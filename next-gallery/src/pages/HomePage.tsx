@@ -1,56 +1,44 @@
+// src/pages/HomePage.tsx
 import React, { useState, useEffect } from "react";
-import axios from "axios";
-import PhotoCard from "../components/PhotoCard";
+import Header from "../components/Header";
+import PhotoGallery from "../components/PhotoGallery";
 import UploadForm from "../components/UploadForm";
-
-interface Photo {
-  _id: string;
-  filename: string;
-  originalName: string;
-  category?: string;
-}
+import { getPhotos } from "../services/photoService";
+import type { Photo } from "../types/types"; // <-- import Photo type
 
 const HomePage: React.FC = () => {
   const [photos, setPhotos] = useState<Photo[]>([]);
 
+  // Fetch all photos from backend
   const fetchPhotos = async () => {
     try {
-      const res = await axios.get<Photo[]>("http://localhost:3001/photos");
-      setPhotos(res.data);
+      const data = await getPhotos(); // returns Photo[]
+      setPhotos(data);
     } catch (err) {
       console.error(err);
     }
   };
 
+  // Fetch photos on mount
   useEffect(() => {
     fetchPhotos();
   }, []);
 
-  const handleDelete = async (id: string) => {
-    if (!window.confirm("Are you sure you want to delete this photo?")) return;
-
-    try {
-      await axios.delete(`http://localhost:3001/photos/${id}`);
-      setPhotos((prev) => prev.filter((photo) => photo._id !== id));
-      alert("Photo deleted successfully");
-    } catch (err) {
-      console.error(err);
-      alert("Failed to delete photo");
-    }
-  };
-
   return (
-    <div className="p-6">
-      <h1 className="text-3xl font-bold mb-4">📸 Next Gallery</h1>
+    <>
+      <header>
+        <Header />
+      </header>
+      <div className="p-6">
+        <h1 className="text-3xl font-bold mb-4">📸 Next Gallery</h1>
 
-      <UploadForm onUploadSuccess={fetchPhotos} />
+        {/* UploadForm calls fetchPhotos after successful upload */}
+        <UploadForm onUploadSuccess={fetchPhotos} />
 
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-        {photos.map((photo) => (
-          <PhotoCard key={photo._id} photo={photo} onDelete={handleDelete} />
-        ))}
+        {/* PhotoGallery displays photos */}
+        <PhotoGallery photos={photos} />
       </div>
-    </div>
+    </>
   );
 };
 
