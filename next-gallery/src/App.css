@@ -1,5 +1,11 @@
 @import "tailwindcss";
 
+/* Apply Inter font and weight globally */
+body {
+  font-family: "Inter", sans-serif;
+  font-weight: 600;
+}
+
 #root {
   max-width: 1280px;
   margin: 0 auto;
