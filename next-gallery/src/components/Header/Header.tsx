@@ -33,27 +33,27 @@ const HeaderWithMenu: React.FC<HeaderProps> = ({
         <div className="mx-auto px-5 py-2.5 flex justify-between items-center">
           <button
             onClick={() => setMenuOpen(true)}
-            className="text-black text-xl font-semibold flex items-center gap-2"
+            className="text-black text-l font-semibold flex items-center gap-2"
           >
             Menu
           </button>
 
-          <div className="text-black text-xl font-semibold text-center">
+          <div className="text-black text-l font-semibold text-center">
             Next Gallery®
           </div>
 
           <div className="flex items-center gap-3">
             <FontAwesomeIcon
               icon={faMagnifyingGlass}
-              className="text-xl text-black cursor-pointer hover:text-gray-800"
+              className="text-l text-black cursor-pointer hover:text-gray-800"
               onClick={() => setSearchOpen(true)}
             />
             <div
               className="flex items-center gap-2 cursor-pointer text-black hover:text-gray-800"
               onClick={handleUserClick}
             >
-              <span className="text-xl font-semibold">{username}</span>
-              <FontAwesomeIcon icon={faCircleUser} className="text-2xl" />
+              <span className="text-l font-semibold">{username}</span>
+              <FontAwesomeIcon icon={faCircleUser} className="text-xl" />
             </div>
           </div>
         </div>
