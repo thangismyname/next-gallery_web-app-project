@@ -1,6 +1,6 @@
 // src/pages/HomePage.tsx
 import React, { useState, useEffect } from "react";
-import Header from "../components/Header";
+import Header from "../components/Header/Header";
 import PhotoGallery from "../components/PhotoGallery";
 import UploadForm from "../components/UploadForm";
 import { getPhotos } from "../services/photoService";

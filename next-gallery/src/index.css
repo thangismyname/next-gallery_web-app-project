@@ -1,1 +1,21 @@
 @import "tailwindcss";
+
+.dropdown-enter {
+  opacity: 0;
+  transform: scaleY(0);
+  transform-origin: top;
+}
+.dropdown-enter-active {
+  opacity: 1;
+  transform: scaleY(1);
+  transition: all 200ms ease-out;
+}
+.dropdown-exit {
+  opacity: 1;
+  transform: scaleY(1);
+}
+.dropdown-exit-active {
+  opacity: 0;
+  transform: scaleY(0);
+  transition: all 150ms ease-in;
+}
