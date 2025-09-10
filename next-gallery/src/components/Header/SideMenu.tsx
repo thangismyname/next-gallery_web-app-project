@@ -1,6 +1,7 @@
-import React, { useState, useRef, useEffect } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faGlobe } from "@fortawesome/free-solid-svg-icons";
+import React, { useContext } from "react";
+import { AppContext } from "../AppContext"; // Import AppContext
+import LanguageSelector from "../LanguageSelector"; // Adjusted path
+import DarkModeToggle from "../DarkMode"; // Adjusted path
 
 interface SideMenuProps {
   open: boolean;
@@ -8,38 +9,12 @@ interface SideMenuProps {
 }
 
 const SideMenu: React.FC<SideMenuProps> = ({ open, onClose }) => {
-  const [darkMode, setDarkMode] = useState(false);
-  const [language, setLanguage] = useState("English");
-  const [showLangMenu, setShowLangMenu] = useState(false);
-
-  const langMenuRef = useRef<HTMLDivElement>(null);
-
-  function toggleDarkMode() {
-    setDarkMode((prev) => !prev);
+  const context = useContext(AppContext);
+  if (!context) {
+    throw new Error("SideMenu must be used within an AppProvider");
   }
 
-  function toggleLangMenu() {
-    setShowLangMenu((prev) => !prev);
-  }
-
-  function selectLanguage(lang: string) {
-    setLanguage(lang);
-    setShowLangMenu(false);
-  }
-
-  // Close language dropdown when clicking outside
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        langMenuRef.current &&
-        !langMenuRef.current.contains(event.target as Node)
-      ) {
-        setShowLangMenu(false);
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
+  const { darkMode } = context;
 
   return (
     <>
@@ -53,29 +28,26 @@ const SideMenu: React.FC<SideMenuProps> = ({ open, onClose }) => {
 
       {/* Side Menu */}
       <div
-        className={`fixed top-0 left-0 h-full w-90 bg-white shadow-lg z-50 transform transition-transform duration-300 ${
+        className={`fixed top-0 left-0 h-full w-72 shadow-lg z-50 transform transition-transform duration-300 ${
           open ? "translate-x-0" : "-translate-x-full"
-        }`}
+        } ${darkMode ? "bg-black text-white" : "bg-white text-black"}`}
       >
         <div className="flex flex-col font-semibold">
           {/* Menu buttons */}
-          <button
-            onClick={onClose}
-            className="p-5 py-3 border-b text-left text-black hover:text-red-600"
-          >
-            Close
+          <button onClick={onClose} className="p-5 py-3 border-b text-left">
+            <span className="hover:text-red-600">Close</span>
           </button>
-          <button className="p-5 py-3 border-b text-left text-black hover:text-blue-600">
-            Upload
+          <button className="p-5 py-3 border-b text-left">
+            <span className=" hover:text-blue-600">Upload</span>
           </button>
-          <button className="p-5 py-3 border-b text-left text-black hover:text-blue-600">
-            Download
+          <button className="p-5 py-3 border-b text-left">
+            <span className="hover:text-blue-600">Download</span>
           </button>
-          <button className="p-5 py-3 border-b text-left text-black hover:text-blue-600">
-            View Profile
+          <button className="p-5 py-3 border-b text-left">
+            <span className="hover:text-blue-600">View Profile</span>
           </button>
-          <button className="p-5 py-3 border-b text-left text-black hover:text-blue-600">
-            See more Albums
+          <button className="p-5 py-3 border-b text-left">
+            <span className="hover:text-blue-600">See more Albums</span>
           </button>
         </div>
 
@@ -86,7 +58,7 @@ const SideMenu: React.FC<SideMenuProps> = ({ open, onClose }) => {
               (item, i) => (
                 <button
                   key={i}
-                  className="text-black text-left hover:text-blue-600 transition-colors"
+                  className="text-left hover:text-blue-600 transition-colors"
                 >
                   {item}
                 </button>
@@ -95,40 +67,9 @@ const SideMenu: React.FC<SideMenuProps> = ({ open, onClose }) => {
           </div>
 
           {/* Language + Dark mode buttons */}
-          <div
-            ref={langMenuRef}
-            className="relative flex flex-col gap-2 items-start justify-center"
-          >
-            {/* Language button */}
-            <button
-              onClick={toggleLangMenu}
-              className="flex items-center gap-2 px-3 py-1 rounded-full bg-gray-200 text-sm hover:bg-gray-300"
-            >
-              {language} <FontAwesomeIcon icon={faGlobe} />
-            </button>
-
-            {/* Language dropdown */}
-            {showLangMenu && (
-              <div className="absolute bottom-full left-0 mb-1 w-32 bg-white rounded-md shadow-md">
-                {["English", "Vietnamese", "French", "Spanish"].map((lang) => (
-                  <button
-                    key={lang}
-                    onClick={() => selectLanguage(lang)}
-                    className="w-full text-left px-3 py-2 hover:bg-gray-100 rounded-md"
-                  >
-                    {lang}
-                  </button>
-                ))}
-              </div>
-            )}
-
-            {/* Dark mode button */}
-            <button
-              onClick={toggleDarkMode}
-              className="px-3 py-1 rounded-full bg-gray-300 hover:bg-gray-100 text-sm"
-            >
-              {darkMode ? "Light mode" : "Dark mode"}
-            </button>
+          <div className="flex flex-col gap-2 items-end justify-center">
+            <LanguageSelector />
+            <DarkModeToggle />
           </div>
         </div>
       </div>

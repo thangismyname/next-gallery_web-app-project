@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCircleUser,
@@ -6,6 +6,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import SideMenu from "./SideMenu";
 import Search from "./Search";
+import { AppContext } from "../AppContext";
 
 interface HeaderProps {
   username?: string;
@@ -18,6 +19,13 @@ const HeaderWithMenu: React.FC<HeaderProps> = ({
 }) => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
+
+  const context = useContext(AppContext);
+  if (!context) {
+    throw new Error("HeaderWithMenu must be used within an AppProvider");
+  }
+
+  const { darkMode } = context;
 
   const handleUserClick = () => {
     if (isLoggedIn) {
@@ -34,19 +42,33 @@ const HeaderWithMenu: React.FC<HeaderProps> = ({
 
   return (
     <>
-      <header className="w-full sticky top-0 z-50 bg-white/70 backdrop-blur-md shadow-sm">
+      <header
+        className={`w-full sticky top-0 z-50 backdrop-blur-md border-b transition-colors duration-300 ${
+          darkMode
+            ? "bg-black text-white border-white"
+            : "bg-white text-black border-black"
+        }`}
+      >
         <div className="mx-auto px-5 py-1.5 flex justify-between items-center">
           {/* Menu Button */}
           <button
             onClick={() => setMenuOpen(true)}
-            className="px-3 py-1 text-black text-l font-semibold flex items-center gap-2 rounded-2xl hover:bg-gray-200 transition-all duration-200 ease-in-out"
+            className={`px-3 py-1 text-l font-semibold flex items-center gap-2 rounded-2xl transition-all duration-200 ease-in-out ${
+              darkMode
+                ? "text-white hover:bg-gray-800"
+                : "text-black hover:bg-gray-200"
+            }`}
           >
             Menu
           </button>
 
           {/* Logo / Title */}
           <div
-            className="text-black text-l font-semibold text-center cursor-pointer hover:text-gray-600 transition-all duration-200 ease-in-out"
+            className={`text-l font-semibold text-center cursor-pointer transition-all duration-200 ease-in-out ${
+              darkMode
+                ? "text-white hover:text-gray-200"
+                : "text-black hover:text-gray-600"
+            }`}
             onClick={handleGoHome}
           >
             Next Gallery®
@@ -56,18 +78,26 @@ const HeaderWithMenu: React.FC<HeaderProps> = ({
           <div className="flex items-center gap-3">
             {/* Search Icon (circle) */}
             <div
-              className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-gray-200 cursor-pointer transition-all duration-200 ease-in-out"
+              className={`w-9 h-9 flex items-center justify-center rounded-full cursor-pointer transition-all duration-200 ease-in-out ${
+                darkMode ? "hover:bg-gray-800" : "hover:bg-gray-200"
+              }`}
               onClick={() => setSearchOpen(true)}
             >
               <FontAwesomeIcon
                 icon={faMagnifyingGlass}
-                className="text-black text-base"
+                className={`text-base ${
+                  darkMode ? "text-white" : "text-black"
+                }`}
               />
             </div>
 
             {/* User Section */}
             <div
-              className="flex items-center gap-2 cursor-pointer text-black hover:text-gray-600 transition-all duration-200 ease-in-out"
+              className={`flex items-center gap-2 cursor-pointer transition-all duration-200 ease-in-out ${
+                darkMode
+                  ? "text-white hover:text-gray-400"
+                  : "text-black hover:text-gray-600"
+              }`}
               onClick={handleUserClick}
             >
               <span className="text-l font-semibold">{username}</span>
