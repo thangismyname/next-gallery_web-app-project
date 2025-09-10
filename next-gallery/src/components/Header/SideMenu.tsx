@@ -61,20 +61,20 @@ const SideMenu: React.FC<SideMenuProps> = ({ open, onClose }) => {
           {/* Menu buttons */}
           <button
             onClick={onClose}
-            className="p-5 py-4 border-b text-left text-black hover:text-red-600"
+            className="p-5 py-3 border-b text-left text-black hover:text-red-600"
           >
             Close
           </button>
-          <button className="p-5 py-4 border-b text-left text-black hover:text-blue-600">
+          <button className="p-5 py-3 border-b text-left text-black hover:text-blue-600">
             Upload
           </button>
-          <button className="p-5 py-4 border-b text-left text-black hover:text-blue-600">
+          <button className="p-5 py-3 border-b text-left text-black hover:text-blue-600">
             Download
           </button>
-          <button className="p-5 py-4 border-b text-left text-black hover:text-blue-600">
+          <button className="p-5 py-3 border-b text-left text-black hover:text-blue-600">
             View Profile
           </button>
-          <button className="p-5 py-4 border-b text-left text-black hover:text-blue-600">
+          <button className="p-5 py-3 border-b text-left text-black hover:text-blue-600">
             See more Albums
           </button>
         </div>

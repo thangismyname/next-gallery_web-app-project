@@ -27,29 +27,47 @@ const HeaderWithMenu: React.FC<HeaderProps> = ({
     }
   };
 
+  const handleGoHome = () => {
+    window.location.href = "/";
+    // OR with react-router-dom: navigate("/");
+  };
+
   return (
     <>
       <header className="w-full sticky top-0 z-50 bg-white/70 backdrop-blur-md shadow-sm">
-        <div className="mx-auto px-5 py-2.5 flex justify-between items-center">
+        <div className="mx-auto px-5 py-1.5 flex justify-between items-center">
+          {/* Menu Button */}
           <button
             onClick={() => setMenuOpen(true)}
-            className="text-black text-l font-semibold flex items-center gap-2"
+            className="px-3 py-1 text-black text-l font-semibold flex items-center gap-2 rounded-2xl hover:bg-gray-200 transition-all duration-200 ease-in-out"
           >
             Menu
           </button>
 
-          <div className="text-black text-l font-semibold text-center">
+          {/* Logo / Title */}
+          <div
+            className="text-black text-l font-semibold text-center cursor-pointer hover:text-gray-600 transition-all duration-200 ease-in-out"
+            onClick={handleGoHome}
+          >
             Next Gallery®
           </div>
 
+          {/* Right Section */}
           <div className="flex items-center gap-3">
-            <FontAwesomeIcon
-              icon={faMagnifyingGlass}
-              className="text-l text-black cursor-pointer hover:text-gray-800"
-              onClick={() => setSearchOpen(true)}
-            />
+            {/* Search Icon (circle) */}
             <div
-              className="flex items-center gap-2 cursor-pointer text-black hover:text-gray-800"
+              className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-gray-200 cursor-pointer transition-all duration-200 ease-in-out"
+              onClick={() => setSearchOpen(true)}
+            >
+              <FontAwesomeIcon
+                icon={faMagnifyingGlass}
+                className="text-black text-base"
+              />
+            </div>
+
+            {/* User Section */}
+            <div
+              className="flex items-center gap-2 cursor-pointer text-black hover:text-gray-600 transition-all duration-200 ease-in-out"
               onClick={handleUserClick}
             >
               <span className="text-l font-semibold">{username}</span>

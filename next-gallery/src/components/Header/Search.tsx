@@ -43,7 +43,7 @@ const Search: React.FC<Search> = ({ onClose }) => {
           {/* Search bar */}
           <div
             className={`bg-white w-full p-3 flex items-center shadow-lg transition-all duration-300 ease-out ${
-              isVisible ? "rounded-t-2xl rounded-b-none" : "rounded-2xl"
+              isVisible ? "rounded-t-3xl rounded-b-none" : "rounded-3xl"
             }`}
           >
             <input
@@ -62,7 +62,7 @@ const Search: React.FC<Search> = ({ onClose }) => {
 
           {/* Suggestions dropdown */}
           <div
-            className="w-full bg-white rounded-b-2xl shadow-lg overflow-hidden transition-all duration-300 ease-in-out transform origin-top"
+            className="w-full bg-white rounded-b-3xl shadow-lg overflow-hidden transition-all duration-300 ease-in-out transform origin-top"
             style={{
               maxHeight: isVisible
                 ? `${filteredSuggestions.length * 40 + 8}px`
