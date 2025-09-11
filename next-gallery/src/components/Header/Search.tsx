@@ -1,6 +1,7 @@
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 
 interface Search {
   onClose: () => void;
@@ -17,6 +18,7 @@ const suggestions = [
 ];
 
 const Search: React.FC<Search> = ({ onClose }) => {
+  const { t } = useTranslation(); // Initialize translation hook
   const [query, setQuery] = useState("");
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
@@ -48,7 +50,7 @@ const Search: React.FC<Search> = ({ onClose }) => {
           >
             <input
               type="text"
-              placeholder="Search"
+              placeholder={t("search.placeholder")} // Use translation key for placeholder
               value={query}
               onFocus={() => setShowSuggestions(true)}
               onChange={(e) => setQuery(e.target.value)}

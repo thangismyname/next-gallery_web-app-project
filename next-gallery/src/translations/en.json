@@ -1,0 +1,117 @@
+{
+    "title": {
+        "next_gallery": "📸 Next Gallery"
+    },
+    "status": {
+        "loading_photos": "Loading photos...",
+        "no_photos_available": "No photos available."
+    },
+    "error": {
+        "failed_to_load_photos": "Failed to load photos. Please try again later."
+    },
+    "header": {
+        "menu": "Menu",
+        "title": "Next Gallery"
+    },
+    "sidemenu": {
+        "close": "Close",
+        "upload": "Upload",
+        "download": "Download",
+        "viewProfile": "View Profile",
+        "seeMoreAlbums": "See More Albums",
+        "terms": "Terms & Conditions",
+        "prices": "Shipping & Returns",
+        "privacy": "Privacy Policy"
+    },
+    "search": {
+        "placeholder": "Search"
+    },
+    "newsletter": {
+        "subscribe_text": "Subscribe for our Newsletter and get a 10% Discount.",
+        "email_placeholder": "Enter your e-mail",
+        "subscribe_button": "Subscribe",
+        "subscribed_message": "Subscribed with email: {{email}}",
+        "error_invalid_email": "Please enter a valid email address."
+    },
+    "footer": {
+        "company_name": "© 2025 Next Gallery® Company",
+        "tagline": "Bring your photos near the arts.",
+        "location": "District 1, Ho Chi Minh City, Vietnam",
+        "phone": "+84 123 456 789",
+        "terms_conditions": "Terms & Conditions",
+        "shipping_returns": "Shipping & Returns",
+        "privacy_policy": "Privacy Policy",
+        "instagram": "Instagram",
+        "facebook": "Facebook",
+        "faq": "FAQ"
+    },
+    "language": {
+        "english": "English",
+        "vietnamese": "Vietnamese"
+    },
+    "darkmode": {
+        "light_mode": "Light mode",
+        "dark_mode": "Dark mode"
+    },
+    "login": {
+        "title": "Sign in to your account",
+        "subtitle": "Bring your memories to life with NextGallery. Sign in to explore, organize, and share your photos effortlessly.",
+        "email_placeholder": "Email Address",
+        "password_placeholder": "Password",
+        "remember_me": "Remember me",
+        "forgot_password": "Forgot password?",
+        "sign_in": "Sign In",
+        "google_sign_in": "Sign in with Google",
+        "register_prompt": "Don’t have an account?",
+        "sign_up": "Sign up",
+        "error_fill_fields": "Please fill in all fields"
+    },
+    "register": {
+        "title": "Create Your Account",
+        "subtitle": "Sign up to explore, organize, and share your photos effortlessly.",
+        "first_name_placeholder": "First Name",
+        "last_name_placeholder": "Last Name",
+        "email_placeholder": "Email",
+        "phone_placeholder": "Phone Number",
+        "password_placeholder": "Password",
+        "repeat_password_placeholder": "Repeat Password",
+        "role_label": "I am a:",
+        "role_user": "User",
+        "role_photographer": "Photographer",
+        "role_other": "Other",
+        "agree_policy": "I agree to the",
+        "privacy_policy": "privacy policy",
+        "sign_up": "Sign Up",
+        "or_sign_up_with": "or sign up with",
+        "google_sign_up": "Sign up with Google",
+        "facebook_sign_up": "Sign up with Facebook",
+        "already_have_account": "Already have an account?",
+        "log_in": "Log in",
+        "error_fill_fields": "Please fill in all required fields and agree to the privacy policy",
+        "error_first_name": "Please enter your first name",
+        "error_last_name": "Please enter your last name",
+        "error_email": "Please enter your email",
+        "error_password": "Please enter your password",
+        "error_agree_policy": "Please agree to the privacy policy"
+    },
+    "forgot_password": {
+        "title": "Reset Your Password",
+        "subtitle": "Enter your email address and we’ll send you a link to reset your password.",
+        "email_placeholder": "Email Address",
+        "send_reset_link": "Send Reset Link",
+        "back_to_login": "Back to Log in",
+        "error_email": "Please enter your email",
+        "success_message": "Reset link sent to your email"
+    },
+    "reset_password": {
+        "title": "Reset Your Password",
+        "subtitle": "Enter your new password below to regain access to your account.",
+        "new_password": "New Password",
+        "confirm_password": "Confirm New Password",
+        "submit_button": "Reset Password",
+        "error_required": "Both fields are required.",
+        "error_mismatch": "Passwords do not match.",
+        "error_invalid_token": "Invalid or expired token.",
+        "success_message": "Your password has been reset successfully!"
+    }
+}

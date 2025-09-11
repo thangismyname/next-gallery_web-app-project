@@ -1,7 +1,8 @@
 import React, { useContext } from "react";
-import { AppContext } from "../AppContext"; // Import AppContext
-import LanguageSelector from "../LanguageSelector"; // Adjusted path
-import DarkModeToggle from "../DarkMode"; // Adjusted path
+import { AppContext } from "../AppContext";
+import LanguageSelector from "../LanguageSelector";
+import DarkModeToggle from "../DarkMode";
+import { useTranslation } from "react-i18next";
 
 interface SideMenuProps {
   open: boolean;
@@ -10,11 +11,19 @@ interface SideMenuProps {
 
 const SideMenu: React.FC<SideMenuProps> = ({ open, onClose }) => {
   const context = useContext(AppContext);
-  if (!context) {
-    throw new Error("SideMenu must be used within an AppProvider");
-  }
+  if (!context) throw new Error("SideMenu must be used within an AppProvider");
 
   const { darkMode } = context;
+  const { t } = useTranslation();
+
+  const menuItems = [
+    { key: "upload", onClick: () => {} },
+    { key: "download", onClick: () => {} },
+    { key: "viewProfile", onClick: () => {} },
+    { key: "seeMoreAlbums", onClick: () => {} },
+  ];
+
+  const footerItems = ["terms", "prices", "privacy"];
 
   return (
     <>
@@ -33,37 +42,34 @@ const SideMenu: React.FC<SideMenuProps> = ({ open, onClose }) => {
         } ${darkMode ? "bg-black text-white" : "bg-white text-black"}`}
       >
         <div className="flex flex-col font-semibold">
-          {/* Menu buttons */}
           <button onClick={onClose} className="p-5 py-3 border-b text-left">
-            <span className="hover:text-red-600">Close</span>
+            <span className="hover:text-red-600">{t("sidemenu.close")}</span>
           </button>
-          <button className="p-5 py-3 border-b text-left">
-            <span className=" hover:text-blue-600">Upload</span>
-          </button>
-          <button className="p-5 py-3 border-b text-left">
-            <span className="hover:text-blue-600">Download</span>
-          </button>
-          <button className="p-5 py-3 border-b text-left">
-            <span className="hover:text-blue-600">View Profile</span>
-          </button>
-          <button className="p-5 py-3 border-b text-left">
-            <span className="hover:text-blue-600">See more Albums</span>
-          </button>
+
+          {menuItems.map((item) => (
+            <button
+              key={item.key}
+              onClick={item.onClick}
+              className="p-5 py-3 border-b text-left"
+            >
+              <span className="hover:text-blue-600">
+                {t(`sidemenu.${item.key}`)}
+              </span>
+            </button>
+          ))}
         </div>
 
         {/* Footer links */}
         <div className="absolute bottom-5 left-5 right-5 flex gap-4 text-sm font-semibold justify-between">
           <div className="flex flex-col gap-1">
-            {["Terms and Conditions", "Prices", "Privacy Policy"].map(
-              (item, i) => (
-                <button
-                  key={i}
-                  className="text-left hover:text-blue-600 transition-colors"
-                >
-                  {item}
-                </button>
-              )
-            )}
+            {footerItems.map((key) => (
+              <button
+                key={key}
+                className="text-left hover:text-blue-600 transition-colors"
+              >
+                {t(`sidemenu.${key}`)}
+              </button>
+            ))}
           </div>
 
           {/* Language + Dark mode buttons */}
