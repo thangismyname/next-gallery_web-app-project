@@ -1,0 +1,117 @@
+{
+    "title": {
+        "next_gallery": "📸 Thư Viện Tiếp Theo"
+    },
+    "status": {
+        "loading_photos": "Đang tải ảnh...",
+        "no_photos_available": "Không có ảnh nào."
+    },
+    "error": {
+        "failed_to_load_photos": "Không thể tải ảnh. Vui lòng thử lại sau."
+    },
+    "header": {
+        "menu": "Menu",
+        "title": "Thư Viện Tiếp Theo"
+    },
+    "sidemenu": {
+        "close": "Đóng",
+        "upload": "Tải lên",
+        "download": "Tải xuống",
+        "viewProfile": "Xem Hồ sơ",
+        "seeMoreAlbums": "Xem Thêm Album",
+        "terms": "Điều khoản & Điều kiện",
+        "prices": "Vận chuyển & Trả hàng",
+        "privacy": "Chính sách Bảo mật"
+    },
+    "search": {
+        "placeholder": "Tìm kiếm"
+    },
+    "newsletter": {
+        "subscribe_text": "Đăng ký nhận Bản tin của chúng tôi và nhận 10% giảm giá.",
+        "email_placeholder": "Nhập email của bạn",
+        "subscribe_button": "Đăng ký",
+        "subscribed_message": "Đã đăng ký với email: {{email}}",
+        "error_invalid_email": "Vui lòng nhập địa chỉ email hợp lệ."
+    },
+    "footer": {
+        "company_name": "© 2025 Công ty Thư Viện Tiếp Theo®",
+        "tagline": "Mang ảnh của bạn đến gần với nghệ thuật.",
+        "location": "Quận 1, Thành phố Hồ Chí Minh, Việt Nam",
+        "phone": "+84 123 456 789",
+        "terms_conditions": "Điều khoản & Điều kiện",
+        "shipping_returns": "Vận chuyển & Trả hàng",
+        "privacy_policy": "Chính sách Bảo mật",
+        "instagram": "Instagram",
+        "facebook": "Facebook",
+        "faq": "Câu hỏi thường gặp"
+    },
+    "language": {
+        "english": "Tiếng Anh",
+        "vietnamese": "Tiếng Việt"
+    },
+    "darkmode": {
+        "light_mode": "Chế độ sáng",
+        "dark_mode": "Chế độ tối"
+    },
+    "login": {
+        "title": "Đăng nhập vào tài khoản của bạn",
+        "subtitle": "Mang ký ức của bạn đến với NextGallery. Đăng nhập để khám phá, sắp xếp và chia sẻ ảnh của bạn một cách dễ dàng.",
+        "email_placeholder": "Địa chỉ Email",
+        "password_placeholder": "Mật khẩu",
+        "remember_me": "Ghi nhớ tôi",
+        "forgot_password": "Quên mật khẩu?",
+        "sign_in": "Đăng nhập",
+        "google_sign_in": "Đăng nhập bằng Google",
+        "register_prompt": "Chưa có tài khoản?",
+        "sign_up": "Đăng ký",
+        "error_fill_fields": "Vui lòng điền đầy đủ các thông tin"
+    },
+    "register": {
+        "title": "Tạo tài khoản của bạn",
+        "subtitle": "Đăng ký để khám phá, sắp xếp và chia sẻ ảnh của bạn một cách dễ dàng.",
+        "first_name_placeholder": "Tên",
+        "last_name_placeholder": "Họ",
+        "email_placeholder": "Email",
+        "phone_placeholder": "Số điện thoại",
+        "password_placeholder": "Mật khẩu",
+        "repeat_password_placeholder": "Nhập lại mật khẩu",
+        "role_label": "Tôi là:",
+        "role_user": "Người dùng",
+        "role_photographer": "Nhiếp ảnh gia",
+        "role_other": "Khác",
+        "agree_policy": "Tôi đồng ý với",
+        "privacy_policy": "chính sách bảo mật",
+        "sign_up": "Đăng ký",
+        "or_sign_up_with": "hoặc đăng ký bằng",
+        "google_sign_up": "Đăng ký bằng Google",
+        "facebook_sign_up": "Đăng ký bằng Facebook",
+        "already_have_account": "Đã có tài khoản?",
+        "log_in": "Đăng nhập",
+        "error_fill_fields": "Vui lòng điền đầy đủ các trường bắt buộc và đồng ý với chính sách bảo mật",
+        "error_first_name": "Vui lòng nhập tên của bạn",
+        "error_last_name": "Vui lòng nhập họ của bạn",
+        "error_email": "Vui lòng nhập email của bạn",
+        "error_password": "Vui lòng nhập mật khẩu của bạn",
+        "error_agree_policy": "Vui lòng đồng ý với chính sách bảo mật"
+    },
+    "forgot_password": {
+        "title": "Đặt lại mật khẩu của bạn",
+        "subtitle": "Nhập địa chỉ email của bạn và chúng tôi sẽ gửi cho bạn một liên kết để đặt lại mật khẩu.",
+        "email_placeholder": "Địa chỉ Email",
+        "send_reset_link": "Gửi liên kết đặt lại",
+        "back_to_login": "Quay lại đăng nhập",
+        "error_email": "Vui lòng nhập email của bạn",
+        "success_message": "Liên kết đặt lại đã được gửi đến email của bạn"
+    },
+    "reset_password": {
+        "title": "Đặt lại mật khẩu",
+        "subtitle": "Nhập mật khẩu mới của bạn để truy cập lại vào tài khoản.",
+        "new_password": "Mật khẩu mới",
+        "confirm_password": "Xác nhận mật khẩu",
+        "submit_button": "Đặt lại mật khẩu",
+        "error_required": "Cả hai trường đều bắt buộc.",
+        "error_mismatch": "Mật khẩu không khớp.",
+        "error_invalid_token": "Token không hợp lệ hoặc đã hết hạn.",
+        "success_message": "Mật khẩu của bạn đã được đặt lại thành công!"
+    }
+}

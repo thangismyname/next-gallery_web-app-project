@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
+import { useTranslation } from "react-i18next";
 import { AppProvider, AppContext } from "../components/AppContext";
 import Header from "../components/Header/Header";
 import Newsletter from "../components/Footer/Newsletter";
@@ -9,6 +10,7 @@ import { getPhotos } from "../services/photoService";
 import type { Photo } from "../types/types";
 
 const HomePageContent: React.FC = () => {
+  const { t } = useTranslation(); // Initialize translation hook
   const context = useContext(AppContext);
   if (!context)
     throw new Error("HomePageContent must be used within AppProvider");
@@ -27,7 +29,7 @@ const HomePageContent: React.FC = () => {
       setPhotos(data);
     } catch (err) {
       console.error(err);
-      setError("Failed to load photos. Please try again later.");
+      setError(t("error.failed_to_load_photos")); // Use translation key for error
     } finally {
       setIsLoading(false);
     }
@@ -47,15 +49,17 @@ const HomePageContent: React.FC = () => {
         <Header />
       </header>
       <main className="flex-1 p-6">
-        <h1 className="text-3xl font-bold mb-4">📸 Next Gallery</h1>
+        <h1 className="text-3xl font-bold mb-4">{t("title.next_gallery")}</h1>
 
         {isLoading && (
-          <p className="text-gray-500 dark:text-gray-400">Loading photos...</p>
+          <p className="text-gray-500 dark:text-gray-400">
+            {t("status.loading_photos")}
+          </p>
         )}
         {error && <p className="text-red-500">{error}</p>}
         {!isLoading && !error && photos.length === 0 && (
           <p className="text-gray-500 dark:text-gray-400">
-            No photos available.
+            {t("status.no_photos_available")}
           </p>
         )}
 

@@ -4,9 +4,11 @@ import {
   faCircleUser,
   faMagnifyingGlass,
 } from "@fortawesome/free-solid-svg-icons";
+import { useNavigate } from "react-router-dom";
 import SideMenu from "./SideMenu";
 import Search from "./Search";
 import { AppContext } from "../AppContext";
+import { useTranslation } from "react-i18next";
 
 interface HeaderProps {
   username?: string;
@@ -19,25 +21,25 @@ const HeaderWithMenu: React.FC<HeaderProps> = ({
 }) => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
+  const navigate = useNavigate();
 
   const context = useContext(AppContext);
-  if (!context) {
+  if (!context)
     throw new Error("HeaderWithMenu must be used within an AppProvider");
-  }
 
   const { darkMode } = context;
+  const { t } = useTranslation();
 
   const handleUserClick = () => {
     if (isLoggedIn) {
-      console.log("Go to user info page");
+      navigate("/user");
     } else {
-      console.log("Redirect to login/register");
+      navigate("/login");
     }
   };
 
   const handleGoHome = () => {
-    window.location.href = "/";
-    // OR with react-router-dom: navigate("/");
+    navigate("/");
   };
 
   return (
@@ -59,7 +61,7 @@ const HeaderWithMenu: React.FC<HeaderProps> = ({
                 : "text-black hover:bg-gray-200"
             }`}
           >
-            Menu
+            {t("header.menu")}
           </button>
 
           {/* Logo / Title */}
@@ -71,12 +73,12 @@ const HeaderWithMenu: React.FC<HeaderProps> = ({
             }`}
             onClick={handleGoHome}
           >
-            Next Gallery®
+            {t("header.title")}
           </div>
 
           {/* Right Section */}
           <div className="flex items-center gap-3">
-            {/* Search Icon (circle) */}
+            {/* Search Icon */}
             <div
               className={`w-9 h-9 flex items-center justify-center rounded-full cursor-pointer transition-all duration-200 ease-in-out ${
                 darkMode ? "hover:bg-gray-800" : "hover:bg-gray-200"
@@ -108,7 +110,6 @@ const HeaderWithMenu: React.FC<HeaderProps> = ({
       </header>
 
       <SideMenu open={menuOpen} onClose={() => setMenuOpen(false)} />
-
       {searchOpen && <Search onClose={() => setSearchOpen(false)} />}
     </>
   );
