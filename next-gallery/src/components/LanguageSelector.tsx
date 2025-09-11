@@ -1,9 +1,11 @@
 import React, { useContext, useState, useRef, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGlobe } from "@fortawesome/free-solid-svg-icons";
 import { AppContext } from "./AppContext";
 
 const LanguageSelector: React.FC = () => {
+  const { t } = useTranslation();
   const context = useContext(AppContext);
   if (!context) {
     throw new Error("LanguageSelector must be used within an AppProvider");
@@ -30,17 +32,30 @@ const LanguageSelector: React.FC = () => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  // Map language codes to display names and translation keys
+  const languageOptions = [
+    { code: "English", key: "language.english" },
+    { code: "Vietnamese", key: "language.vietnamese" },
+  ];
+
+  // Map language codes to translation keys for display
+  const languageDisplayMap: { [key: string]: string } = {
+    en: "language.english",
+    vi: "language.vietnamese",
+  };
+
   return (
     <div ref={langMenuRef} className="flex flex-col items-end relative">
       <button
         onClick={toggleLangMenu}
-        className={`px-3 py-1 rounded-full text-sm font-semibold flex items-center gap-2 ${
+        className={`px-3 py-1 rounded-full font-semibold flex items-center gap-2 whitespace-nowrap ${
           darkMode
             ? "bg-gray-black border border-white text-white hover:bg-gray-500"
             : "bg-gray-200 text-black hover:bg-gray-300"
         }`}
       >
-        {language} <FontAwesomeIcon icon={faGlobe} />
+        {t(languageDisplayMap[language] || "language.english")}
+        <FontAwesomeIcon icon={faGlobe} />
       </button>
 
       {showLangMenu && (
@@ -49,18 +64,18 @@ const LanguageSelector: React.FC = () => {
             darkMode ? "bg-black text-white" : "bg-white text-black"
           } z-10`}
         >
-          {["English", "Vietnamese", "French", "Spanish"].map((lang) => (
+          {languageOptions.map((lang) => (
             <button
-              key={lang}
+              key={lang.code}
               onClick={() => {
-                selectLanguage(lang);
-                setShowLangMenu(false); // close only this menu
+                selectLanguage(lang.code);
+                setShowLangMenu(false);
               }}
               className={`w-full text-left px-3 py-2 ${
                 darkMode ? "hover:bg-gray-800" : "hover:bg-gray-100"
               } rounded-md`}
             >
-              {lang}
+              {t(lang.key)}
             </button>
           ))}
         </div>

@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
-/* Apply Inter font and weight globally */
+/* Apply Poppins font and weight globally */
 body {
-  font-family: "Inter", sans-serif;
+  font-family: "Poppins", sans-serif;
   font-weight: 600;
 }
 
