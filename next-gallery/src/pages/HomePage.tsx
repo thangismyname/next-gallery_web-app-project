@@ -74,8 +74,10 @@ const HomePageContent: React.FC = () => {
                 {t("status.no_photos_available")}
               </p>
             )}
-            <UploadForm onUploadSuccess={fetchPhotos} />
-            <PhotoGallery photos={photos} />
+            <div className="p-6">
+              <UploadForm onUploadSuccess={fetchPhotos} />
+              <PhotoGallery photos={photos} />
+            </div>
           </main>
           <div className="col-span-12">
             <Newsletter />

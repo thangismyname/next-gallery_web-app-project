@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCircleUser,
@@ -9,18 +9,12 @@ import SideMenu from "./SideMenu";
 import Search from "./Search";
 import { AppContext } from "../Theme/AppContext";
 import { useTranslation } from "react-i18next";
+import { getCurrentUser } from "../../services/authService";
 
-interface HeaderProps {
-  username?: string;
-  isLoggedIn?: boolean;
-}
-
-const HeaderWithMenu: React.FC<HeaderProps> = ({
-  username = "User",
-  isLoggedIn = false,
-}) => {
+const HeaderWithMenu: React.FC = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
+  const [user, setUser] = useState<{ name: string } | null>(getCurrentUser());
   const navigate = useNavigate();
 
   const context = useContext(AppContext);
@@ -30,8 +24,18 @@ const HeaderWithMenu: React.FC<HeaderProps> = ({
   const { darkMode } = context;
   const { t } = useTranslation();
 
+  // Update user whenever localStorage changes (login/logout)
+  useEffect(() => {
+    const handleStorageChange = () => {
+      setUser(getCurrentUser());
+    };
+
+    window.addEventListener("storage", handleStorageChange);
+    return () => window.removeEventListener("storage", handleStorageChange);
+  }, []);
+
   const handleUserClick = () => {
-    if (isLoggedIn) {
+    if (user) {
       navigate("/user");
     } else {
       navigate("/login");
@@ -42,9 +46,6 @@ const HeaderWithMenu: React.FC<HeaderProps> = ({
     navigate("/");
   };
 
-  // Log to verify menuOpen state
-  console.log("Menu Open:", menuOpen);
-
   return (
     <>
       <header
@@ -53,7 +54,7 @@ const HeaderWithMenu: React.FC<HeaderProps> = ({
             ? "bg-black text-white border-white"
             : "bg-white text-black border-black"
         } ${menuOpen ? "backdrop-blur-sm bg-gray-800/40" : ""}`}
-        style={{ position: "relative" }} // Ensure proper stacking context
+        style={{ position: "relative" }}
       >
         <div className="mx-auto px-5 py-1.5 flex justify-between items-center">
           {/* Menu Button */}
@@ -106,7 +107,9 @@ const HeaderWithMenu: React.FC<HeaderProps> = ({
               }`}
               onClick={handleUserClick}
             >
-              <span className="text-l font-semibold">{username}</span>
+              <span className="text-l font-semibold">
+                {user ? user.name : t("Sign In")}
+              </span>
               <FontAwesomeIcon icon={faCircleUser} className="text-xl" />
             </div>
           </div>

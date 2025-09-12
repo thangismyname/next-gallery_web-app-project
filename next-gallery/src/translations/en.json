@@ -22,6 +22,7 @@
         "download": "Download",
         "viewProfile": "View Profile",
         "seeMoreAlbums": "See More Albums",
+        "logout": "Logout",
         "terms": "Terms & Conditions",
         "prices": "Shipping & Returns",
         "privacy": "Privacy Policy"
@@ -121,6 +122,7 @@
         "success_message": "Your password has been reset successfully!"
     },
     "homepage": {
-        "transfer_line": "Transfer and receive images easily"
+        "transfer_line": "Transfer and receive images easily",
+        "creator_credit": "Next Gallery® is created to help photographers and clients connect and transfer loss-less quality images easily without changing any platform"
     }
 }

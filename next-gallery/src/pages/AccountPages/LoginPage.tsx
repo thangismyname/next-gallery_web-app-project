@@ -40,26 +40,26 @@ const Login: React.FC = () => {
     setError(null);
 
     try {
-      const response = await loginApi({
+      // Call backend login API
+      const user = await loginApi({
         email: formData.email,
         password: formData.password,
       });
 
-      // Save token
+      // Save user and token based on "remember me"
+      const token = localStorage.getItem("token"); // already saved inside authService
       if (formData.rememberMe) {
-        localStorage.setItem("token", response.token);
+        localStorage.setItem("token", token || "");
+        localStorage.setItem("user", JSON.stringify(user));
       } else {
-        sessionStorage.setItem("token", response.token);
+        sessionStorage.setItem("token", token || "");
+        sessionStorage.setItem("user", JSON.stringify(user));
       }
 
-      console.log("Login successful:", response);
-      navigate("/"); // redirect to home page
+      navigate("/"); // redirect to home
     } catch (err: any) {
-      setError(
-        err.response?.data?.message ||
-          err.message ||
-          t("login.error_invalid_credentials")
-      );
+      // Show backend message if exists, else generic
+      setError(err.message || t("login.error_invalid_credentials"));
     } finally {
       setLoading(false);
     }
@@ -67,10 +67,11 @@ const Login: React.FC = () => {
 
   return (
     <div
-      className={`min-h-screen flex flex-col items-center justify-center px-4 transition-colors duration-300 
-        ${darkMode ? "bg-gray-900" : "bg-slate-50"}`}
+      className={`min-h-screen flex flex-col items-center justify-center px-4 transition-colors duration-300 ${
+        darkMode ? "bg-gray-900" : "bg-slate-50"
+      }`}
     >
-      {/* Title & Subtitle */}
+      {/* Title */}
       <div className="text-center space-y-3 mb-6">
         <h1
           className={`text-4xl md:text-5xl font-bold ${
@@ -88,7 +89,7 @@ const Login: React.FC = () => {
         </p>
       </div>
 
-      {/* Card box */}
+      {/* Form Card */}
       <div
         className={`w-full max-w-md p-8 rounded-2xl shadow-xl flex flex-col gap-6 ${
           darkMode ? "bg-gray-800" : "bg-white"
@@ -137,6 +138,7 @@ const Login: React.FC = () => {
                 {t("login.remember_me")}
               </span>
             </label>
+
             <Link
               to="/forgot-password"
               className={`text-sm hover:text-blue-600 hover:underline dark:hover:text-blue-400 ${
@@ -155,22 +157,6 @@ const Login: React.FC = () => {
             className="w-full px-4 py-3 rounded-lg bg-blue-600 dark:bg-blue-700 text-white font-semibold hover:bg-blue-700 dark:hover:bg-blue-800"
           >
             {loading ? t("login.loading") : t("login.sign_in")}
-          </button>
-
-          <button
-            type="button"
-            className={`w-full px-4 py-3 rounded-lg border flex items-center justify-center gap-2 font-semibold ${
-              darkMode
-                ? "bg-gray-700 border-zinc-600 text-white hover:bg-gray-600"
-                : "bg-slate-50 border-zinc-200 text-slate-800 hover:bg-gray-100"
-            }`}
-          >
-            <img
-              src="https://www.svgrepo.com/show/355037/google.svg"
-              alt="Google"
-              className="w-5 h-5"
-            />
-            {t("login.google_sign_in")}
           </button>
 
           <p
