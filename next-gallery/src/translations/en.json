@@ -2,6 +2,9 @@
     "title": {
         "next_gallery": "📸 Next Gallery"
     },
+    "animated_title": {
+        "next_gallery": "Next Gallery®"
+    },
     "status": {
         "loading_photos": "Loading photos...",
         "no_photos_available": "No photos available."
@@ -11,7 +14,7 @@
     },
     "header": {
         "menu": "Menu",
-        "title": "Next Gallery"
+        "title": "Next Gallery®"
     },
     "sidemenu": {
         "close": "Close",
@@ -19,6 +22,7 @@
         "download": "Download",
         "viewProfile": "View Profile",
         "seeMoreAlbums": "See More Albums",
+        "logout": "Logout",
         "terms": "Terms & Conditions",
         "prices": "Shipping & Returns",
         "privacy": "Privacy Policy"
@@ -78,6 +82,8 @@
         "role_label": "I am a:",
         "role_user": "User",
         "role_photographer": "Photographer",
+        "role_iupc_member": "IUPC Member",
+        "student_id_placeholder": "Enter your student ID",
         "role_other": "Other",
         "agree_policy": "I agree to the",
         "privacy_policy": "privacy policy",
@@ -92,6 +98,7 @@
         "error_last_name": "Please enter your last name",
         "error_email": "Please enter your email",
         "error_password": "Please enter your password",
+        "error_student_id": "Student ID is required for IUPC members",
         "error_agree_policy": "Please agree to the privacy policy"
     },
     "forgot_password": {
@@ -113,5 +120,9 @@
         "error_mismatch": "Passwords do not match.",
         "error_invalid_token": "Invalid or expired token.",
         "success_message": "Your password has been reset successfully!"
+    },
+    "homepage": {
+        "transfer_line": "Transfer and receive images easily",
+        "creator_credit": "Next Gallery® is created to help photographers and clients connect and transfer loss-less quality images easily without changing any platform"
     }
 }

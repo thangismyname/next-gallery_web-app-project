@@ -19,3 +19,58 @@
   transform: scaleY(0);
   transition: all 150ms ease-in;
 }
+
+/* Title animation */
+/* Letters entrance animation */
+@keyframes flow-in {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Letters exit animation */
+@keyframes flow-out {
+  from {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+}
+
+.animate-flow-in {
+  animation: flow-in 0.5s forwards;
+}
+
+.flow-out {
+  animation: flow-out 0.8s forwards;
+}
+
+.flow-out {
+  display: inline-block;
+  animation: flow-out 0.8s forwards;
+}
+
+/* Transfer lines animation */
+
+/* Infinite scrolling */
+@keyframes scroll-left {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-scroll {
+  display: flex;
+  animation: scroll-left 20s linear infinite; /* adjust 20s for speed */
+}

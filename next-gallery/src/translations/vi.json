@@ -1,6 +1,9 @@
 {
     "title": {
-        "next_gallery": "📸 Thư Viện Tiếp Theo"
+        "next_gallery": "📸 Next Gallery®"
+    },
+    "animated_title": {
+        "next_gallery": "Next Gallery®"
     },
     "status": {
         "loading_photos": "Đang tải ảnh...",
@@ -11,7 +14,7 @@
     },
     "header": {
         "menu": "Menu",
-        "title": "Thư Viện Tiếp Theo"
+        "title": "Next Gallery®"
     },
     "sidemenu": {
         "close": "Đóng",
@@ -19,6 +22,7 @@
         "download": "Tải xuống",
         "viewProfile": "Xem Hồ sơ",
         "seeMoreAlbums": "Xem Thêm Album",
+        "logout": "Đăng xuất",
         "terms": "Điều khoản & Điều kiện",
         "prices": "Vận chuyển & Trả hàng",
         "privacy": "Chính sách Bảo mật"
@@ -78,6 +82,8 @@
         "role_label": "Tôi là:",
         "role_user": "Người dùng",
         "role_photographer": "Nhiếp ảnh gia",
+        "role_iupc_member": "Thành viên IUPC",
+        "student_id_placeholder": "Nhập mã số sinh viên",
         "role_other": "Khác",
         "agree_policy": "Tôi đồng ý với",
         "privacy_policy": "chính sách bảo mật",
@@ -92,6 +98,7 @@
         "error_last_name": "Vui lòng nhập họ của bạn",
         "error_email": "Vui lòng nhập email của bạn",
         "error_password": "Vui lòng nhập mật khẩu của bạn",
+        "error_student_id": "Mã số sinh viên là bắt buộc đối với thành viên IUPC",
         "error_agree_policy": "Vui lòng đồng ý với chính sách bảo mật"
     },
     "forgot_password": {
@@ -113,5 +120,9 @@
         "error_mismatch": "Mật khẩu không khớp.",
         "error_invalid_token": "Token không hợp lệ hoặc đã hết hạn.",
         "success_message": "Mật khẩu của bạn đã được đặt lại thành công!"
+    },
+    "homepage": {
+        "transfer_line": "Chuyển và nhận ảnh dễ dàng",
+        "creator_credit": "Next Gallery® được tạo ra để giúp các nhiếp ảnh gia và khách hàng kết nối và chuyển ảnh chất lượng không mất dữ liệu một cách dễ dàng mà không cần thay đổi nền tảng"
     }
 }
