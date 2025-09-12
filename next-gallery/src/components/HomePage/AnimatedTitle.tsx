@@ -10,15 +10,15 @@ const AnimatedTitle: React.FC = () => {
   const letters = text.split("");
 
   useEffect(() => {
-    const timer = setTimeout(() => setAnimateOut(true), 3000);
+    const timer = setTimeout(() => setAnimateOut(true), 2000); // animate out after 2s
     return () => clearTimeout(timer);
   }, []);
 
   if (!show) return null;
 
   return (
-    <div className="animated-title-wrapper">
-      <h1 className="animated-title font-bold text-center">
+    <div className="fixed top-1/5 left-1/2 transform -translate-x-1/2 z-50 w-[90%] text-center">
+      <h1 className="flex justify-center flex-nowrap whitespace-nowrap font-bold text-9xl text-center">
         <span
           className={animateOut ? "flow-out" : ""}
           onAnimationEnd={() => {
@@ -28,7 +28,7 @@ const AnimatedTitle: React.FC = () => {
           {letters.map((char, i) => (
             <span
               key={i}
-              className="letter animate-flow-in"
+              className="inline-block opacity-0 animate-flow-in"
               style={{ animationDelay: `${i * 0.1}s` }}
             >
               {char === " " ? "\u00A0" : char}

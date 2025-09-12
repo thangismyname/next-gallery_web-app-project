@@ -22,6 +22,7 @@
         "download": "Tải xuống",
         "viewProfile": "Xem Hồ sơ",
         "seeMoreAlbums": "Xem Thêm Album",
+        "logout": "Đăng xuất",
         "terms": "Điều khoản & Điều kiện",
         "prices": "Vận chuyển & Trả hàng",
         "privacy": "Chính sách Bảo mật"
@@ -121,6 +122,7 @@
         "success_message": "Mật khẩu của bạn đã được đặt lại thành công!"
     },
     "homepage": {
-        "transfer_line": "Chuyển và nhận ảnh dễ dàng"
+        "transfer_line": "Chuyển và nhận ảnh dễ dàng",
+        "creator_credit": "Next Gallery® được tạo ra để giúp các nhiếp ảnh gia và khách hàng kết nối và chuyển ảnh chất lượng không mất dữ liệu một cách dễ dàng mà không cần thay đổi nền tảng"
     }
 }
