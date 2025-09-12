@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { AppContext } from "../../components/AppContext";
+import { AppContext } from "../../components/Theme/AppContext";
 
 const ForgotPassword: React.FC = () => {
   const { t } = useTranslation(); // Initialize translation hook

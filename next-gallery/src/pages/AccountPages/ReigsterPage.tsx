@@ -1,7 +1,8 @@
 import React, { useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { AppContext } from "../../components/AppContext";
+import { AppContext } from "../../components/Theme/AppContext";
+import LegalLinks from "../../components/LegalLinks";
 
 interface RegisterProps {
   onSwitchToLogin?: () => void;
@@ -17,6 +18,8 @@ const Register: React.FC<RegisterProps> = ({ onSwitchToLogin }) => {
     password: "",
     repeatPassword: "",
     agreePolicy: false,
+    isIUPCMember: false, // new checkbox
+    studentId: "", // new student ID field
     role: "User",
   });
   const [errors, setErrors] = useState<{
@@ -25,6 +28,7 @@ const Register: React.FC<RegisterProps> = ({ onSwitchToLogin }) => {
     email?: string;
     password?: string;
     agreePolicy?: string;
+    studentId?: string;
   }>({});
 
   const context = useContext(AppContext);
@@ -238,30 +242,58 @@ const Register: React.FC<RegisterProps> = ({ onSwitchToLogin }) => {
             >
               {t("register.role_label")}
             </span>
-            <div className="flex gap-4">
+            <div className="flex flex-col sm:flex-row gap-4">
               {[
-                t("register.role_user"),
-                t("register.role_photographer"),
-                t("register.role_other"),
-              ].map((role, index) => (
-                <label key={role} className="flex items-center gap-2 text-base">
+                { label: t("register.role_iupc_member"), value: "IUPCMember" }, // New role
+                { label: t("register.role_user"), value: "User" },
+                {
+                  label: t("register.role_photographer"),
+                  value: "Photographer",
+                },
+                { label: t("register.role_other"), value: "Other" },
+              ].map((role) => (
+                <label
+                  key={role.value}
+                  className="flex items-center gap-2 text-base"
+                >
                   <input
                     type="radio"
                     name="role"
-                    value={["User", "Photographer", "Other"][index]}
-                    checked={
-                      formData.role === ["User", "Photographer", "Other"][index]
-                    }
+                    value={role.value}
+                    checked={formData.role === role.value}
                     onChange={handleInputChange}
-                    className={`w-5 h-5 rounded-full`}
+                    className="w-5 h-5 rounded-full"
                   />
                   <span className={darkMode ? "text-white" : "text-black"}>
-                    {role}
+                    {role.label}
                   </span>
                 </label>
               ))}
             </div>
           </div>
+
+          {/* Show student ID input only if IUPC Member role is selected */}
+          {formData.role === "IUPCMember" && (
+            <div>
+              <input
+                type="text"
+                name="studentId"
+                value={formData.studentId}
+                onChange={handleInputChange}
+                placeholder={t("register.student_id_placeholder")}
+                className={`w-full px-4 py-3 rounded-lg border text-base focus:outline-none focus:ring-2 ${
+                  errors.studentId
+                    ? "border-red-500"
+                    : darkMode
+                    ? "bg-gray-700 border-zinc-600 text-zinc-300 focus:ring-blue-400"
+                    : "bg-white border-zinc-200 text-zinc-600 focus:ring-blue-500"
+                }`}
+              />
+              {errors.studentId && (
+                <p className="text-red-500 text-sm mt-1">{errors.studentId}</p>
+              )}
+            </div>
+          )}
 
           {/* Agree policy */}
           <div>
@@ -275,10 +307,13 @@ const Register: React.FC<RegisterProps> = ({ onSwitchToLogin }) => {
               />
               <span className={darkMode ? "text-white" : "text-black"}>
                 {t("register.agree_policy")}{" "}
-                <a href="#" className="underline">
-                  {t("register.privacy_policy")}
-                </a>
+                <LegalLinks
+                  show={["privacy_policy"]}
+                  vertical={false}
+                  className="inline underline"
+                />
               </span>
+              s
             </label>
             {errors.agreePolicy && (
               <p className="text-red-500 text-sm mt-1">{errors.agreePolicy}</p>

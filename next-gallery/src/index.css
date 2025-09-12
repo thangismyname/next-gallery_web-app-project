@@ -19,3 +19,101 @@
   transform: scaleY(0);
   transition: all 150ms ease-in;
 }
+
+/* Title animation */
+/* Title wrapper */
+.animated-title-wrapper {
+  position: fixed; /* overlay */
+  top: 20%; /* adjust vertical position */
+  left: 50%;
+  transform: translateX(-50%); /* horizontal centering */
+  z-index: 50;
+  width: 90%; /* responsive width */
+  text-align: center;
+}
+
+/* Title container */
+.animated-title {
+  display: flex;
+  flex-wrap: nowrap; /* prevent wrapping */
+  justify-content: center;
+  white-space: nowrap; /* preserve spaces */
+}
+
+/* Letters */
+.letter {
+  display: inline-block;
+  opacity: 0;
+  font-size: clamp(2rem, 8vw, 6rem); /* responsive font size */
+}
+
+/* Entrance animation */
+@keyframes flow-in {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.animate-flow-in {
+  animation: flow-in 0.5s forwards;
+}
+
+/* Exit animation */
+@keyframes flow-out {
+  from {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+}
+
+.flow-out {
+  display: inline-block;
+  animation: flow-out 0.8s forwards;
+}
+
+/* Transfer lines animation */
+.transfer-lines-container {
+  width: 100%;
+  overflow: hidden;
+  border-top: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
+  padding: 0.5rem 0;
+}
+
+.transfer-lines {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+}
+
+.transfer-line {
+  flex-shrink: 0;
+  white-space: nowrap;
+  margin-right: 4rem; /* spacing between repeats */
+  font-size: 1.125rem;
+  font-weight: 500;
+}
+
+/* Infinite scrolling */
+@keyframes scroll-left {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-scroll {
+  display: flex;
+  animation: scroll-left 20s linear infinite; /* adjust 20s for speed */
+}
