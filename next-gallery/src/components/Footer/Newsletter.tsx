@@ -2,7 +2,7 @@ import React, { useState, useContext } from "react";
 import { useTranslation } from "react-i18next";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
-import { AppContext } from "../AppContext";
+import { AppContext } from "../Theme/AppContext";
 
 const Newsletter: React.FC = () => {
   const { t } = useTranslation(); // Initialize translation hook
