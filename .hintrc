@@ -13,6 +13,14 @@
     "typescript-config/is-valid": "off",
     "typescript-config/consistent-casing": "off",
     "typescript-config/strict": "off",
-    "no-inline-styles": "off"
+    "no-inline-styles": "off",
+    "compat-api/css": [
+      "default",
+      {
+        "ignore": [
+          "user-select"
+        ]
+      }
+    ]
   }
 }

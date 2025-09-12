@@ -1,6 +1,6 @@
 import React, { createContext, useState, useEffect, useRef } from "react";
 import type { ReactNode } from "react";
-import i18n from "../i18n";
+import i18n from "../../i18n";
 
 interface AppContextType {
   darkMode: boolean;

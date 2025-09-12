@@ -12,6 +12,7 @@ const app = express();
 const corsMiddleware = require("./middlewares/corsMiddleware");
 const errorHandler = require("./middlewares/errorMiddleware");
 const photoRoutes = require("./routes/photoRoute");
+const authRoutes = require("./routes/authRoutes");
 
 // Middleware
 app.use(corsMiddleware);
@@ -20,6 +21,7 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 // Routes
 app.use("/", photoRoutes);
+app.use("/api", authRoutes); // <-- mount login/register routes under /api
 
 // Error handler middleware (after all routes, but before listen)
 app.use(errorHandler);

@@ -7,7 +7,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import SideMenu from "./SideMenu";
 import Search from "./Search";
-import { AppContext } from "../AppContext";
+import { AppContext } from "../Theme/AppContext";
 import { useTranslation } from "react-i18next";
 
 interface HeaderProps {
@@ -42,14 +42,18 @@ const HeaderWithMenu: React.FC<HeaderProps> = ({
     navigate("/");
   };
 
+  // Log to verify menuOpen state
+  console.log("Menu Open:", menuOpen);
+
   return (
     <>
       <header
-        className={`w-full sticky top-0 z-50 backdrop-blur-md border-b transition-colors duration-300 ${
+        className={`w-full sticky top-0 z-50 border-b transition-colors duration-300 ${
           darkMode
             ? "bg-black text-white border-white"
             : "bg-white text-black border-black"
-        }`}
+        } ${menuOpen ? "backdrop-blur-sm bg-gray-800/40" : ""}`}
+        style={{ position: "relative" }} // Ensure proper stacking context
       >
         <div className="mx-auto px-5 py-1.5 flex justify-between items-center">
           {/* Menu Button */}
