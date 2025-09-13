@@ -1,3 +1,4 @@
+// LoginPage.tsx
 import React, { useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
@@ -32,7 +33,7 @@ const Login: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!formData.email || !formData.password) {
-      setError(t("login.error_fill_fields"));
+      setError(t("errors.login.fill_fields"));
       return;
     }
 
@@ -59,7 +60,7 @@ const Login: React.FC = () => {
       navigate("/"); // redirect to home
     } catch (err: any) {
       // Show backend message if exists, else generic
-      setError(err.message || t("login.error_invalid_credentials"));
+      setError(err.message || t("errors.login.invalid_credentials"));
     } finally {
       setLoading(false);
     }

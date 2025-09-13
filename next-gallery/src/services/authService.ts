@@ -6,13 +6,15 @@ const API_URL = "http://localhost:3001/api";
 interface LoginData {
   email: string;
   password: string;
-  rememberMe?: boolean; // add rememberMe
+  rememberMe?: boolean;
 }
 
 export interface User {
   id: string;
   name: string;
   email: string;
+  role?: string;
+  studentId?: string;
 }
 
 interface LoginResponse {
@@ -20,7 +22,7 @@ interface LoginResponse {
   user: User;
 }
 
-// Login function
+// ✅ Login function
 export const login = async (data: LoginData): Promise<User> => {
   try {
     const res = await axios.post<LoginResponse>(`${API_URL}/login`, {
@@ -30,7 +32,6 @@ export const login = async (data: LoginData): Promise<User> => {
 
     const { token, user } = res.data;
 
-    // Store token & user based on rememberMe
     if (data.rememberMe) {
       localStorage.setItem("token", token);
       localStorage.setItem("user", JSON.stringify(user));
@@ -48,7 +49,7 @@ export const login = async (data: LoginData): Promise<User> => {
   }
 };
 
-// Logout function
+// ✅ Logout function
 export const logout = () => {
   localStorage.removeItem("token");
   localStorage.removeItem("user");
@@ -56,13 +57,50 @@ export const logout = () => {
   sessionStorage.removeItem("user");
 };
 
-// Get current user
+// ✅ Get current user
 export const getCurrentUser = (): User | null => {
-  const storedUser = localStorage.getItem("user") || sessionStorage.getItem("user");
+  const storedUser =
+    localStorage.getItem("user") || sessionStorage.getItem("user");
   return storedUser ? JSON.parse(storedUser) : null;
 };
 
-// Get current token
+// ✅ Get current token
 export const getToken = (): string | null => {
   return localStorage.getItem("token") || sessionStorage.getItem("token");
+};
+
+// -------- Registration --------
+interface RegisterData {
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone?: string;
+  password: string;
+  role: "Admin" | "Photographer" | "User";
+  studentId?: string;
+}
+
+interface RegisterResponse {
+  message: string;
+  token: string;
+  user: User;
+}
+
+// ✅ Register function
+export const register = async (data: RegisterData): Promise<User> => {
+  try {
+    const res = await axios.post<RegisterResponse>(`${API_URL}/register`, data);
+
+    const { token, user } = res.data;
+
+    // Store token + user (default: localStorage)
+    localStorage.setItem("token", token);
+    localStorage.setItem("user", JSON.stringify(user));
+
+    return user;
+  } catch (err: any) {
+    throw new Error(
+      err.response?.data?.message || "Registration failed. Please try again."
+    );
+  }
 };

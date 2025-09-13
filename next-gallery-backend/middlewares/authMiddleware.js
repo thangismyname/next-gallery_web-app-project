@@ -9,24 +9,20 @@ exports.login = async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    console.log("Login request:", { email, password }); // Debugging
-
     if (!email || !password) {
-      return res.status(400).json({ message: "Please fill all fields" });
+      return res.status(400).json({ code: "MISSING_FIELDS" });
     }
 
     // Find user (case-insensitive)
     const user = await User.findOne({ email: email.toLowerCase() });
     if (!user) {
-      console.log("User not found for email:", email.toLowerCase());
-      return res.status(401).json({ message: "Invalid email or password" });
+      return res.status(401).json({ code: "INVALID_CREDENTIALS" });
     }
 
     // Compare password
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      console.log("Password mismatch for email:", email);
-      return res.status(401).json({ message: "Invalid email or password" });
+      return res.status(401).json({ code: "INVALID_CREDENTIALS" });
     }
 
     // Create JWT token
@@ -40,13 +36,13 @@ exports.login = async (req, res) => {
       token,
       user: {
         id: user._id,
-        name: user.name,
+        name: `${user.firstName} ${user.lastName}`,
         email: user.email,
       },
     });
   } catch (err) {
-    console.error("Login error:", err);
-    res.status(500).json({ message: "Server error" });
+    console.error(err);
+    res.status(500).json({ code: "SERVER_ERROR" });
   }
 };
 
@@ -56,59 +52,47 @@ exports.register = async (req, res) => {
     const { firstName, lastName, email, phone, password, role, studentId } =
       req.body;
 
-    // Validate required fields
     if (!firstName || !lastName || !email || !password || !role) {
-      return res.status(400).json({ message: "Missing required fields" });
+      return res.status(400).json({ code: "MISSING_FIELDS" });
     }
 
-    // Validate password
+    // ✅ Password validation
     const passwordRegex = /^(?=.*[!@#$%^&*(),.?":{}|<>]).{8,}$/;
     if (!passwordRegex.test(password)) {
-      return res.status(400).json({
-        message:
-          "Password must be at least 8 characters long and contain at least one special character",
-      });
+      return res.status(400).json({ code: "PASSWORD_TOO_WEAK" });
     }
 
-    // Check for existing user
     const existingUser = await User.findOne({ email: email.toLowerCase() });
     if (existingUser) {
-      return res.status(400).json({ message: "Email already registered" });
+      return res.status(400).json({ code: "EMAIL_ALREADY_REGISTERED" });
     }
 
-    // Special rule for Admin
+    // ✅ Special rule for Admin
     if (role === "Admin") {
       if (!studentId) {
-        return res
-          .status(400)
-          .json({ message: "Student ID required for Admin" });
+        return res.status(400).json({ code: "STUDENT_ID_REQUIRED" });
       }
 
       const fullName = `${firstName} ${lastName}`.trim();
       const whitelistEntry = await AdminWhitelist.findOne({ studentId });
 
       if (!whitelistEntry || whitelistEntry.fullName !== fullName) {
-        return res.status(403).json({
-          message:
-            "You are not authorized to register as Admin. Please contact an existing Admin.",
-        });
+        return res.status(403).json({ code: "ADMIN_NOT_WHITELISTED" });
       }
     }
 
-    // Create new user (password will be hashed by userSchema.pre("save") hook)
     const user = new User({
       firstName,
       lastName,
       email: email.toLowerCase(),
       phone,
-      password, // Pass plaintext password; hook will hash it
+      password,
       role,
       studentId: role === "Admin" ? studentId : undefined,
     });
 
     await user.save();
 
-    // Create JWT token
     const token = jwt.sign(
       { id: user._id, role: user.role },
       process.env.JWT_SECRET || "supersecret",
@@ -128,6 +112,6 @@ exports.register = async (req, res) => {
     });
   } catch (err) {
     console.error("Register error:", err);
-    res.status(500).json({ message: err.message || "Server error" });
+    res.status(500).json({ code: "SERVER_ERROR" });
   }
 };
