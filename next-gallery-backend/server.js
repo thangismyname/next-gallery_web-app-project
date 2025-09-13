@@ -28,7 +28,7 @@ app.use(errorHandler);
 
 // Connect to MongoDB
 mongoose
-  .connect(process.env.MONGO_URI || "mongodb://localhost:27017/photoDrop")
+  .connect(process.env.MONGO_URI || "mongodb://localhost:27017/next_galleryDB")
   .then(() => {
     console.log("✅ MongoDB connected");
 

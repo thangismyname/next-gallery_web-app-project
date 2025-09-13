@@ -58,48 +58,51 @@
         "dark_mode": "Chế độ tối"
     },
     "login": {
-        "title": "Đăng nhập vào tài khoản của bạn",
-        "subtitle": "Mang ký ức của bạn đến với NextGallery. Đăng nhập để khám phá, sắp xếp và chia sẻ ảnh của bạn một cách dễ dàng.",
+        "title": "Chào mừng bạn đến với Next Gallery®",
+        "subtitle": "Đăng nhập để tiếp tục",
         "email_placeholder": "Địa chỉ Email",
         "password_placeholder": "Mật khẩu",
-        "remember_me": "Ghi nhớ tôi",
+        "login_button": "Đăng nhập",
+        "no_account": "Chưa có tài khoản?",
+        "register_here": "Đăng ký tại đây",
         "forgot_password": "Quên mật khẩu?",
-        "sign_in": "Đăng nhập",
-        "google_sign_in": "Đăng nhập bằng Google",
-        "register_prompt": "Chưa có tài khoản?",
-        "sign_up": "Đăng ký",
-        "error_fill_fields": "Vui lòng điền đầy đủ các thông tin"
+        "error_invalid_credentials": "Thông tin đăng nhập không hợp lệ.",
+        "error_required_fields": "Vui lòng điền tất cả các trường bắt buộc."
     },
     "register": {
         "title": "Tạo tài khoản của bạn",
-        "subtitle": "Đăng ký để khám phá, sắp xếp và chia sẻ ảnh của bạn một cách dễ dàng.",
+        "subtitle": "Đăng ký để bắt đầu hành trình với Next Gallery®",
         "first_name_placeholder": "Tên",
         "last_name_placeholder": "Họ",
-        "email_placeholder": "Email",
+        "email_placeholder": "Địa chỉ Email",
         "phone_placeholder": "Số điện thoại",
         "password_placeholder": "Mật khẩu",
-        "repeat_password_placeholder": "Nhập lại mật khẩu",
-        "role_label": "Tôi là:",
-        "role_user": "Người dùng",
-        "role_photographer": "Nhiếp ảnh gia",
-        "role_iupc_member": "Thành viên IUPC",
-        "student_id_placeholder": "Nhập mã số sinh viên",
-        "role_other": "Khác",
-        "agree_policy": "Tôi đồng ý với",
-        "privacy_policy": "chính sách bảo mật",
-        "sign_up": "Đăng ký",
-        "or_sign_up_with": "hoặc đăng ký bằng",
-        "google_sign_up": "Đăng ký bằng Google",
-        "facebook_sign_up": "Đăng ký bằng Facebook",
-        "already_have_account": "Đã có tài khoản?",
-        "log_in": "Đăng nhập",
-        "error_fill_fields": "Vui lòng điền đầy đủ các trường bắt buộc và đồng ý với chính sách bảo mật",
-        "error_first_name": "Vui lòng nhập tên của bạn",
-        "error_last_name": "Vui lòng nhập họ của bạn",
-        "error_email": "Vui lòng nhập email của bạn",
-        "error_password": "Vui lòng nhập mật khẩu của bạn",
-        "error_student_id": "Mã số sinh viên là bắt buộc đối với thành viên IUPC",
-        "error_agree_policy": "Vui lòng đồng ý với chính sách bảo mật"
+        "confirm_password_placeholder": "Xác nhận Mật khẩu",
+        "register_button": "Đăng ký",
+        "have_account": "Đã có tài khoản?",
+        "login_here": "Đăng nhập tại đây",
+        "error_email_exists": "Email đã được sử dụng.",
+        "error_password_mismatch": "Mật khẩu không khớp.",
+        "error_required_fields": "Vui lòng điền tất cả các trường bắt buộc."
+    },
+    "errors": {
+        "common": {
+            "fill_fields": "Vui lòng điền tất cả các trường bắt buộc"
+        },
+        "login": {
+            "fill_fields": "Vui lòng điền tất cả các trường"
+        },
+        "register": {
+            "fill_fields": "Vui lòng điền tất cả các trường bắt buộc và đồng ý với chính sách bảo mật",
+            "first_name": "Vui lòng nhập tên của bạn",
+            "last_name": "Vui lòng nhập họ của bạn",
+            "email": "Vui lòng nhập email của bạn",
+            "password": "Vui lòng nhập mật khẩu của bạn",
+            "student_id_required": "Mã số sinh viên là bắt buộc đối với thành viên IUPC",
+            "student_id_invalid": "Định dạng mã số sinh viên không hợp lệ",
+            "student_id_not_allowed": "Mã số sinh viên này không được phép đăng ký với tư cách quản trị viên",
+            "agree_policy": "Vui lòng đồng ý với chính sách bảo mật"
+        }
     },
     "forgot_password": {
         "title": "Đặt lại mật khẩu của bạn",
