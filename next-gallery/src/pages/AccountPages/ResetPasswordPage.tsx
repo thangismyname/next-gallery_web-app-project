@@ -2,6 +2,7 @@ import React, { useState, useContext } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { AppContext } from "../../components/Theme/AppContext";
+import { resetPassword } from "../../services/authService"; // <-- import service
 
 const ResetPassword: React.FC = () => {
   const { t } = useTranslation();
@@ -30,8 +31,10 @@ const ResetPassword: React.FC = () => {
     setSuccess(null);
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setError(null);
+    setSuccess(null);
 
     if (!formData.password || !formData.confirmPassword) {
       setError(t("reset_password.error_required"));
@@ -48,18 +51,17 @@ const ResetPassword: React.FC = () => {
       return;
     }
 
-    // Simulate API call
-    console.log(
-      "Resetting password with token:",
-      token,
-      "New password:",
-      formData.password
-    );
-    setSuccess(t("reset_password.success_message"));
-    setFormData({ password: "", confirmPassword: "" });
+    try {
+      const res = await resetPassword(token, formData.password); // ✅ use service
+      const message = (res as { message?: string }).message;
+      setSuccess(message || t("reset_password.success_message"));
+      setFormData({ password: "", confirmPassword: "" });
 
-    // Optionally redirect to login after 2-3 seconds
-    setTimeout(() => navigate("/login"), 2500);
+      // Redirect after short delay
+      setTimeout(() => navigate("/login"), 2500);
+    } catch (err: any) {
+      setError(err.message || t("reset_password.error_failed"));
+    }
   };
 
   return (
@@ -77,11 +79,7 @@ const ResetPassword: React.FC = () => {
         </p>
       </div>
 
-      <div
-        className={`w-full max-w-md p-8 rounded-2xl shadow-xl flex flex-col gap-6 ${
-          darkMode ? "bg-gray-800" : "bg-white"
-        }`}
-      >
+      <div className="w-full max-w-md p-8 rounded-2xl shadow-xl flex flex-col gap-6">
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <input
             type="password"
@@ -89,11 +87,7 @@ const ResetPassword: React.FC = () => {
             value={formData.password}
             onChange={handleInputChange}
             placeholder={t("reset_password.new_password")}
-            className={`w-full px-4 py-3 rounded-lg border focus:outline-none focus:ring-2 ${
-              darkMode
-                ? "bg-gray-700 border-zinc-600 text-zinc-300 focus:ring-blue-400"
-                : "bg-white border-zinc-200 text-zinc-600 focus:ring-blue-500"
-            }`}
+            className="w-full px-4 py-3 rounded-lg border"
           />
           <input
             type="password"
@@ -101,18 +95,15 @@ const ResetPassword: React.FC = () => {
             value={formData.confirmPassword}
             onChange={handleInputChange}
             placeholder={t("reset_password.confirm_password")}
-            className={`w-full px-4 py-3 rounded-lg border focus:outline-none focus:ring-2 ${
-              darkMode
-                ? "bg-gray-700 border-zinc-600 text-zinc-300 focus:ring-blue-400"
-                : "bg-white border-zinc-200 text-zinc-600 focus:ring-blue-500"
-            }`}
+            className="w-full px-4 py-3 rounded-lg border"
           />
+
           {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
           {success && <p className="text-green-500 text-sm mt-1">{success}</p>}
 
           <button
             type="submit"
-            className="w-full px-4 py-3 rounded-lg bg-blue-600 dark:bg-blue-700 text-white font-semibold hover:bg-blue-700 dark:hover:bg-blue-800"
+            className="w-full px-4 py-3 rounded-lg bg-blue-600 text-white font-semibold hover:bg-blue-700"
           >
             {t("reset_password.submit_button")}
           </button>

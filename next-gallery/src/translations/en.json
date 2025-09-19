@@ -67,8 +67,7 @@
         "sign_in": "Sign In",
         "google_sign_in": "Sign in with Google",
         "register_prompt": "Don’t have an account?",
-        "sign_up": "Sign up",
-        "error_fill_fields": "Please fill in all fields"
+        "sign_up": "Sign up"
     },
     "register": {
         "title": "Create Your Account",
@@ -92,14 +91,26 @@
         "google_sign_up": "Sign up with Google",
         "facebook_sign_up": "Sign up with Facebook",
         "already_have_account": "Already have an account?",
-        "log_in": "Log in",
-        "error_fill_fields": "Please fill in all required fields and agree to the privacy policy",
-        "error_first_name": "Please enter your first name",
-        "error_last_name": "Please enter your last name",
-        "error_email": "Please enter your email",
-        "error_password": "Please enter your password",
-        "error_student_id": "Student ID is required for IUPC members",
-        "error_agree_policy": "Please agree to the privacy policy"
+        "log_in": "Log in"
+    },
+    "errors": {
+        "common": {
+            "fill_fields": "Please fill in all required fields"
+        },
+        "login": {
+            "fill_fields": "Please fill in all fields"
+        },
+        "register": {
+            "fill_fields": "Please fill in all required fields and agree to the privacy policy",
+            "first_name": "Please enter your first name",
+            "last_name": "Please enter your last name",
+            "email": "Please enter your email",
+            "password": "Please enter your password",
+            "student_id_required": "Student ID is required for IUPC members",
+            "student_id_invalid": "Invalid Student ID format",
+            "student_id_not_allowed": "This Student ID is not authorized to register as admin",
+            "agree_policy": "Please agree to the privacy policy"
+        }
     },
     "forgot_password": {
         "title": "Reset Your Password",

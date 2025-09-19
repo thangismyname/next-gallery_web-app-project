@@ -1,15 +1,26 @@
+// RegisterPage.tsx
 import React, { useState, useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { AppContext } from "../../components/Theme/AppContext";
 import LegalLinks from "../../components/LegalLinks";
+import { register as registerApi } from "../../services/authService";
+
+// Example whitelist (replace with real data from API/backend)
+const adminWhitelist = [
+  { studentId: "123456", fullName: "John Doe" },
+  { studentId: "654321", fullName: "Jane Smith" },
+];
 
 interface RegisterProps {
   onSwitchToLogin?: () => void;
 }
 
+type RoleType = "User" | "Admin" | "Photographer";
+
 const Register: React.FC<RegisterProps> = ({ onSwitchToLogin }) => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -18,18 +29,22 @@ const Register: React.FC<RegisterProps> = ({ onSwitchToLogin }) => {
     password: "",
     repeatPassword: "",
     agreePolicy: false,
-    isIUPCMember: false, // new checkbox
-    studentId: "", // new student ID field
-    role: "User",
+    studentId: "",
+    role: "User" as RoleType,
   });
   const [errors, setErrors] = useState<{
     firstName?: string;
     lastName?: string;
     email?: string;
     password?: string;
+    repeatPassword?: string;
     agreePolicy?: string;
     studentId?: string;
   }>({});
+  const [statusMessage, setStatusMessage] = useState<{
+    message: string;
+    isError: boolean;
+  } | null>(null);
 
   const context = useContext(AppContext);
   if (!context) {
@@ -44,36 +59,63 @@ const Register: React.FC<RegisterProps> = ({ onSwitchToLogin }) => {
     const { name, value, type, checked } = e.target as HTMLInputElement;
     setFormData((prev) => ({
       ...prev,
-      [name]: type === "checkbox" ? checked : value,
+      [name]:
+        type === "checkbox" || type === "radio"
+          ? type === "checkbox"
+            ? checked
+            : value
+          : value,
     }));
     // Clear error for the field when user starts typing
     setErrors((prev) => ({ ...prev, [name]: undefined }));
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const newErrors: {
       firstName?: string;
       lastName?: string;
       email?: string;
       password?: string;
+      repeatPassword?: string;
       agreePolicy?: string;
+      studentId?: string;
     } = {};
 
     if (!formData.firstName) {
-      newErrors.firstName = t("register.error_first_name");
+      newErrors.firstName = t("errors.register.first_name");
     }
     if (!formData.lastName) {
-      newErrors.lastName = t("register.error_last_name");
+      newErrors.lastName = t("errors.register.last_name");
     }
     if (!formData.email) {
-      newErrors.email = t("register.error_email");
+      newErrors.email = t("errors.register.email");
     }
     if (!formData.password) {
-      newErrors.password = t("register.error_password");
+      newErrors.password = t("errors.register.password");
+    }
+    if (formData.password !== formData.repeatPassword) {
+      newErrors.repeatPassword = t("errors.register.password_mismatch");
     }
     if (!formData.agreePolicy) {
-      newErrors.agreePolicy = t("register.error_agree_policy");
+      newErrors.agreePolicy = t("errors.register.agree_policy");
+    }
+
+    // IUPC Member validation (mapped to Admin)
+    if (formData.role === "Admin") {
+      if (!formData.studentId.trim()) {
+        newErrors.studentId = t("errors.register.student_id_required");
+      } else {
+        const fullName = `${formData.firstName.trim()} ${formData.lastName.trim()}`;
+        const match = adminWhitelist.find(
+          (entry) =>
+            entry.studentId === formData.studentId.trim() &&
+            entry.fullName.toLowerCase() === fullName.toLowerCase()
+        );
+        if (!match) {
+          newErrors.studentId = t("errors.register.admin_not_whitelisted");
+        }
+      }
     }
 
     if (Object.keys(newErrors).length > 0) {
@@ -81,8 +123,24 @@ const Register: React.FC<RegisterProps> = ({ onSwitchToLogin }) => {
       return;
     }
 
-    console.log("Register with:", formData);
-    setErrors({});
+    try {
+      const response = await registerApi(formData);
+      console.log("Register success:", response);
+      setStatusMessage({
+        message: t("register.success_message"),
+        isError: false,
+      });
+      setErrors({});
+      setTimeout(() => {
+        navigate("/login");
+      }, 1500);
+    } catch (error: any) {
+      console.error("Register failed:", error);
+      setStatusMessage({
+        message: error.response?.data?.message || t("register.error_message"),
+        isError: true,
+      });
+    }
   };
 
   return (
@@ -115,6 +173,19 @@ const Register: React.FC<RegisterProps> = ({ onSwitchToLogin }) => {
           darkMode ? "bg-gray-800" : "bg-white"
         }`}
       >
+        {/* Status Message */}
+        {statusMessage && (
+          <div
+            className={`p-3 rounded-md text-center ${
+              statusMessage.isError
+                ? "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200"
+                : "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200"
+            }`}
+          >
+            {statusMessage.message}
+          </div>
+        )}
+
         {/* Form */}
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           {/* Name fields */}
@@ -226,11 +297,18 @@ const Register: React.FC<RegisterProps> = ({ onSwitchToLogin }) => {
               onChange={handleInputChange}
               placeholder={t("register.repeat_password_placeholder")}
               className={`w-full px-4 py-3 rounded-lg border text-base focus:outline-none focus:ring-2 ${
-                darkMode
+                errors.repeatPassword
+                  ? "border-red-500 focus:ring-red-400"
+                  : darkMode
                   ? "bg-gray-700 border-zinc-600 text-zinc-300 focus:ring-blue-400"
                   : "bg-white border-zinc-200 text-zinc-600 focus:ring-blue-500"
               }`}
             />
+            {errors.repeatPassword && (
+              <p className="text-red-500 text-sm mt-1">
+                {errors.repeatPassword}
+              </p>
+            )}
           </div>
 
           {/* Role selection */}
@@ -244,13 +322,12 @@ const Register: React.FC<RegisterProps> = ({ onSwitchToLogin }) => {
             </span>
             <div className="flex flex-col sm:flex-row gap-4">
               {[
-                { label: t("register.role_iupc_member"), value: "IUPCMember" }, // New role
+                { label: t("register.role_iupc_member"), value: "Admin" },
                 { label: t("register.role_user"), value: "User" },
                 {
                   label: t("register.role_photographer"),
                   value: "Photographer",
                 },
-                { label: t("register.role_other"), value: "Other" },
               ].map((role) => (
                 <label
                   key={role.value}
@@ -272,8 +349,8 @@ const Register: React.FC<RegisterProps> = ({ onSwitchToLogin }) => {
             </div>
           </div>
 
-          {/* Show student ID input only if IUPC Member role is selected */}
-          {formData.role === "IUPCMember" && (
+          {/* Show student ID input only if Admin role is selected */}
+          {formData.role === "Admin" && (
             <div>
               <input
                 type="text"
@@ -283,7 +360,7 @@ const Register: React.FC<RegisterProps> = ({ onSwitchToLogin }) => {
                 placeholder={t("register.student_id_placeholder")}
                 className={`w-full px-4 py-3 rounded-lg border text-base focus:outline-none focus:ring-2 ${
                   errors.studentId
-                    ? "border-red-500"
+                    ? "border-red-500 focus:ring-red-400"
                     : darkMode
                     ? "bg-gray-700 border-zinc-600 text-zinc-300 focus:ring-blue-400"
                     : "bg-white border-zinc-200 text-zinc-600 focus:ring-blue-500"
@@ -303,7 +380,7 @@ const Register: React.FC<RegisterProps> = ({ onSwitchToLogin }) => {
                 name="agreePolicy"
                 checked={formData.agreePolicy}
                 onChange={handleInputChange}
-                className={`w-5 h-5 rounded-md`}
+                className="w-5 h-5 rounded-md"
               />
               <span className={darkMode ? "text-white" : "text-black"}>
                 {t("register.agree_policy")}{" "}
@@ -313,7 +390,6 @@ const Register: React.FC<RegisterProps> = ({ onSwitchToLogin }) => {
                   className="inline underline"
                 />
               </span>
-              s
             </label>
             {errors.agreePolicy && (
               <p className="text-red-500 text-sm mt-1">{errors.agreePolicy}</p>
