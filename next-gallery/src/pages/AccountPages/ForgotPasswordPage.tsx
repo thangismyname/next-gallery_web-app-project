@@ -2,6 +2,7 @@ import React, { useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { AppContext } from "../../components/Theme/AppContext";
+import { forgotPassword } from "../../services/authService";
 
 const ForgotPassword: React.FC = () => {
   const { t } = useTranslation(); // Initialize translation hook
@@ -23,17 +24,23 @@ const ForgotPassword: React.FC = () => {
     setSuccess(null); // Clear success message when typing
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setError(null);
+    setSuccess(null);
+
     if (!formData.email) {
       setError(t("forgot_password.error_email"));
       return;
     }
-    // Simulate sending reset link (replace with actual API call)
-    console.log("Sending reset link to:", formData.email);
-    setSuccess(t("forgot_password.success_message"));
-    setError(null);
-    setFormData({ email: "" }); // Clear form after success
+
+    try {
+      const res = await forgotPassword(formData.email); // ✅ call API
+      setSuccess(res.message || t("forgot_password.success_message"));
+      setFormData({ email: "" }); // clear after success
+    } catch (err: any) {
+      setError(err.message || t("forgot_password.error_failed"));
+    }
   };
 
   return (

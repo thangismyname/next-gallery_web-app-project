@@ -21,10 +21,12 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 // Routes
 app.use("/", photoRoutes);
-app.use("/api", authRoutes); // <-- mount login/register routes under /api
+app.use("/api/auth", authRoutes); // <-- mount login/register routes under /api/auth
 
 // Error handler middleware (after all routes, but before listen)
 app.use(errorHandler);
+
+mongoose.set("debug", true);
 
 // Connect to MongoDB
 mongoose
