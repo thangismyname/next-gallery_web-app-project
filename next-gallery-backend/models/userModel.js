@@ -15,6 +15,8 @@ const userSchema = new mongoose.Schema(
       default: "User",
     },
     studentId: { type: String }, // Only required if Admin (IUPC member)
+    resetPasswordToken: { type: String, select: false },
+    resetPasswordExpire: { type: Date }, // Changed from resetPasswordExpires
   },
   { timestamps: true }
 );
