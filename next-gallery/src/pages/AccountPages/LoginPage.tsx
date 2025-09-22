@@ -1,14 +1,14 @@
 // LoginPage.tsx
 import React, { useState, useContext } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { AppContext } from "../../components/Theme/AppContext";
-import { login as loginApi } from "../../services/authService";
+import { login } from "../../services/authService";
+import { useNavigate } from "react-router-dom";
 
 const Login: React.FC = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
-
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -39,9 +39,23 @@ const Login: React.FC = () => {
 
     setLoading(true);
     setError(null);
+
+    try {
+      await login({
+        email: formData.email,
+        password: formData.password,
+        rememberMe: formData.rememberMe,
+      });
+
+      // Redirect to user page after successful login
+      navigate("/"); // now this works
+    } catch (err: any) {
+      setError(err.response?.data?.message || t("errors.login.failed"));
+    } finally {
+      setLoading(false);
+    }
   };
 
-  // Login API call
   const handleGoogleLogin = () => {
     window.location.href = `${import.meta.env.VITE_API_URL}/api/auth/google`;
   };

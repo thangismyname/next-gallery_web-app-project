@@ -11,40 +11,36 @@ import { AppContext } from "../Theme/AppContext";
 import { useTranslation } from "react-i18next";
 import { getCurrentUser } from "../../services/authService";
 
+interface UserHeader {
+  firstName: string;
+  avatar?: string;
+}
+
 const HeaderWithMenu: React.FC = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
-  const [user, setUser] = useState<{ name: string } | null>(getCurrentUser());
+  const [user, setUser] = useState<UserHeader | null>(getCurrentUser());
   const navigate = useNavigate();
 
   const context = useContext(AppContext);
   if (!context)
     throw new Error("HeaderWithMenu must be used within an AppProvider");
-
   const { darkMode } = context;
   const { t } = useTranslation();
 
-  // Update user whenever localStorage changes (login/logout)
+  // Update user whenever localStorage changes (login/logout/avatar update)
   useEffect(() => {
-    const handleStorageChange = () => {
-      setUser(getCurrentUser());
-    };
-
+    const handleStorageChange = () => setUser(getCurrentUser());
     window.addEventListener("storage", handleStorageChange);
     return () => window.removeEventListener("storage", handleStorageChange);
   }, []);
 
   const handleUserClick = () => {
-    if (user) {
-      navigate("/user");
-    } else {
-      navigate("/login");
-    }
+    if (user) navigate("/userpage");
+    else navigate("/login");
   };
 
-  const handleGoHome = () => {
-    navigate("/");
-  };
+  const handleGoHome = () => navigate("/");
 
   return (
     <>
@@ -54,7 +50,6 @@ const HeaderWithMenu: React.FC = () => {
             ? "bg-black text-white border-white"
             : "bg-white text-black border-black"
         } ${menuOpen ? "backdrop-blur-sm bg-gray-800/40" : ""}`}
-        style={{ position: "relative" }}
       >
         <div className="mx-auto px-5 py-1.5 flex justify-between items-center">
           {/* Menu Button */}
@@ -108,9 +103,18 @@ const HeaderWithMenu: React.FC = () => {
               onClick={handleUserClick}
             >
               <span className="text-l font-semibold">
-                {user ? user.name : t("Sign In")}
+                {user ? user.firstName : t("Sign In")}
               </span>
-              <FontAwesomeIcon icon={faCircleUser} className="text-xl" />
+
+              {user?.avatar ? (
+                <img
+                  src={user.avatar}
+                  alt="User Avatar"
+                  className="w-8 h-8 rounded-full object-cover"
+                />
+              ) : (
+                <FontAwesomeIcon icon={faCircleUser} className="text-xl" />
+              )}
             </div>
           </div>
         </div>

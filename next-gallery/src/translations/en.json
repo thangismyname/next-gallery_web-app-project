@@ -68,7 +68,9 @@
         "google_sign_in": "Sign in with Google",
         "discord_sign_in": "Sign in with Discord",
         "register_prompt": "Don’t have an account?",
-        "sign_up": "Sign up"
+        "sign_up": "Sign up",
+        "or": "or",
+        "loading": "Loading..."
     },
     "register": {
         "title": "Create Your Account",

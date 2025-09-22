@@ -63,11 +63,13 @@
         "email_placeholder": "Địa chỉ Email",
         "password_placeholder": "Mật khẩu",
         "login_button": "Đăng nhập",
-        "no_account": "Chưa có tài khoản?",
-        "register_here": "Đăng ký tại đây",
+        "google_sign_in": "Đăng nhập với Google",
+        "discord_sign_in": "Đăng nhập với Discord",
+        "register_prompt": "Chưa có tài khoản?",
+        "sign_up": "Đăng ký tại đây",
         "forgot_password": "Quên mật khẩu?",
-        "error_invalid_credentials": "Thông tin đăng nhập không hợp lệ.",
-        "error_required_fields": "Vui lòng điền tất cả các trường bắt buộc."
+        "remember_me": "Lưu đăng nhập",
+        "or": "hoặc"
     },
     "register": {
         "title": "Tạo tài khoản của bạn",

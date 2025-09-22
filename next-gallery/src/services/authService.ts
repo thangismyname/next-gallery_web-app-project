@@ -1,53 +1,87 @@
 import axios from "axios";
 
-const BASE_URL = import.meta.env.API_URL;
-const AUTH_URL = `${BASE_URL}/auth`;
-
-interface LoginData {
-  email: string;
-  password: string;
-  rememberMe?: boolean;
-}
+const BASE_URL = import.meta.env.VITE_API_URL;
+const AUTH_URL = `${BASE_URL}/api/auth`;
 
 export interface User {
-  id: string;
-  name: string;
-  email: string;
+  id?: string;
+  firstName: string;
+  email?: string;
   role?: string;
   studentId?: string;
 }
 
+// -------- Login --------
 interface LoginResponse {
   token: string;
   user: User;
 }
 
+export const login = async ({
+  email,
+  password,
+  rememberMe,
+}: {
+  email: string;
+  password: string;
+  rememberMe?: boolean;
+}): Promise<User> => {
+  const res = await axios.post<LoginResponse>(`${AUTH_URL}/login`, { email, password });
+  const { token, user } = res.data;
+
+  if (rememberMe) {
+    localStorage.setItem("token", token);
+    localStorage.setItem("user", JSON.stringify({ firstName: user.firstName }));
+  } else {
+    sessionStorage.setItem("token", token);
+    sessionStorage.setItem("user", JSON.stringify({ firstName: user.firstName }));
+  }
+
+  return user;
+};
+
+// -------- Registration --------
+interface RegisterResponse {
+  token: string;
+  user: User;
+}
+
+export const register = async (data: {
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone?: string;
+  password: string;
+  role: "Admin" | "Photographer" | "User";
+  studentId?: string;
+}): Promise<User> => {
+  const res = await axios.post<RegisterResponse>(`${AUTH_URL}/register`, data);
+  const { token, user } = res.data;
+
+  localStorage.setItem("token", token);
+  localStorage.setItem("user", JSON.stringify({ firstName: user.firstName }));
+
+  return user;
+};
+
+// -------- Forgot Password --------
 interface ForgotPasswordResponse {
   message: string;
 }
 
-// -------- Login --------
-export const login = async (data: LoginData): Promise<User> => {
-  try {
-    const res = await axios.post<LoginResponse>(`${AUTH_URL}/login`, {
-      email: data.email,
-      password: data.password,
-    });
+export const forgotPassword = async (email: string): Promise<ForgotPasswordResponse> => {
+  const res = await axios.post<ForgotPasswordResponse>(`${AUTH_URL}/forgot-password`, { email });
+  return res.data;
+};
 
-    const { token, user } = res.data;
+// -------- Reset Password --------
+interface ResetPasswordResponse {
+  message: string;
+}
 
-    if (data.rememberMe) {
-      localStorage.setItem("token", token);
-      localStorage.setItem("user", JSON.stringify(user));
-    } else {
-      sessionStorage.setItem("token", token);
-      sessionStorage.setItem("user", JSON.stringify(user));
-    }
-
-    return user;
-  } catch (err: any) {
-    throw new Error(err.response?.data?.message || "Login failed. Please try again.");
-  }
+export const resetPassword = async (token: string, newPassword: string): Promise<ResetPasswordResponse> => {
+  const res = await axios.post<ResetPasswordResponse>(`${AUTH_URL}/reset-password`, { token, newPassword });
+  return res.data;
 };
 
 // -------- Logout --------
@@ -59,7 +93,7 @@ export const logout = () => {
 };
 
 // -------- Current User --------
-export const getCurrentUser = (): User | null => {
+export const getCurrentUser = (): { firstName: string } | null => {
   const storedUser =
     localStorage.getItem("user") || sessionStorage.getItem("user");
   return storedUser ? JSON.parse(storedUser) : null;
@@ -67,58 +101,4 @@ export const getCurrentUser = (): User | null => {
 
 export const getToken = (): string | null => {
   return localStorage.getItem("token") || sessionStorage.getItem("token");
-};
-
-// -------- Registration --------
-interface RegisterData {
-  firstName: string;
-  lastName: string;
-  email: string;
-  phone?: string;
-  password: string;
-  role: "Admin" | "Photographer" | "User";
-  studentId?: string;
-}
-
-interface RegisterResponse {
-  message: string;
-  token: string;
-  user: User;
-}
-
-export const register = async (data: RegisterData): Promise<User> => {
-  try {
-    const res = await axios.post<RegisterResponse>(`${AUTH_URL}/register`, data);
-
-    const { token, user } = res.data;
-    localStorage.setItem("token", token);
-    localStorage.setItem("user", JSON.stringify(user));
-
-    return user;
-  } catch (err: any) {
-    throw new Error(err.response?.data?.message || "Registration failed. Please try again.");
-  }
-};
-
-// -------- Forgot Password --------
-export const forgotPassword = async (email: string): Promise<ForgotPasswordResponse> => {
-  try {
-    const res = await axios.post<ForgotPasswordResponse>(`${AUTH_URL}/forgot-password`, { email });
-    return res.data;
-  } catch (err: any) {
-    throw new Error(err.response?.data?.message || "Failed to send reset link");
-  }
-};
-
-// -------- Reset Password --------
-export const resetPassword = async (token: string, newPassword: string) => {
-  try {
-    const res = await axios.post(`${AUTH_URL}/reset-password`, {
-      token,
-      newPassword,
-    });
-    return res.data;
-  } catch (err: any) {
-    throw new Error(err.response?.data?.message || "Failed to reset password");
-  }
 };

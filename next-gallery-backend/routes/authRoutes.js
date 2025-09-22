@@ -1,8 +1,6 @@
 const express = require("express");
 const passport = require("passport");
 const jwt = require("jsonwebtoken");
-const router = express.Router();
-
 const {
   register,
   login,
@@ -11,14 +9,16 @@ const {
   me,
 } = require("../controllers/authController");
 
-// -------------------- Normal Auth --------------------
+const router = express.Router();
+
+// -------- Normal Auth (API) --------
 router.post("/register", register);
 router.post("/login", login);
 router.post("/forgot-password", forgotPassword);
 router.post("/reset-password", resetPassword);
 router.get("/me", me);
 
-// -------------------- Google OAuth --------------------
+// -------- Google OAuth --------
 router.get(
   "/google",
   passport.authenticate("google", { scope: ["profile", "email"] })
@@ -27,7 +27,7 @@ router.get(
 router.get(
   "/google/callback",
   passport.authenticate("google", {
-    failureRedirect: `${process.env.FRONTEND_URL}/login`,
+    failureRedirect: "/login", // frontend route
     session: false,
   }),
   (req, res) => {
@@ -37,11 +37,14 @@ router.get(
       process.env.JWT_SECRET,
       { expiresIn: "7d" }
     );
-    res.redirect(`${process.env.FRONTEND_URL}/oauth-success?token=${token}`);
+    const status = user.isNew ? "new" : "existing";
+    res.redirect(
+      `${process.env.FRONTEND_URL}/oauth-success?token=${token}&status=${status}`
+    );
   }
 );
 
-// -------------------- Discord OAuth --------------------
+// -------- Discord OAuth --------
 router.get(
   "/discord",
   passport.authenticate("discord", { scope: ["identify", "email"] })
@@ -50,7 +53,7 @@ router.get(
 router.get(
   "/discord/callback",
   passport.authenticate("discord", {
-    failureRedirect: `${process.env.FRONTEND_URL}/login`,
+    failureRedirect: "/login", // frontend route
     session: false,
   }),
   (req, res) => {
@@ -60,7 +63,10 @@ router.get(
       process.env.JWT_SECRET,
       { expiresIn: "7d" }
     );
-    res.redirect(`${process.env.FRONTEND_URL}/oauth-success?token=${token}`);
+    const status = user.isNew ? "new" : "existing";
+    res.redirect(
+      `${process.env.FRONTEND_URL}/oauth-success?token=${token}&status=${status}`
+    );
   }
 );
 
