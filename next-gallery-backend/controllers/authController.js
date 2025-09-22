@@ -1,7 +1,7 @@
 // controllers/authController.js
 const User = require("../models/userModel");
 const jwt = require("jsonwebtoken");
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs"); // use bcryptjs consistently
 const crypto = require("crypto");
 const nodemailer = require("nodemailer");
 const moment = require("moment-timezone");
@@ -44,14 +44,14 @@ exports.register = async (req, res) => {
         .json({ message: "Student ID is required for Admins" });
     }
 
-    const existingUser = await User.findOne({ email });
+    const existingUser = await User.findOne({ email: email.toLowerCase() });
     if (existingUser)
       return res.status(400).json({ message: "Email already registered" });
 
     const user = await User.create({
       firstName,
       lastName,
-      email,
+      email: email.toLowerCase(),
       phone,
       password,
       role,
@@ -78,7 +78,7 @@ exports.login = async (req, res) => {
     if (!email || !password)
       return res.status(400).json({ message: "Please fill all fields" });
 
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ email: email.toLowerCase() });
     if (!user)
       return res.status(400).json({ message: "Invalid email or password" });
 
@@ -98,7 +98,7 @@ exports.login = async (req, res) => {
 exports.forgotPassword = async (req, res) => {
   try {
     const { email } = req.body;
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ email: email.toLowerCase() });
     if (!user)
       return res
         .status(404)
@@ -154,5 +154,32 @@ exports.resetPassword = async (req, res) => {
     res.json({ message: "Password reset successful" });
   } catch (error) {
     res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
+
+// -------- Get Authenticated User Info --------
+exports.me = async (req, res) => {
+  try {
+    // Grab token from headers: Authorization: Bearer <token>
+    const authHeader = req.headers["authorization"];
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      return res.status(401).json({ code: "NO_TOKEN_PROVIDED" });
+    }
+
+    const token = authHeader.split(" ")[1];
+
+    // Verify token
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+    // Fetch user from DB
+    const user = await User.findById(decoded.id).select("-password");
+    if (!user) {
+      return res.status(404).json({ code: "USER_NOT_FOUND" });
+    }
+
+    res.json({ user });
+  } catch (err) {
+    console.error("Auth me error:", err);
+    res.status(401).json({ code: "INVALID_OR_EXPIRED_TOKEN" });
   }
 };

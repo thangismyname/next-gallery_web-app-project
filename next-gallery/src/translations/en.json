@@ -66,6 +66,7 @@
         "forgot_password": "Forgot password?",
         "sign_in": "Sign In",
         "google_sign_in": "Sign in with Google",
+        "discord_sign_in": "Sign in with Discord",
         "register_prompt": "Don’t have an account?",
         "sign_up": "Sign up"
     },
@@ -89,7 +90,7 @@
         "sign_up": "Sign Up",
         "or_sign_up_with": "or sign up with",
         "google_sign_up": "Sign up with Google",
-        "facebook_sign_up": "Sign up with Facebook",
+        "discord_sign_up": "Sign up with Discord",
         "already_have_account": "Already have an account?",
         "log_in": "Log in"
     },

@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE_URL = import.meta.env.VITE_API_URL;
+const BASE_URL = import.meta.env.API_URL;
 const AUTH_URL = `${BASE_URL}/auth`;
 
 interface LoginData {

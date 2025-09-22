@@ -1,43 +1,50 @@
-// next-gallery-backend/server.js
 const express = require("express");
 const mongoose = require("mongoose");
-const path = require("path");
 const dotenv = require("dotenv");
+const cors = require("cors");
+const passport = require("passport");
 
+// Load .env first
 dotenv.config();
 
 const app = express();
 
-// Import middleware & routes
-const corsMiddleware = require("./middlewares/corsMiddleware");
-const errorHandler = require("./middlewares/errorMiddleware");
-const photoRoutes = require("./routes/photoRoute");
-const authRoutes = require("./routes/authRoutes");
-
-// Middleware
-app.use(corsMiddleware);
+// Middlewares
 app.use(express.json());
+app.use(
+  cors({
+    origin: process.env.FRONTEND_URL,
+    credentials: true,
+  })
+);
+// Serve static uploads (if cannot access to S3)
+const path = require("path");
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
-// Routes
-app.use("/", photoRoutes);
-app.use("/api/auth", authRoutes); // <-- mount login/register routes under /api/auth
+// Passport strategies
+require("./config/passport");
+app.use(passport.initialize());
 
-// Error handler middleware (after all routes, but before listen)
-app.use(errorHandler);
+// Health check
+app.get("/", (req, res) => {
+  res.send("Server running ✅");
+});
 
-mongoose.set("debug", true);
+// 🔥 Routes
+const authRoutes = require("./routes/authRoutes");
+const photoRoutes = require("./routes/photoRoutes");
 
-// Connect to MongoDB
+app.use("/api/auth", authRoutes);
+app.use("/api", photoRoutes); // <-- added photo routes
+
+// Connect Mongo + Start server
+const PORT = process.env.PORT || 3001;
 mongoose
-  .connect(process.env.MONGO_URI || "mongodb://localhost:27017/next_galleryDB")
+  .connect(process.env.MONGO_URI)
   .then(() => {
-    console.log("✅ MongoDB connected");
-
-    // Start server ONLY after DB connection is ready
-    const PORT = process.env.PORT || 3001;
-    app.listen(PORT, () => {
-      console.log(`🚀 Backend running at http://localhost:${PORT}`);
-    });
+    console.log("MongoDB connected");
+    app.listen(PORT, () =>
+      console.log(`Server running on http://localhost:${PORT}`)
+    );
   })
-  .catch((err) => console.error("❌ MongoDB connection error:", err));
+  .catch((err) => console.error("MongoDB connection error:", err));
