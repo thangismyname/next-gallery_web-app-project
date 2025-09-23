@@ -64,6 +64,12 @@ const Login: React.FC = () => {
     window.location.href = `${import.meta.env.VITE_API_URL}/api/auth/discord`;
   };
 
+  const { i18n } = useTranslation();
+
+  function changeLanguage(lang: string): void {
+    i18n.changeLanguage(lang);
+  }
+
   return (
     <div
       className={`min-h-screen flex flex-col items-center justify-center px-4 transition-colors duration-300 ${
@@ -254,6 +260,40 @@ const Login: React.FC = () => {
             {t("login.sign_up")}
           </Link>
         </p>
+      </div>
+      {/* 🔹 Language Switcher */}
+      <div className="flex justify-center gap-4 mt-6">
+        <button
+          onClick={() => changeLanguage("en")}
+          className={`font-light ${
+            i18n.language === "en"
+              ? "text-blue-600 dark:text-blue-400 font-semibold"
+              : darkMode
+              ? "text-zinc-400 hover:text-white hover:font-semibold"
+              : "text-zinc-500 hover:text-black hover:font-semibold"
+          }`}
+        >
+          {t("language.english")}
+        </button>
+        <span
+          className={`${
+            darkMode ? "text-zinc-600" : "text-zinc-400"
+          } select-none`}
+        >
+          |
+        </span>
+        <button
+          onClick={() => changeLanguage("vi")}
+          className={`font-light ${
+            i18n.language === "vi"
+              ? "text-blue-600 dark:text-blue-400 font-semibold"
+              : darkMode
+              ? "text-zinc-400 hover:text-white hover:font-semibold"
+              : "text-zinc-500 hover:text-black hover:font-semibold"
+          }`}
+        >
+          {t("language.vietnamese")}
+        </button>
       </div>
     </div>
   );

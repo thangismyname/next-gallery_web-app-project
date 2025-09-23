@@ -1,0 +1,14 @@
+[{
+  "_id": {
+    "$oid": "68b6b154d36c69124bdbef45"
+  },
+  "filename": "1756803412751-437013441.png",
+  "path": "D:\\Study\\Web App\\Lab (new sem)\\next-gallery_web-app-project\\next-gallery-backend\\uploads\\1756803412751-437013441.png",
+  "mimetype": "image/png",
+  "size": 335525,
+  "storage": "local",
+  "createdAt": {
+    "$date": "2025-09-02T08:56:52.759Z"
+  },
+  "__v": 0
+}]
