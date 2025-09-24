@@ -5,9 +5,8 @@ const multer = require("multer");
 const path = require("path");
 
 const photoController = require("../controllers/photoController");
-const upload = require("../middlewares/storage"); // Use your centralized multer config
 
-// Configure multer for file uploads
+// Multer storage config
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, path.join(__dirname, "../uploads"));
@@ -18,11 +17,14 @@ const storage = multer.diskStorage({
   },
 });
 
-// Routes
-router.post("/upload", upload.single("photo"), photoController.uploadPhoto);
-router.get("/photos", photoController.getAllPhotos);
-router.get("/photos/:id", photoController.getPhotoById);
-router.get("/photos/download/:id", photoController.downloadPhoto);
-router.delete("/photos/:id", photoController.deletePhoto);
+// Multer instance
+const upload = multer({ storage });
+
+// ✅ RESTful routes under /api/photos
+router.post("/", upload.single("photo"), photoController.uploadPhoto);
+router.get("/", photoController.getAllPhotos);
+router.get("/:id", photoController.getPhotoById);
+router.get("/download/:id", photoController.downloadPhoto);
+router.delete("/:id", photoController.deletePhoto);
 
 module.exports = router;

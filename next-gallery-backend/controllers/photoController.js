@@ -1,42 +1,41 @@
+// next-gallery-backend/controllers/photoController.js
 const fs = require("fs");
 const path = require("path");
 const AWS = require("aws-sdk");
 const Photo = require("../models/Photo");
 
-// Get photo by ID
-exports.getPhotoById = async (req, res) => {
-  try {
-    const photo = await Photo.findById(req.params.id);
-    if (!photo) return res.status(404).json({ error: "Photo not found" });
-    res.json(photo);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-};
+// --- Helpers ---
+function toUrlPath(p) {
+  return p.split(path.sep).join("/"); // ensures forward slashes
+}
 
-// Upload photo
+function getLocalFilePath(storedPath) {
+  if (path.isAbsolute(storedPath)) return storedPath;
+  return path.resolve(__dirname, "..", storedPath);
+}
+
+// --- Upload photo ---
 exports.uploadPhoto = async (req, res) => {
   try {
     const file = req.file;
     if (!file) return res.status(400).json({ error: "No file uploaded" });
 
-    // Prepare data differently depending on storage type
     let photoData = {
       originalName: file.originalname,
-      category: "Uncategorized", // your placeholder category
+      category: "Uncategorized",
     };
 
     if (process.env.USE_S3 === "true") {
-      // When using S3, multer-s3 provides .key and .location
-      photoData.filename = file.key; // S3 object key (filename in bucket)
-      photoData.url = file.location; // Public URL to access S3 object
+      // S3 upload
+      photoData.filename = file.key;
+      photoData.url = file.location;
       photoData.mimetype = file.mimetype;
       photoData.size = file.size;
       photoData.storage = "s3";
     } else {
       // Local storage
-      photoData.filename = file.filename; // filename on disk
-      photoData.path = file.path; // full local path
+      photoData.filename = file.filename;
+      photoData.path = toUrlPath(path.join("uploads", file.filename));
       photoData.mimetype = file.mimetype;
       photoData.size = file.size;
       photoData.storage = "local";
@@ -47,13 +46,14 @@ exports.uploadPhoto = async (req, res) => {
 
     res.status(201).json(photo);
   } catch (err) {
+    console.error("❌ Upload error:", err);
     res.status(500).json({ error: err.message });
   }
 };
 
+// --- Get all photos ---
 exports.getAllPhotos = async (req, res) => {
   try {
-    // Sort by creation date descending (latest first)
     const photos = await Photo.find().sort({ createdAt: -1 });
     res.json(photos);
   } catch (err) {
@@ -61,56 +61,63 @@ exports.getAllPhotos = async (req, res) => {
   }
 };
 
-// Delete a Photo
+// --- Get photo by ID ---
+exports.getPhotoById = async (req, res) => {
+  try {
+    const photo = await Photo.findById(req.params.id);
+    if (!photo) return res.status(404).json({ error: "Photo not found" });
+    res.json(photo);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+// --- Delete photo ---
 exports.deletePhoto = async (req, res) => {
   try {
     const photo = await Photo.findById(req.params.id);
     if (!photo) return res.status(404).json({ error: "Photo not found" });
 
     if (photo.storage === "local" && photo.path) {
-      // Ensure photo.path is absolute or construct it if relative
-      // Adjust this if photo.path is stored as a relative path to your uploads folder
-      const filePath = path.isAbsolute(photo.path)
-        ? photo.path
-        : path.resolve(__dirname, "..", photo.path);
+      const filePath = getLocalFilePath(photo.path);
 
-      // Use fs.promises.unlink for awaitable unlink
       try {
         await fs.promises.unlink(filePath);
+        console.log("🗑️ Deleted local file:", filePath);
       } catch (err) {
-        console.error("Failed to delete file:", err);
-        // You can decide to continue or fail here. I continue.
+        console.warn("⚠️ Failed to delete local file:", err.message);
       }
     }
 
     await Photo.deleteOne({ _id: req.params.id });
     res.json({ message: "Photo deleted successfully" });
   } catch (err) {
-    console.error("Error deleting photo:", err);
+    console.error("❌ Delete error:", err);
     res.status(500).json({ error: err.message });
   }
 };
 
-// Download from S3
+// --- AWS S3 Setup ---
 const s3 = new AWS.S3({
   accessKeyId: process.env.AWS_ACCESS_KEY_ID,
   secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
   region: process.env.AWS_REGION,
 });
 
+// --- Download photo ---
 exports.downloadPhoto = async (req, res) => {
   try {
     const photo = await Photo.findById(req.params.id);
     if (!photo) return res.status(404).json({ error: "Photo not found" });
 
     if (photo.storage === "local") {
-      // Serve local file
-      return res.download(
-        path.resolve(photo.path),
-        photo.originalName || photo.filename
-      );
-    } else if (photo.storage === "s3") {
-      // Stream from S3 and send as attachment
+      const filePath = getLocalFilePath(photo.path);
+      console.log("📂 Serving local file:", filePath);
+
+      return res.download(filePath, photo.originalName || photo.filename);
+    }
+
+    if (photo.storage === "s3") {
       const params = {
         Bucket: process.env.AWS_S3_BUCKET_NAME,
         Key: photo.filename,
@@ -119,16 +126,18 @@ exports.downloadPhoto = async (req, res) => {
       const s3Stream = s3.getObject(params).createReadStream();
 
       s3Stream.on("error", (err) => {
-        console.error(err);
+        console.error("❌ S3 download error:", err);
         res.status(500).json({ error: "Error downloading file from S3" });
       });
 
       res.attachment(photo.originalName || photo.filename);
       s3Stream.pipe(res);
-    } else {
-      res.status(400).json({ error: "Unknown storage type" });
+      return;
     }
+
+    res.status(400).json({ error: "Unknown storage type" });
   } catch (err) {
+    console.error("❌ Download error:", err);
     res.status(500).json({ error: err.message });
   }
 };

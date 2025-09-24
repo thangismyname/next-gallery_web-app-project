@@ -16,13 +16,14 @@ const UploadForm: React.FC<UploadFormProps> = ({ onUploadSuccess }) => {
     formData.append("photo", file);
 
     try {
-      await axios.post("http://localhost:3001/upload", formData, {
+      await axios.post("http://localhost:3001/api/photos", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
       alert("Uploaded successfully!");
       onUploadSuccess();
+      setFile(null); // clear after upload
     } catch (err) {
-      console.error(err);
+      console.error("❌ Upload failed:", err);
       alert("Upload failed");
     }
   };

@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const cors = require("cors");
 const passport = require("passport");
+const path = require("path");
 
 // Load .env first
 dotenv.config();
@@ -17,8 +18,8 @@ app.use(
     credentials: true,
   })
 );
-// Serve static uploads (if cannot access to S3)
-const path = require("path");
+
+// Serve static uploads (if not using S3)
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 // Passport strategies
@@ -35,7 +36,7 @@ const authRoutes = require("./routes/authRoutes");
 const photoRoutes = require("./routes/photoRoutes");
 
 app.use("/api/auth", authRoutes);
-app.use("/api", photoRoutes); // <-- added photo routes
+app.use("/api/photos", photoRoutes); // ✅ RESTful mount
 
 // Connect Mongo + Start server
 const PORT = process.env.PORT || 3001;
