@@ -9,13 +9,21 @@ const moment = require("moment-timezone");
 // Helper: format user object with UTC+7 timestamps
 const formatUser = (user) => {
   const obj = user.toObject();
-  obj.createdAt = moment(user.createdAt)
-    .tz("Asia/Ho_Chi_Minh")
-    .format("YYYY-MM-DD HH:mm:ss");
-  obj.updatedAt = moment(user.updatedAt)
-    .tz("Asia/Ho_Chi_Minh")
-    .format("YYYY-MM-DD HH:mm:ss");
-  return obj;
+  return {
+    id: obj._id,
+    email: obj.email,
+    firstName: obj.firstName || "",
+    lastName: obj.lastName || "",
+    avatar: obj.avatar || "",
+    role: obj.role,
+    provider: obj.provider,
+    createdAt: moment(obj.createdAt)
+      .tz("Asia/Ho_Chi_Minh")
+      .format("YYYY-MM-DD HH:mm:ss"),
+    updatedAt: moment(obj.updatedAt)
+      .tz("Asia/Ho_Chi_Minh")
+      .format("YYYY-MM-DD HH:mm:ss"),
+  };
 };
 
 // Generate JWT
@@ -117,7 +125,7 @@ exports.forgotPassword = async (req, res) => {
       to: user.email,
       subject: "Password Reset Request",
       html: `
-        <p>Hello ${user.firstName},</p>
+        <p>Hello ${user.firstName || "user"},</p>
         <p>You requested a password reset. Please click below:</p>
         <a href="${resetUrl}">${resetUrl}</a>
         <p>This link will expire at <b>${moment(user.resetPasswordExpire)
@@ -160,24 +168,20 @@ exports.resetPassword = async (req, res) => {
 // -------- Get Authenticated User Info --------
 exports.me = async (req, res) => {
   try {
-    // Grab token from headers: Authorization: Bearer <token>
     const authHeader = req.headers["authorization"];
     if (!authHeader || !authHeader.startsWith("Bearer ")) {
       return res.status(401).json({ code: "NO_TOKEN_PROVIDED" });
     }
 
     const token = authHeader.split(" ")[1];
-
-    // Verify token
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-    // Fetch user from DB
     const user = await User.findById(decoded.id).select("-password");
     if (!user) {
       return res.status(404).json({ code: "USER_NOT_FOUND" });
     }
 
-    res.json({ user });
+    res.json({ user: formatUser(user) });
   } catch (err) {
     console.error("Auth me error:", err);
     res.status(401).json({ code: "INVALID_OR_EXPIRED_TOKEN" });

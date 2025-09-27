@@ -1,11 +1,15 @@
 import React, { useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import axios from "axios";
 
-interface OAuthParams {
-  token: string | null;
-  status: string | null;
-  firstName: string | null;
-  avatar?: string | null;
+interface User {
+  id: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+  avatar?: string;
+  role: string;
+  provider: string;
 }
 
 const OAuthSuccess: React.FC = () => {
@@ -15,28 +19,35 @@ const OAuthSuccess: React.FC = () => {
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     const token = params.get("token");
-    const status = params.get("status");
-    const firstName = params.get("firstName") || "User"; // fallback if backend provides
-    const avatar = params.get("avatar") || undefined; // optional avatar
 
     if (!token) {
       navigate("/login");
       return;
     }
 
-    // Save token and user in localStorage
+    // Save token
     localStorage.setItem("token", token);
-    localStorage.setItem("user", JSON.stringify({ firstName, avatar }));
 
-    // Trigger storage event so HeaderWithMenu updates automatically
-    window.dispatchEvent(new Event("storage"));
+    // Fetch full user info
+    axios
+      .get<{ user: User }>(`${import.meta.env.VITE_BACKEND_URL}/api/auth/me`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((res) => {
+        const user = res.data.user;
 
-    // Redirect based on user status
-    if (status === "new") {
-      navigate("/register");
-    } else {
-      navigate("/");
-    }
+        // Save user in localStorage
+        localStorage.setItem("user", JSON.stringify(user));
+
+        // Trigger storage event so UI updates
+        window.dispatchEvent(new Event("storage"));
+
+        // Redirect home
+        navigate("/");
+      })
+      .catch(() => {
+        navigate("/login");
+      });
   }, [location, navigate]);
 
   return (

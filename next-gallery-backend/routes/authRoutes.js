@@ -18,6 +18,15 @@ router.post("/forgot-password", forgotPassword);
 router.post("/reset-password", resetPassword);
 router.get("/me", me);
 
+// helper for generating tokens
+function generateToken(user) {
+  return jwt.sign(
+    { id: user._id, email: user.email, role: user.role },
+    process.env.JWT_SECRET,
+    { expiresIn: "7d" }
+  );
+}
+
 // -------- Google OAuth --------
 router.get(
   "/google",
@@ -31,16 +40,9 @@ router.get(
     session: false,
   }),
   (req, res) => {
-    const user = req.user;
-    const token = jwt.sign(
-      { id: user._id, email: user.email, role: user.role },
-      process.env.JWT_SECRET,
-      { expiresIn: "7d" }
-    );
-    const status = user.isNew ? "new" : "existing";
-    res.redirect(
-      `${process.env.FRONTEND_URL}/oauth-success?token=${token}&status=${status}`
-    );
+    const token = generateToken(req.user);
+    // don’t send firstName/status here — frontend will fetch /me
+    res.redirect(`${process.env.FRONTEND_URL}/oauth-success?token=${token}`);
   }
 );
 
@@ -57,16 +59,8 @@ router.get(
     session: false,
   }),
   (req, res) => {
-    const user = req.user;
-    const token = jwt.sign(
-      { id: user._id, email: user.email, role: user.role },
-      process.env.JWT_SECRET,
-      { expiresIn: "7d" }
-    );
-    const status = user.isNew ? "new" : "existing";
-    res.redirect(
-      `${process.env.FRONTEND_URL}/oauth-success?token=${token}&status=${status}`
-    );
+    const token = generateToken(req.user);
+    res.redirect(`${process.env.FRONTEND_URL}/oauth-success?token=${token}`);
   }
 );
 

@@ -12,8 +12,11 @@ import { useTranslation } from "react-i18next";
 import { getCurrentUser } from "../../services/authService";
 
 interface UserHeader {
-  firstName: string;
+  firstName?: string;
+  lastName?: string;
   avatar?: string;
+  email?: string;
+  role?: string;
 }
 
 const HeaderWithMenu: React.FC = () => {
@@ -103,13 +106,18 @@ const HeaderWithMenu: React.FC = () => {
               onClick={handleUserClick}
             >
               <span className="text-l font-semibold">
-                {user ? user.firstName : t("Sign In")}
+                {user
+                  ? user.firstName ||
+                    user.lastName ||
+                    user.email?.split("@")[0] ||
+                    t("User")
+                  : t("Sign In")}
               </span>
 
               {user?.avatar ? (
                 <img
                   src={user.avatar}
-                  alt="User Avatar"
+                  alt={user.firstName || user.email || "User Avatar"}
                   className="w-8 h-8 rounded-full object-cover"
                 />
               ) : (

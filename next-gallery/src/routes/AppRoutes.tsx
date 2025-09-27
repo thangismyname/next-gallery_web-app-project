@@ -6,6 +6,7 @@ import Register from "../pages/AccountPages/ReigsterPage";
 import ForgotPassword from "../pages/AccountPages/ForgotPasswordPage";
 import ResetPassword from "../pages/AccountPages/ResetPasswordPage";
 import OAuthSuccess from "../components/OAuthSuccess";
+import UserPage from "../pages/UserPage"; // ← renamed import
 
 const AppRoutes: React.FC = () => {
   return (
@@ -16,6 +17,7 @@ const AppRoutes: React.FC = () => {
       <Route path="/register" element={<Register />} />
       <Route path="/forgot-password" element={<ForgotPassword />} />
       <Route path="/reset-password" element={<ResetPassword />} />
+      <Route path="/userpage" element={<UserPage />} /> {/* ← changed path */}
     </Routes>
   );
 };

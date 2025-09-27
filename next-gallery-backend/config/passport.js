@@ -1,3 +1,4 @@
+// config/passport.js
 const passport = require("passport");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const DiscordStrategy = require("passport-discord").Strategy;
@@ -13,21 +14,44 @@ passport.use(
     },
     async (accessToken, refreshToken, profile, done) => {
       try {
-        // ✅ Log Google profile in terminal
         console.log("Google profile:", JSON.stringify(profile, null, 2));
 
-        // First check if user already exists by email
-        let user = await User.findOne({ email: profile.emails?.[0]?.value });
+        const email = profile.emails?.[0]?.value;
+        let user = await User.findOne({ email });
+
+        const firstName =
+          profile.name?.givenName || profile.displayName?.split(" ")[0];
+        const lastName =
+          profile.name?.familyName ||
+          profile.displayName?.split(" ").slice(1).join(" ");
+        const avatar = profile.photos?.[0]?.value || "";
+
+        // Google profile usually doesn’t include phone by default
+        const phone = profile._json?.phoneNumber || "";
 
         if (!user) {
+          // New user
           user = await User.create({
             provider: "google",
             providerId: profile.id,
-            email: profile.emails?.[0]?.value,
-            name: profile.displayName,
+            email,
+            firstName,
+            lastName,
+            avatar,
+            phone, // save phone if exists
+            role: "User", // 🔥 ensure a default role
           });
           user.isNew = true;
         } else {
+          // Update only if missing
+          if (!user.firstName) user.firstName = firstName;
+          if (!user.lastName) user.lastName = lastName;
+          if (!user.avatar) user.avatar = avatar;
+          if (!user.phone && phone) user.phone = phone;
+          if (!user.providerId) user.providerId = profile.id;
+          if (!user.provider) user.provider = "google";
+
+          await user.save();
           user.isNew = false;
         }
 
@@ -46,31 +70,49 @@ passport.use(
       clientID: process.env.DISCORD_CLIENT_ID,
       clientSecret: process.env.DISCORD_CLIENT_SECRET,
       callbackURL: "/api/auth/discord/callback",
+      scope: ["identify", "email"],
     },
     async (accessToken, refreshToken, profile, done) => {
       try {
-        // ✅ Log Discord profile in terminal
-        console.log("✅ Google Login Summary:", {
+        console.log("✅ Discord Login Summary:", {
           id: profile.id,
-          name: profile.displayName,
-          firstName: profile.name?.givenName,
-          lastName: profile.name?.familyName,
-          email: profile.emails?.[0]?.value,
-          photo: profile.photos?.[0]?.value,
-          provider: profile.provider,
+          username: profile.username,
+          email: profile.email,
+          avatar: profile.avatar,
         });
 
         let user = await User.findOne({ email: profile.email });
+
+        const firstName = profile.username?.split(" ")[0];
+        const lastName = profile.username?.split(" ").slice(1).join(" ");
+        const avatar = profile.avatar
+          ? `https://cdn.discordapp.com/avatars/${profile.id}/${profile.avatar}.png`
+          : "";
+
+        // Discord doesn’t provide phone by default unless extra scopes
+        const phone = profile.phone || "";
 
         if (!user) {
           user = await User.create({
             provider: "discord",
             providerId: profile.id,
             email: profile.email,
-            name: profile.username,
+            firstName,
+            lastName,
+            avatar,
+            phone, // save phone if exists
+            role: "User", // 🔥 ensure a default role
           });
           user.isNew = true;
         } else {
+          if (!user.firstName) user.firstName = firstName;
+          if (!user.lastName) user.lastName = lastName;
+          if (!user.avatar) user.avatar = avatar;
+          if (!user.phone && phone) user.phone = phone;
+          if (!user.providerId) user.providerId = profile.id;
+          if (!user.provider) user.provider = "discord";
+
+          await user.save();
           user.isNew = false;
         }
 
@@ -81,5 +123,3 @@ passport.use(
     }
   )
 );
-
-module.exports = passport;

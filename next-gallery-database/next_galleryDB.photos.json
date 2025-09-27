@@ -1,9 +1,23 @@
 [{
   "_id": {
+    "$oid": "68d3b97443f2f1a3622ee01b"
+  },
+  "filename": "1758706036381-140975535.png",
+  "path": "uploads/1758706036381-140975535.png",
+  "mimetype": "image/png",
+  "size": 26123,
+  "storage": "local",
+  "createdAt": {
+    "$date": "2025-09-24T09:27:16.386Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
     "$oid": "68b6b154d36c69124bdbef45"
   },
   "filename": "1756803412751-437013441.png",
-  "path": "D:\\Study\\Web App\\Lab (new sem)\\next-gallery_web-app-project\\next-gallery-backend\\uploads\\1756803412751-437013441.png",
+  "path": "uploads/1756803412751-437013441.png",
   "mimetype": "image/png",
   "size": 335525,
   "storage": "local",
