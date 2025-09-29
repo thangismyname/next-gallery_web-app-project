@@ -1,4 +1,3 @@
-// LoginPage.tsx
 import React, { useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
@@ -32,6 +31,7 @@ const Login: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    console.log("Login: Password login attempt:", formData);
     if (!formData.email || !formData.password) {
       setError(t("errors.login.fill_fields"));
       return;
@@ -41,15 +41,15 @@ const Login: React.FC = () => {
     setError(null);
 
     try {
-      await login({
+      const user = await login({
         email: formData.email,
         password: formData.password,
         rememberMe: formData.rememberMe,
       });
-
-      // Redirect to user page after successful login
-      navigate("/"); // now this works
+      console.log("Login: Password login successful, user:", user);
+      navigate("/");
     } catch (err: any) {
+      console.error("Login: Password login failed:", err);
       setError(err.response?.data?.message || t("errors.login.failed"));
     } finally {
       setLoading(false);
@@ -57,10 +57,12 @@ const Login: React.FC = () => {
   };
 
   const handleGoogleLogin = () => {
+    console.log("Login: Initiating Google OAuth");
     window.location.href = `${import.meta.env.VITE_API_URL}/api/auth/google`;
   };
 
   const handleDiscordLogin = () => {
+    console.log("Login: Initiating Discord OAuth");
     window.location.href = `${import.meta.env.VITE_API_URL}/api/auth/discord`;
   };
 
@@ -187,7 +189,6 @@ const Login: React.FC = () => {
         </div>
 
         <div className="gap-3 flex flex-col">
-          {/* Social Login Buttons Container */}
           {/* Google Sign-In Button */}
           <button
             onClick={handleGoogleLogin}
@@ -261,7 +262,7 @@ const Login: React.FC = () => {
           </Link>
         </p>
       </div>
-      {/* 🔹 Language Switcher */}
+      {/* Language Switcher */}
       <div className="flex justify-center gap-4 mt-6">
         <button
           onClick={() => changeLanguage("en")}

@@ -1,10 +1,14 @@
 // controllers/authController.js
 const User = require("../models/userModel");
 const jwt = require("jsonwebtoken");
-const bcrypt = require("bcryptjs"); // use bcryptjs consistently
+const bcrypt = require("bcryptjs");
 const crypto = require("crypto");
 const nodemailer = require("nodemailer");
 const moment = require("moment-timezone");
+const { OAuth2Client } = require("google-auth-library");
+
+// Initialize Google OAuth2 client with your Client ID
+const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 // Helper: format user object with UTC+7 timestamps
 const formatUser = (user) => {
@@ -64,6 +68,7 @@ exports.register = async (req, res) => {
       password,
       role,
       studentId,
+      provider: "local",
     });
 
     const token = generateToken(user._id);
@@ -89,6 +94,12 @@ exports.login = async (req, res) => {
     const user = await User.findOne({ email: email.toLowerCase() });
     if (!user)
       return res.status(400).json({ message: "Invalid email or password" });
+
+    if (user.provider !== "local") {
+      return res.status(400).json({
+        message: `This account was registered with ${user.provider}. Please log in using ${user.provider}.`,
+      });
+    }
 
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch)
@@ -185,5 +196,61 @@ exports.me = async (req, res) => {
   } catch (err) {
     console.error("Auth me error:", err);
     res.status(401).json({ code: "INVALID_OR_EXPIRED_TOKEN" });
+  }
+};
+
+// -------- Google Sign-In --------
+exports.googleLogin = async (req, res) => {
+  try {
+    const { idToken } = req.body;
+
+    if (!idToken) {
+      return res.status(400).json({ message: "Google ID token is required" });
+    }
+
+    // Verify Google ID token
+    const ticket = await client.verifyIdToken({
+      idToken,
+      audience: process.env.GOOGLE_CLIENT_ID,
+    });
+
+    const payload = ticket.getPayload();
+    if (!payload) {
+      return res.status(401).json({ message: "Invalid Google token" });
+    }
+
+    const { sub: googleId, email, given_name, family_name, picture } = payload;
+
+    // Find or create user
+    let user = await User.findOne({
+      $or: [{ email: email.toLowerCase() }, { providerId: googleId }],
+    });
+
+    if (!user) {
+      user = await User.create({
+        email: email.toLowerCase(),
+        firstName: given_name || "",
+        lastName: family_name || "",
+        avatar: picture || "",
+        provider: "google",
+        providerId: googleId,
+        role: "User",
+      });
+    } else if (user.provider !== "google") {
+      return res.status(400).json({
+        message: `This email is already registered with ${user.provider}. Please use that method to log in.`,
+      });
+    }
+
+    const token = generateToken(user._id);
+
+    res.json({
+      message: "Google login successful",
+      token,
+      user: formatUser(user),
+    });
+  } catch (error) {
+    console.error("Google login error:", error);
+    res.status(500).json({ message: "Server error", error: error.message });
   }
 };

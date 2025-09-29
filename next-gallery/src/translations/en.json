@@ -94,7 +94,8 @@
         "google_sign_up": "Sign up with Google",
         "discord_sign_up": "Sign up with Discord",
         "already_have_account": "Already have an account?",
-        "log_in": "Log in"
+        "log_in": "Log in",
+        "success_message": "Registration successful! Please check your email to verify your account."
     },
     "errors": {
         "common": {

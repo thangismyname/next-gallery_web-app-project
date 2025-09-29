@@ -41,10 +41,7 @@ app.use("/api/photos", photoRoutes); // ✅ RESTful mount
 // Connect Mongo + Start server
 const PORT = process.env.PORT || 3001;
 mongoose
-  .connect(process.env.MONGO_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
+  .connect(process.env.MONGO_URI)
   .then(() => {
     console.log("✅ MongoDB Atlas connected");
     app.listen(PORT, () =>

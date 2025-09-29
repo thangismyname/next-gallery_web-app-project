@@ -5,19 +5,11 @@ import {
   faMagnifyingGlass,
 } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
-import SideMenu from "./SideMenu";
+import SideMenu, { type UserHeader } from "./SideMenu";
 import Search from "./Search";
 import { AppContext } from "../Theme/AppContext";
 import { useTranslation } from "react-i18next";
 import { getCurrentUser } from "../../services/authService";
-
-interface UserHeader {
-  firstName?: string;
-  lastName?: string;
-  avatar?: string;
-  email?: string;
-  role?: string;
-}
 
 const HeaderWithMenu: React.FC = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -31,19 +23,41 @@ const HeaderWithMenu: React.FC = () => {
   const { darkMode } = context;
   const { t } = useTranslation();
 
-  // Update user whenever localStorage changes (login/logout/avatar update)
+  console.log("HeaderWithMenu: Initial user:", user);
+
   useEffect(() => {
-    const handleStorageChange = () => setUser(getCurrentUser());
+    const handleStorageChange = () => {
+      const currentUser = getCurrentUser();
+      console.log("HeaderWithMenu: Storage changed, user:", currentUser);
+      setUser(currentUser);
+    };
     window.addEventListener("storage", handleStorageChange);
-    return () => window.removeEventListener("storage", handleStorageChange);
-  }, []);
+
+    // Poll for storage changes (same-tab updates)
+    const interval = setInterval(() => {
+      const currentUser = getCurrentUser();
+      if (JSON.stringify(currentUser) !== JSON.stringify(user)) {
+        console.log("HeaderWithMenu: Polled user update:", currentUser);
+        setUser(currentUser);
+      }
+    }, 1000);
+
+    return () => {
+      window.removeEventListener("storage", handleStorageChange);
+      clearInterval(interval);
+    };
+  }, [user]);
 
   const handleUserClick = () => {
+    console.log("HeaderWithMenu: User clicked, current user:", user);
     if (user) navigate("/userpage");
     else navigate("/login");
   };
 
-  const handleGoHome = () => navigate("/");
+  const handleGoHome = () => {
+    console.log("HeaderWithMenu: Navigating to home");
+    navigate("/");
+  };
 
   return (
     <>
@@ -55,9 +69,11 @@ const HeaderWithMenu: React.FC = () => {
         } ${menuOpen ? "backdrop-blur-sm bg-gray-800/40" : ""}`}
       >
         <div className="mx-auto px-5 py-1.5 flex justify-between items-center">
-          {/* Menu Button */}
           <button
-            onClick={() => setMenuOpen(true)}
+            onClick={() => {
+              console.log("HeaderWithMenu: Menu button clicked");
+              setMenuOpen(true);
+            }}
             className={`px-3 py-1 text-l font-semibold flex items-center gap-2 rounded-2xl transition-all duration-200 ease-in-out ${
               darkMode
                 ? "text-white hover:bg-gray-800"
@@ -66,8 +82,6 @@ const HeaderWithMenu: React.FC = () => {
           >
             {t("header.menu")}
           </button>
-
-          {/* Logo / Title */}
           <div
             className={`text-l font-semibold text-center cursor-pointer transition-all duration-200 ease-in-out ${
               darkMode
@@ -78,15 +92,15 @@ const HeaderWithMenu: React.FC = () => {
           >
             {t("header.title")}
           </div>
-
-          {/* Right Section */}
           <div className="flex items-center gap-3">
-            {/* Search Icon */}
             <div
               className={`w-9 h-9 flex items-center justify-center rounded-full cursor-pointer transition-all duration-200 ease-in-out ${
                 darkMode ? "hover:bg-gray-800" : "hover:bg-gray-200"
               }`}
-              onClick={() => setSearchOpen(true)}
+              onClick={() => {
+                console.log("HeaderWithMenu: Search icon clicked");
+                setSearchOpen(true);
+              }}
             >
               <FontAwesomeIcon
                 icon={faMagnifyingGlass}
@@ -95,8 +109,6 @@ const HeaderWithMenu: React.FC = () => {
                 }`}
               />
             </div>
-
-            {/* User Section */}
             <div
               className={`flex items-center gap-2 cursor-pointer transition-all duration-200 ease-in-out ${
                 darkMode
@@ -113,7 +125,6 @@ const HeaderWithMenu: React.FC = () => {
                     t("User")
                   : t("Sign In")}
               </span>
-
               {user?.avatar ? (
                 <img
                   src={user.avatar}
@@ -127,9 +138,22 @@ const HeaderWithMenu: React.FC = () => {
           </div>
         </div>
       </header>
-
-      <SideMenu open={menuOpen} onClose={() => setMenuOpen(false)} />
-      {searchOpen && <Search onClose={() => setSearchOpen(false)} />}
+      <SideMenu
+        open={menuOpen}
+        onClose={() => {
+          console.log("HeaderWithMenu: Closing SideMenu");
+          setMenuOpen(false);
+        }}
+        user={user}
+      />
+      {searchOpen && (
+        <Search
+          onClose={() => {
+            console.log("HeaderWithMenu: Closing Search");
+            setSearchOpen(false);
+          }}
+        />
+      )}
     </>
   );
 };

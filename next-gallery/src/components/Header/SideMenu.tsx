@@ -4,15 +4,24 @@ import LanguageSelector from "../Theme/LanguageSelector";
 import DarkModeToggle from "../Theme/DarkMode";
 import { useTranslation } from "react-i18next";
 import LegalLinks from "../LegalLinks";
-import { logout } from "../../services/authService"; // import logout function
+import { logout } from "../../services/authService";
 import { useNavigate } from "react-router-dom";
+
+export interface UserHeader {
+  firstName?: string;
+  lastName?: string;
+  avatar?: string;
+  email?: string;
+  role?: string;
+}
 
 interface SideMenuProps {
   open: boolean;
   onClose: () => void;
+  user: UserHeader | null; // 👈 new prop
 }
 
-const SideMenu: React.FC<SideMenuProps> = ({ open, onClose }) => {
+const SideMenu: React.FC<SideMenuProps> = ({ open, onClose, user }) => {
   const context = useContext(AppContext);
   if (!context) throw new Error("SideMenu must be used within an AppProvider");
 
@@ -21,9 +30,9 @@ const SideMenu: React.FC<SideMenuProps> = ({ open, onClose }) => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    logout(); // clear token & user from storage
-    onClose(); // close the menu
-    navigate("/login"); // redirect to login page
+    logout();
+    onClose();
+    navigate("/login");
   };
 
   const menuItems = [
@@ -31,8 +40,12 @@ const SideMenu: React.FC<SideMenuProps> = ({ open, onClose }) => {
     { key: "download", onClick: () => {} },
     { key: "viewProfile", onClick: () => {} },
     { key: "seeMoreAlbums", onClick: () => {} },
-    { key: "logout", onClick: handleLogout }, // new logout item
   ];
+
+  // Only add logout if user exists
+  if (user) {
+    menuItems.push({ key: "logout", onClick: handleLogout });
+  }
 
   return (
     <>
@@ -82,7 +95,6 @@ const SideMenu: React.FC<SideMenuProps> = ({ open, onClose }) => {
             <LegalLinks vertical={true} />
           </div>
 
-          {/* Language + Dark mode buttons */}
           <div className="flex flex-col gap-2 items-end justify-center">
             <LanguageSelector />
             <DarkModeToggle />

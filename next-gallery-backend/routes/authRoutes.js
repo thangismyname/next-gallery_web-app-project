@@ -18,8 +18,13 @@ router.post("/forgot-password", forgotPassword);
 router.post("/reset-password", resetPassword);
 router.get("/me", me);
 
-// helper for generating tokens
+// Helper for generating tokens
 function generateToken(user) {
+  console.log("Generating token for user:", {
+    id: user._id,
+    email: user.email,
+    role: user.role,
+  });
   return jwt.sign(
     { id: user._id, email: user.email, role: user.role },
     process.env.JWT_SECRET,
@@ -36,12 +41,13 @@ router.get(
 router.get(
   "/google/callback",
   passport.authenticate("google", {
-    failureRedirect: "/login", // frontend route
+    failureRedirect: `${process.env.FRONTEND_URL}/login`,
     session: false,
   }),
   (req, res) => {
+    console.log("Google Callback: User authenticated:", req.user);
     const token = generateToken(req.user);
-    // don’t send firstName/status here — frontend will fetch /me
+    console.log("Google Callback: Generated token:", token);
     res.redirect(`${process.env.FRONTEND_URL}/oauth-success?token=${token}`);
   }
 );
@@ -55,11 +61,13 @@ router.get(
 router.get(
   "/discord/callback",
   passport.authenticate("discord", {
-    failureRedirect: "/login", // frontend route
+    failureRedirect: `${process.env.FRONTEND_URL}/login`,
     session: false,
   }),
   (req, res) => {
+    console.log("Discord Callback: User authenticated:", req.user);
     const token = generateToken(req.user);
+    console.log("Discord Callback: Generated token:", token);
     res.redirect(`${process.env.FRONTEND_URL}/oauth-success?token=${token}`);
   }
 );

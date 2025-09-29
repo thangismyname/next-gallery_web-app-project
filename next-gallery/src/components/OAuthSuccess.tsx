@@ -19,33 +19,43 @@ const OAuthSuccess: React.FC = () => {
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     const token = params.get("token");
+    console.log(
+      "OAuthSuccess: Token from URL:",
+      token ? "Received" : "Missing"
+    );
 
     if (!token) {
+      console.log("OAuthSuccess: No token, redirecting to login");
       navigate("/login");
       return;
     }
 
     // Save token
     localStorage.setItem("token", token);
+    console.log("OAuthSuccess: Token saved to localStorage");
 
     // Fetch full user info
     axios
-      .get<{ user: User }>(`${import.meta.env.VITE_BACKEND_URL}/api/auth/me`, {
+      .get<{ user: User }>(`${import.meta.env.VITE_API_URL}/api/auth/me`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => {
         const user = res.data.user;
+        console.log("OAuthSuccess: User fetched from /me:", user);
 
         // Save user in localStorage
         localStorage.setItem("user", JSON.stringify(user));
+        console.log("OAuthSuccess: User saved to localStorage:", user);
 
         // Trigger storage event so UI updates
         window.dispatchEvent(new Event("storage"));
+        console.log("OAuthSuccess: Dispatched storage event");
 
         // Redirect home
         navigate("/");
       })
-      .catch(() => {
+      .catch((err) => {
+        console.error("OAuthSuccess: Failed to fetch user:", err);
         navigate("/login");
       });
   }, [location, navigate]);
