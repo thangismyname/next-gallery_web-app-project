@@ -78,7 +78,6 @@ const Login: React.FC = () => {
         darkMode ? "bg-gray-900" : "bg-slate-50"
       }`}
     >
-      {/* Title */}
       <div className="text-center space-y-3 mb-6">
         <h1
           className={`text-4xl md:text-5xl font-bold ${
@@ -95,8 +94,6 @@ const Login: React.FC = () => {
           {t("login.subtitle")}
         </p>
       </div>
-
-      {/* Form Card */}
       <div
         className={`w-full max-w-md p-8 rounded-2xl shadow-xl flex flex-col gap-6 ${
           darkMode ? "bg-gray-800" : "bg-white"
@@ -127,7 +124,6 @@ const Login: React.FC = () => {
                 : "bg-white border-zinc-200 text-zinc-600 focus:ring-blue-500"
             }`}
           />
-
           <div className="flex justify-between items-center">
             <label className="flex items-center gap-2">
               <input
@@ -145,7 +141,6 @@ const Login: React.FC = () => {
                 {t("login.remember_me")}
               </span>
             </label>
-
             <Link
               to="/forgot-password"
               className={`text-sm hover:text-blue-600 hover:underline dark:hover:text-blue-400 ${
@@ -155,9 +150,7 @@ const Login: React.FC = () => {
               {t("login.forgot_password")}
             </Link>
           </div>
-
           {error && <p className="text-red-500 text-sm">{error}</p>}
-
           <button
             type="submit"
             disabled={loading}
@@ -166,8 +159,6 @@ const Login: React.FC = () => {
             {loading ? t("login.loading") : t("login.sign_in")}
           </button>
         </form>
-
-        {/* Divider */}
         <div className="flex items-center gap-2">
           <hr
             className={`flex-1 ${
@@ -187,9 +178,7 @@ const Login: React.FC = () => {
             }`}
           />
         </div>
-
         <div className="gap-3 flex flex-col">
-          {/* Google Sign-In Button */}
           <button
             onClick={handleGoogleLogin}
             disabled={loading}
@@ -223,8 +212,6 @@ const Login: React.FC = () => {
             </svg>
             <span>{t("login.google_sign_in")}</span>
           </button>
-
-          {/* Discord Sign-In Button */}
           <button
             onClick={handleDiscordLogin}
             disabled={loading}
@@ -247,7 +234,6 @@ const Login: React.FC = () => {
             <span>{t("login.discord_sign_in")}</span>
           </button>
         </div>
-
         <p
           className={`text-center text-sm ${
             darkMode ? "text-zinc-400" : "text-zinc-500"
@@ -262,7 +248,6 @@ const Login: React.FC = () => {
           </Link>
         </p>
       </div>
-      {/* Language Switcher */}
       <div className="flex justify-center gap-4 mt-6">
         <button
           onClick={() => changeLanguage("en")}

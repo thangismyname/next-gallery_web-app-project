@@ -33,7 +33,7 @@ const HeaderWithMenu: React.FC = () => {
     };
     window.addEventListener("storage", handleStorageChange);
 
-    // Poll for storage changes (same-tab updates)
+    // Poll for storage changes
     const interval = setInterval(() => {
       const currentUser = getCurrentUser();
       if (JSON.stringify(currentUser) !== JSON.stringify(user)) {

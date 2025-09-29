@@ -7,6 +7,7 @@ const {
   forgotPassword,
   resetPassword,
   me,
+  linkProvider,
 } = require("../controllers/authController");
 
 const router = express.Router();
@@ -17,6 +18,7 @@ router.post("/login", login);
 router.post("/forgot-password", forgotPassword);
 router.post("/reset-password", resetPassword);
 router.get("/me", me);
+router.post("/link-provider", linkProvider);
 
 // Helper for generating tokens
 function generateToken(user) {
@@ -33,10 +35,14 @@ function generateToken(user) {
 }
 
 // -------- Google OAuth --------
-router.get(
-  "/google",
-  passport.authenticate("google", { scope: ["profile", "email"] })
-);
+router.get("/google", (req, res, next) => {
+  console.log("Google: Initiating OAuth, link:", req.query.link);
+  passport.authenticate("google", { scope: ["profile", "email"] })(
+    req,
+    res,
+    next
+  );
+});
 
 router.get(
   "/google/callback",
@@ -44,19 +50,63 @@ router.get(
     failureRedirect: `${process.env.FRONTEND_URL}/login`,
     session: false,
   }),
-  (req, res) => {
-    console.log("Google Callback: User authenticated:", req.user);
-    const token = generateToken(req.user);
-    console.log("Google Callback: Generated token:", token);
-    res.redirect(`${process.env.FRONTEND_URL}/oauth-success?token=${token}`);
+  async (req, res) => {
+    try {
+      console.log("Google Callback: User authenticated:", {
+        id: req.user._id,
+        email: req.user.email,
+        providers: req.user.providers,
+      });
+
+      if (req.query.link === "true") {
+        // Handle linking
+        console.log(
+          "Google Callback: Linking Google for user:",
+          req.user.email
+        );
+        const googleProvider = req.user.providers.find(
+          (p) => p.provider === "google"
+        );
+        await linkProvider(
+          {
+            body: {
+              email: req.user.email,
+              provider: "google",
+              providerId: googleProvider.providerId,
+            },
+          },
+          {
+            json: (data) =>
+              console.log("Google Callback: Link response:", data),
+          }
+        );
+        res.redirect(
+          `${process.env.FRONTEND_URL}/link-provider?message=Google%20linked%20successfully`
+        );
+      } else {
+        // Handle login
+        const token = generateToken(req.user);
+        console.log("Google Callback: Generated token:", token);
+        res.redirect(
+          `${process.env.FRONTEND_URL}/oauth-success?token=${token}`
+        );
+      }
+    } catch (error) {
+      console.error("Google Callback error:", error);
+      res.redirect(`${process.env.FRONTEND_URL}/login`);
+    }
   }
 );
 
 // -------- Discord OAuth --------
-router.get(
-  "/discord",
-  passport.authenticate("discord", { scope: ["identify", "email"] })
-);
+router.get("/discord", (req, res, next) => {
+  console.log("Discord: Initiating OAuth, link:", req.query.link);
+  passport.authenticate("discord", { scope: ["identify", "email"] })(
+    req,
+    res,
+    next
+  );
+});
 
 router.get(
   "/discord/callback",
@@ -64,11 +114,51 @@ router.get(
     failureRedirect: `${process.env.FRONTEND_URL}/login`,
     session: false,
   }),
-  (req, res) => {
-    console.log("Discord Callback: User authenticated:", req.user);
-    const token = generateToken(req.user);
-    console.log("Discord Callback: Generated token:", token);
-    res.redirect(`${process.env.FRONTEND_URL}/oauth-success?token=${token}`);
+  async (req, res) => {
+    try {
+      console.log("Discord Callback: User authenticated:", {
+        id: req.user._id,
+        email: req.user.email,
+        providers: req.user.providers,
+      });
+
+      if (req.query.link === "true") {
+        // Handle linking
+        console.log(
+          "Discord Callback: Linking Discord for user:",
+          req.user.email
+        );
+        const discordProvider = req.user.providers.find(
+          (p) => p.provider === "discord"
+        );
+        await linkProvider(
+          {
+            body: {
+              email: req.user.email,
+              provider: "discord",
+              providerId: discordProvider.providerId,
+            },
+          },
+          {
+            json: (data) =>
+              console.log("Discord Callback: Link response:", data),
+          }
+        );
+        res.redirect(
+          `${process.env.FRONTEND_URL}/link-provider?message=Discord%20linked%20successfully`
+        );
+      } else {
+        // Handle login
+        const token = generateToken(req.user);
+        console.log("Discord Callback: Generated token:", token);
+        res.redirect(
+          `${process.env.FRONTEND_URL}/oauth-success?token=${token}`
+        );
+      }
+    } catch (error) {
+      console.error("Discord Callback error:", error);
+      res.redirect(`${process.env.FRONTEND_URL}/login`);
+    }
   }
 );
 

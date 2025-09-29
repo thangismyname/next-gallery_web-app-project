@@ -8,12 +8,23 @@ import { logout } from "../../services/authService";
 import { useNavigate } from "react-router-dom";
 
 export interface UserHeader {
-  firstName?: string;
-  lastName?: string;
+  id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone?: string;
+  role: "Admin" | "Photographer" | "User";
+  studentId?: string;
+  providers: {
+    provider: "local" | "google" | "discord";
+    providerId?: string;
+  }[];
   avatar?: string;
-  email?: string;
-  role?: string;
+  createdAt?: string;
+  updatedAt?: string;
 }
+
+// ... rest of SideMenu.tsx remains unchanged
 
 interface SideMenuProps {
   open: boolean;

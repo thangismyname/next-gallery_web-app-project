@@ -11,8 +11,7 @@ export interface User {
   phone?: string;
   role: "Admin" | "Photographer" | "User";
   studentId?: string;
-  provider: "local" | "google" | "discord";
-  providerId?: string;
+  providers: { provider: "local" | "google" | "discord"; providerId?: string }[];
   avatar?: string;
   createdAt?: string;
   updatedAt?: string;
@@ -23,7 +22,7 @@ interface AuthResponse {
   user: User;
 }
 
-// -------- Login --------
+// Login
 export const login = async ({
   email,
   password,
@@ -52,10 +51,11 @@ export const login = async ({
     console.log("authService: Stored in sessionStorage:", user);
   }
 
+  window.dispatchEvent(new Event("storage"));
   return user;
 };
 
-// -------- Register --------
+// Register
 export const register = async (data: {
   firstName: string;
   lastName: string;
@@ -75,41 +75,32 @@ export const register = async (data: {
   localStorage.setItem("user", JSON.stringify(user));
   console.log("authService: Stored in localStorage:", user);
 
+  window.dispatchEvent(new Event("storage"));
   return user;
 };
 
-// -------- Google Sign-In (Optional, if using client-side Google button) --------
-export const googleLogin = async (
-  idToken: string,
-  rememberMe: boolean = true
-): Promise<User> => {
-  console.log("authService: Google login attempt, ID token:", idToken ? "Received" : "Missing");
-  try {
-    const res = await axios.post<AuthResponse>(`${AUTH_URL}/google-login`, {
-      idToken,
-    });
+// Link Provider
+export const linkProvider = async (
+  email: string,
+  provider?: "google" | "discord",
+  providerId?: string,
+  password?: string
+): Promise<{ message: string; user: User }> => {
+  console.log("authService: Link provider attempt:", { email, provider, providerId, hasPassword: !!password });
+  const res = await axios.post<{ message: string; user: User }>(
+    `${AUTH_URL}/link-provider`,
+    { email, provider, providerId, password }
+  );
+  console.log("authService: Link provider success:", res.data);
 
-    const { token, user } = res.data as AuthResponse;
-    console.log("authService: Google login success:", { user, token });
+  localStorage.setItem("user", JSON.stringify(res.data.user));
+  console.log("authService: Updated user in localStorage:", res.data.user);
+  window.dispatchEvent(new Event("storage"));
 
-    if (rememberMe) {
-      localStorage.setItem("token", token);
-      localStorage.setItem("user", JSON.stringify(user));
-      console.log("authService: Stored in localStorage:", user);
-    } else {
-      sessionStorage.setItem("token", token);
-      sessionStorage.setItem("user", JSON.stringify(user));
-      console.log("authService: Stored in sessionStorage:", user);
-    }
-
-    return user;
-  } catch (error) {
-    console.error("authService: Google login failed:", error);
-    throw error;
-  }
+  return res.data;
 };
 
-// -------- Forgot Password --------
+// Forgot Password
 export const forgotPassword = async (
   email: string
 ): Promise<{ message: string }> => {
@@ -122,7 +113,7 @@ export const forgotPassword = async (
   return res.data;
 };
 
-// -------- Reset Password --------
+// Reset Password
 export const resetPassword = async (
   token: string,
   newPassword: string
@@ -136,7 +127,7 @@ export const resetPassword = async (
   return res.data;
 };
 
-// -------- Logout --------
+// Logout
 export const logout = () => {
   console.log("authService: Logging out");
   localStorage.removeItem("token");
@@ -146,7 +137,7 @@ export const logout = () => {
   window.dispatchEvent(new Event("storage"));
 };
 
-// -------- Current User --------
+// Current User
 export const getCurrentUser = (): User | null => {
   const storedUser =
     localStorage.getItem("user") || sessionStorage.getItem("user");
@@ -166,7 +157,7 @@ export const getCurrentUser = (): User | null => {
   }
 };
 
-// -------- Get Token --------
+// Get Token
 export const getToken = (): string | null => {
   const token = localStorage.getItem("token") || sessionStorage.getItem("token");
   console.log("authService: getToken:", token ? "Found" : "Not found");

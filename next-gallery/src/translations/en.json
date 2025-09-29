@@ -97,6 +97,18 @@
         "log_in": "Log in",
         "success_message": "Registration successful! Please check your email to verify your account."
     },
+    "link_provider": {
+        "title": "Link Authentication Providers",
+        "email": "Email",
+        "password": "Set Password",
+        "link_password": "Link Password",
+        "link_google": "Link Google",
+        "link_discord": "Link Discord",
+        "loading": "Processing...",
+        "fill_fields": "Please fill all required fields",
+        "failed": "Failed to link provider",
+        "not_logged_in": "You must be logged in to link a provider"
+    },
     "errors": {
         "common": {
             "fill_fields": "Please fill in all required fields"
