@@ -1,6 +1,7 @@
+// LinkProvider.tsx
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { linkProvider, getCurrentUser } from "../services/authService";
+import { linkProvider, getCurrentUser } from "../../services/authService";
 import { useNavigate } from "react-router-dom";
 
 const LinkProvider: React.FC = () => {

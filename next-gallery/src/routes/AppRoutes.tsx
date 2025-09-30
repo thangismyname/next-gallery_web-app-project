@@ -5,7 +5,7 @@ import Login from "../pages/AccountPages/LoginPage";
 import Register from "../pages/AccountPages/ReigsterPage";
 import ForgotPassword from "../pages/AccountPages/ForgotPasswordPage";
 import ResetPassword from "../pages/AccountPages/ResetPasswordPage";
-import OAuthSuccess from "../components/OAuthSuccess";
+import OAuthSuccess from "../components/Account/OAuthSuccess";
 import UserPage from "../pages/UserPage"; // ← renamed import
 
 const AppRoutes: React.FC = () => {
