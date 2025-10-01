@@ -9,7 +9,7 @@ import SideMenu, { type UserHeader } from "./SideMenu";
 import Search from "./Search";
 import { AppContext } from "../Theme/AppContext";
 import { useTranslation } from "react-i18next";
-import { getCurrentUser } from "../../services/authService";
+import { getCurrentUser } from "../../services/userService";
 
 const HeaderWithMenu: React.FC = () => {
   const [menuOpen, setMenuOpen] = useState(false);

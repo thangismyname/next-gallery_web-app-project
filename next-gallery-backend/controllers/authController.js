@@ -384,36 +384,3 @@ exports.resetPassword = async (req, res) => {
     res.status(500).json({ message: "Server error", error: error.message });
   }
 };
-
-// -------- Get Authenticated User Info --------
-exports.me = async (req, res) => {
-  try {
-    const authHeader = req.headers["authorization"];
-    if (!authHeader || !authHeader.startsWith("Bearer ")) {
-      console.log("Me: No token provided");
-      return res.status(401).json({ code: "NO_TOKEN_PROVIDED" });
-    }
-
-    const token = authHeader.split(" ")[1];
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-
-    const user = await User.findById(decoded.id).select("-password");
-    if (!user) {
-      console.log("Me: User not found for ID:", decoded.id);
-      return res.status(404).json({ code: "USER_NOT_FOUND" });
-    }
-
-    // Ensure providers array exists
-    if (!Array.isArray(user.providers)) {
-      console.log("Me: Initializing providers array for user:", user.email);
-      user.providers = user.password ? [{ provider: "local" }] : [];
-      await user.save();
-    }
-
-    console.log("Me: User fetched:", user.email);
-    res.json({ user: formatUser(user) });
-  } catch (error) {
-    console.error("Me error:", error);
-    res.status(401).json({ code: "INVALID_OR_EXPIRED_TOKEN" });
-  }
-};

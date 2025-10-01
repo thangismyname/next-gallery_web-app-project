@@ -137,62 +137,6 @@ export const logout = () => {
   window.dispatchEvent(new Event("storage"));
 };
 
-// Current User
-export const getCurrentUser = (): User | null => {
-  const storedUser =
-    localStorage.getItem("user") || sessionStorage.getItem("user");
-
-  if (!storedUser || storedUser === "undefined") {
-    console.log("authService: getCurrentUser: No user found in storage");
-    return null;
-  }
-
-  try {
-    const user = JSON.parse(storedUser) as User;
-    console.log("authService: getCurrentUser: Retrieved user:", user);
-    return user;
-  } catch (err) {
-    console.error("authService: getCurrentUser: Failed to parse user:", err);
-    return null;
-  }
-};
-
-// Update User
-export const updateUser = async (data: Partial<User> & { password?: string; address?: string }): Promise<User> => {
-  console.log("authService: Update user attempt:", data);
-  const token = getToken();
-  if (!token) {
-    console.error("authService: Update user failed: No token found");
-    throw new Error("No authentication token found");
-  }
-
-  const res = await axios.put<{ user: User }>(
-    `${AUTH_URL}/update`,
-    data,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }
-  );
-
-  const { user } = res.data;
-  console.log("authService: Update user success:", { user });
-
-  // Update user in storage
-  if (localStorage.getItem("token")) {
-    localStorage.setItem("user", JSON.stringify(user));
-    console.log("authService: Updated user in localStorage:", user);
-  } else if (sessionStorage.getItem("token")) {
-    sessionStorage.setItem("user", JSON.stringify(user));
-    console.log("authService: Updated user in sessionStorage:", user);
-  }
-
-  window.dispatchEvent(new Event("storage"));
-  return user;
-};
-
-
 // Get Token
 export const getToken = (): string | null => {
   const token = localStorage.getItem("token") || sessionStorage.getItem("token");

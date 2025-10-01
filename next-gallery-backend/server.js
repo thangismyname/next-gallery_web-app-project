@@ -34,9 +34,11 @@ app.get("/", (req, res) => {
 // 🔥 Routes
 const authRoutes = require("./routes/authRoutes");
 const photoRoutes = require("./routes/photoRoutes");
+const userRoutes = require("./routes/userRoutes");
 
 app.use("/api/auth", authRoutes);
 app.use("/api/photos", photoRoutes); // ✅ RESTful mount
+app.use("/api/users", userRoutes);
 
 // Connect Mongo + Start server
 const PORT = process.env.PORT || 3001;

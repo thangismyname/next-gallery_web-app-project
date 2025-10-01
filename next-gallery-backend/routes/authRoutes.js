@@ -1,3 +1,4 @@
+// routes/authRoutes.js
 const express = require("express");
 const passport = require("passport");
 const jwt = require("jsonwebtoken");
@@ -6,35 +7,19 @@ const {
   login,
   forgotPassword,
   resetPassword,
-  me,
   linkProvider,
 } = require("../controllers/authController");
 
 const router = express.Router();
 
-// -------- Normal Auth (API) --------
+// Normal Auth (API)
 router.post("/register", register);
 router.post("/login", login);
 router.post("/forgot-password", forgotPassword);
 router.post("/reset-password", resetPassword);
-router.get("/me", me);
 router.post("/link-provider", linkProvider);
 
-// Helper for generating tokens
-function generateToken(user) {
-  console.log("Generating token for user:", {
-    id: user._id,
-    email: user.email,
-    role: user.role,
-  });
-  return jwt.sign(
-    { id: user._id, email: user.email, role: user.role },
-    process.env.JWT_SECRET,
-    { expiresIn: "7d" }
-  );
-}
-
-// -------- Google OAuth --------
+// Google OAuth
 router.get("/google", (req, res, next) => {
   console.log("Google: Initiating OAuth, link:", req.query.link);
   passport.authenticate("google", { scope: ["profile", "email"] })(
@@ -59,7 +44,6 @@ router.get(
       });
 
       if (req.query.link === "true") {
-        // Handle linking
         console.log(
           "Google Callback: Linking Google for user:",
           req.user.email
@@ -84,7 +68,6 @@ router.get(
           `${process.env.FRONTEND_URL}/link-provider?message=Google%20linked%20successfully`
         );
       } else {
-        // Handle login
         const token = generateToken(req.user);
         console.log("Google Callback: Generated token:", token);
         res.redirect(
@@ -98,7 +81,7 @@ router.get(
   }
 );
 
-// -------- Discord OAuth --------
+// Discord OAuth
 router.get("/discord", (req, res, next) => {
   console.log("Discord: Initiating OAuth, link:", req.query.link);
   passport.authenticate("discord", { scope: ["identify", "email"] })(
@@ -123,7 +106,6 @@ router.get(
       });
 
       if (req.query.link === "true") {
-        // Handle linking
         console.log(
           "Discord Callback: Linking Discord for user:",
           req.user.email
@@ -148,7 +130,6 @@ router.get(
           `${process.env.FRONTEND_URL}/link-provider?message=Discord%20linked%20successfully`
         );
       } else {
-        // Handle login
         const token = generateToken(req.user);
         console.log("Discord Callback: Generated token:", token);
         res.redirect(
@@ -161,5 +142,19 @@ router.get(
     }
   }
 );
+
+// Helper for generating tokens
+function generateToken(user) {
+  console.log("Generating token for user:", {
+    id: user._id,
+    email: user.email,
+    role: user.role,
+  });
+  return jwt.sign(
+    { id: user._id, email: user.email, role: user.role },
+    process.env.JWT_SECRET,
+    { expiresIn: "7d" }
+  );
+}
 
 module.exports = router;

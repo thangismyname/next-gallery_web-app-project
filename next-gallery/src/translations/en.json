@@ -57,6 +57,10 @@
         "light_mode": "Light mode",
         "dark_mode": "Dark mode"
     },
+    "common": {
+        "go_back_home": "Go back to Home",
+        "cancel": "Cancel"
+    },
     "login": {
         "title": "Sign in to your account",
         "subtitle": "Bring your memories to life with NextGallery. Sign in to explore, organize, and share your photos effortlessly.",
@@ -88,7 +92,7 @@
         "student_id_placeholder": "Enter your student ID",
         "role_other": "Other",
         "agree_policy": "I agree to the",
-        "privacy_policy": "privacy policy",
+        "privacy_policy": "Privacy Policy",
         "sign_up": "Sign Up",
         "or_sign_up_with": "or sign up with",
         "google_sign_up": "Sign up with Google",
@@ -96,6 +100,18 @@
         "already_have_account": "Already have an account?",
         "log_in": "Log in",
         "success_message": "Registration successful! Please check your email to verify your account."
+    },
+    "user": {
+        "profile_title": "Your Profile",
+        "edit_profile": "Edit Profile",
+        "save_changes": "Save Changes",
+        "update_success": "Profile updated successfully!",
+        "update_error": "Failed to update profile. Please try again.",
+        "upload_avatar": "Upload Avatar",
+        "change_avatar": "Change Avatar",
+        "agree_with": "I agree with the",
+        "address_placeholder": "Address",
+        "privacy": "Privacy Policy"
     },
     "link_provider": {
         "title": "Link Authentication Providers",

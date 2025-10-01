@@ -2,7 +2,7 @@
 import React, { useState, useContext, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { AppContext } from "../components/Theme/AppContext";
-import { getCurrentUser, updateUser } from "../services/authService";
+import { getCurrentUser, updateUser } from "../services/userService";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";

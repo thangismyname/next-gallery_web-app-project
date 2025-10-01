@@ -31,14 +31,14 @@
         "placeholder": "Tìm kiếm"
     },
     "newsletter": {
-        "subscribe_text": "Đăng ký nhận Bản tin của chúng tôi và nhận 10% giảm giá.",
+        "subscribe_text": "Đăng ký nhận Bản tin và nhận 10% giảm giá.",
         "email_placeholder": "Nhập email của bạn",
         "subscribe_button": "Đăng ký",
         "subscribed_message": "Đã đăng ký với email: {{email}}",
         "error_invalid_email": "Vui lòng nhập địa chỉ email hợp lệ."
     },
     "footer": {
-        "company_name": "© 2025 Công ty Thư Viện Tiếp Theo®",
+        "company_name": "© 2025 Công ty Next Gallery®",
         "tagline": "Mang ảnh của bạn đến gần với nghệ thuật.",
         "location": "Quận 1, Thành phố Hồ Chí Minh, Việt Nam",
         "phone": "+84 123 456 789",
@@ -57,35 +57,72 @@
         "light_mode": "Chế độ sáng",
         "dark_mode": "Chế độ tối"
     },
+    "common": {
+        "go_back_home": "Quay lại Trang chủ",
+        "cancel": "Hủy"
+    },
     "login": {
-        "title": "Chào mừng bạn đến với Next Gallery®",
-        "subtitle": "Đăng nhập để tiếp tục",
+        "title": "Đăng nhập vào tài khoản của bạn",
+        "subtitle": "Mang ký ức của bạn đến với Next Gallery. Đăng nhập để khám phá, sắp xếp và chia sẻ ảnh dễ dàng.",
         "email_placeholder": "Địa chỉ Email",
         "password_placeholder": "Mật khẩu",
-        "login_button": "Đăng nhập",
+        "remember_me": "Ghi nhớ đăng nhập",
+        "forgot_password": "Quên mật khẩu?",
+        "sign_in": "Đăng nhập",
         "google_sign_in": "Đăng nhập với Google",
         "discord_sign_in": "Đăng nhập với Discord",
         "register_prompt": "Chưa có tài khoản?",
-        "sign_up": "Đăng ký tại đây",
-        "forgot_password": "Quên mật khẩu?",
-        "remember_me": "Lưu đăng nhập",
-        "or": "hoặc"
+        "sign_up": "Đăng ký",
+        "or": "hoặc",
+        "loading": "Đang tải..."
     },
     "register": {
-        "title": "Tạo tài khoản của bạn",
-        "subtitle": "Đăng ký để bắt đầu hành trình với Next Gallery®",
+        "title": "Tạo tài khoản mới",
+        "subtitle": "Đăng ký để khám phá, sắp xếp và chia sẻ ảnh dễ dàng.",
         "first_name_placeholder": "Tên",
         "last_name_placeholder": "Họ",
-        "email_placeholder": "Địa chỉ Email",
+        "email_placeholder": "Email",
         "phone_placeholder": "Số điện thoại",
         "password_placeholder": "Mật khẩu",
-        "confirm_password_placeholder": "Xác nhận Mật khẩu",
-        "register_button": "Đăng ký",
-        "have_account": "Đã có tài khoản?",
-        "login_here": "Đăng nhập tại đây",
-        "error_email_exists": "Email đã được sử dụng.",
-        "error_password_mismatch": "Mật khẩu không khớp.",
-        "error_required_fields": "Vui lòng điền tất cả các trường bắt buộc."
+        "repeat_password_placeholder": "Nhập lại mật khẩu",
+        "role_label": "Tôi là:",
+        "role_user": "Người dùng",
+        "role_photographer": "Nhiếp ảnh gia",
+        "role_iupc_member": "Thành viên IUPC",
+        "student_id_placeholder": "Nhập mã số sinh viên",
+        "role_other": "Khác",
+        "agree_policy": "Tôi đồng ý với",
+        "privacy_policy": "chính sách bảo mật",
+        "sign_up": "Đăng ký",
+        "or_sign_up_with": "hoặc đăng ký với",
+        "google_sign_up": "Đăng ký với Google",
+        "discord_sign_up": "Đăng ký với Discord",
+        "already_have_account": "Đã có tài khoản?",
+        "log_in": "Đăng nhập",
+        "success_message": "Đăng ký thành công! Vui lòng kiểm tra email để xác minh tài khoản."
+    },
+    "user": {
+        "profile_title": "Hồ sơ của bạn",
+        "edit_profile": "Chỉnh sửa hồ sơ",
+        "save_changes": "Lưu thay đổi",
+        "update_success": "Cập nhật hồ sơ thành công!",
+        "update_error": "Cập nhật hồ sơ thất bại. Vui lòng thử lại.",
+        "upload_avatar": "Tải ảnh đại diện",
+        "change_avatar": "Đổi ảnh đại diện",
+        "agree_with": "Tôi đồng ý với",
+        "address_placeholder": "Địa chỉ"
+    },
+    "link_provider": {
+        "title": "Liên kết nhà cung cấp đăng nhập",
+        "email": "Email",
+        "password": "Đặt mật khẩu",
+        "link_password": "Liên kết mật khẩu",
+        "link_google": "Liên kết Google",
+        "link_discord": "Liên kết Discord",
+        "loading": "Đang xử lý...",
+        "fill_fields": "Vui lòng điền đầy đủ các trường",
+        "failed": "Liên kết thất bại",
+        "not_logged_in": "Bạn cần đăng nhập để liên kết"
     },
     "errors": {
         "common": {
@@ -96,38 +133,38 @@
         },
         "register": {
             "fill_fields": "Vui lòng điền tất cả các trường bắt buộc và đồng ý với chính sách bảo mật",
-            "first_name": "Vui lòng nhập tên của bạn",
-            "last_name": "Vui lòng nhập họ của bạn",
-            "email": "Vui lòng nhập email của bạn",
-            "password": "Vui lòng nhập mật khẩu của bạn",
-            "student_id_required": "Mã số sinh viên là bắt buộc đối với thành viên IUPC",
+            "first_name": "Vui lòng nhập tên",
+            "last_name": "Vui lòng nhập họ",
+            "email": "Vui lòng nhập email",
+            "password": "Vui lòng nhập mật khẩu",
+            "student_id_required": "Mã số sinh viên là bắt buộc cho thành viên IUPC",
             "student_id_invalid": "Định dạng mã số sinh viên không hợp lệ",
-            "student_id_not_allowed": "Mã số sinh viên này không được phép đăng ký với tư cách quản trị viên",
+            "student_id_not_allowed": "Mã số sinh viên này không được phép đăng ký làm quản trị viên",
             "agree_policy": "Vui lòng đồng ý với chính sách bảo mật"
         }
     },
     "forgot_password": {
-        "title": "Đặt lại mật khẩu của bạn",
-        "subtitle": "Nhập địa chỉ email của bạn và chúng tôi sẽ gửi cho bạn một liên kết để đặt lại mật khẩu.",
+        "title": "Đặt lại mật khẩu",
+        "subtitle": "Nhập email của bạn, chúng tôi sẽ gửi liên kết đặt lại mật khẩu.",
         "email_placeholder": "Địa chỉ Email",
         "send_reset_link": "Gửi liên kết đặt lại",
         "back_to_login": "Quay lại đăng nhập",
-        "error_email": "Vui lòng nhập email của bạn",
+        "error_email": "Vui lòng nhập email",
         "success_message": "Liên kết đặt lại đã được gửi đến email của bạn"
     },
     "reset_password": {
         "title": "Đặt lại mật khẩu",
-        "subtitle": "Nhập mật khẩu mới của bạn để truy cập lại vào tài khoản.",
+        "subtitle": "Nhập mật khẩu mới để truy cập lại tài khoản.",
         "new_password": "Mật khẩu mới",
         "confirm_password": "Xác nhận mật khẩu",
         "submit_button": "Đặt lại mật khẩu",
         "error_required": "Cả hai trường đều bắt buộc.",
         "error_mismatch": "Mật khẩu không khớp.",
         "error_invalid_token": "Token không hợp lệ hoặc đã hết hạn.",
-        "success_message": "Mật khẩu của bạn đã được đặt lại thành công!"
+        "success_message": "Mật khẩu đã được đặt lại thành công!"
     },
     "homepage": {
         "transfer_line": "Chuyển và nhận ảnh dễ dàng",
-        "creator_credit": "Next Gallery® được tạo ra để giúp các nhiếp ảnh gia và khách hàng kết nối và chuyển ảnh chất lượng không mất dữ liệu một cách dễ dàng mà không cần thay đổi nền tảng"
+        "creator_credit": "Next Gallery® được tạo để giúp nhiếp ảnh gia và khách hàng kết nối, chia sẻ ảnh chất lượng cao dễ dàng mà không cần thay đổi nền tảng"
     }
 }
