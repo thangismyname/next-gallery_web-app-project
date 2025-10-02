@@ -143,8 +143,8 @@ const UserPage: React.FC = () => {
           <div
             className={`p-3 rounded-md text-center mb-4 ${
               statusMessage.isError
-                ? "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200"
-                : "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200"
+                ? "bg-white text-red-600 dark:bg-red-700 dark:text-red-100"
+                : "bg-white text-green-600 dark:bg-green-700 dark:text-green-100"
             }`}
           >
             {statusMessage.message}

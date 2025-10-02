@@ -33,10 +33,7 @@ export const updateUser = async (
   const token = getToken();
   if (!token) throw new Error("No authentication token found");
 
-  const currentUser = getCurrentUser();
-  if (!currentUser?.id) throw new Error("No current user found");
-
-  const url = `${AUTH_URL}/update/${currentUser.id}`;
+  const url = `${BASE_URL}/api/users/me`;
 
   const res = await axios.put<{ user: User }>(url, data, {
     headers: { Authorization: `Bearer ${token}` },
@@ -53,4 +50,21 @@ export const updateUser = async (
 
   window.dispatchEvent(new Event("storage"));
   return user;
+};
+
+// ---- Change Password (logged in) ----
+export const changePassword = async (
+  oldPassword: string,
+  newPassword: string
+): Promise<{ message: string }> => {
+  const token = getToken();
+  if (!token) throw new Error("No authentication token found");
+
+  const res = await axios.put<{ message: string }>(
+    `${AUTH_URL}/change-password`,
+    { oldPassword, newPassword },
+    { headers: { Authorization: `Bearer ${token}` } }
+  );
+
+  return res.data;
 };

@@ -7,6 +7,8 @@ const router = express.Router();
 
 // User Profile routes (JWT protected)
 router.get("/me", authMiddleware, me); // Get current user
+
 router.put("/me", authMiddleware, updateUser); // Update current user
+router.put("/change-password", authMiddleware, changePassword);
 
 module.exports = router;
