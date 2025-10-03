@@ -3,7 +3,7 @@ const moment = require("moment-timezone");
 const User = require("../models/userModel");
 const bcrypt = require("bcrypt");
 
-// Helper
+// Helper function to format user object
 const formatUser = (user) => {
   const obj = user.toObject();
   return {
@@ -40,14 +40,33 @@ exports.updateUser = async (req, res) => {
   try {
     const { firstName, lastName, phone, avatar } = req.body;
 
+    // Regex validations
+    const nameRegex = /^[A-Za-zÀ-ỹ\s]{2,30}$/;
+    const phoneRegex = /^[0-9]{9,15}$/;
+
+    if (firstName && !nameRegex.test(firstName)) {
+      return res
+        .status(400)
+        .json({ message: "First name must be 2–30 letters only" });
+    }
+    if (lastName && !nameRegex.test(lastName)) {
+      return res
+        .status(400)
+        .json({ message: "Last name must be 2–30 letters only" });
+    }
+    if (phone && !phoneRegex.test(phone)) {
+      return res
+        .status(400)
+        .json({ message: "Phone number must be 9–15 digits" });
+    }
+    // Avatar skipped regex – handled by upload API
+
     const user = await User.findById(req.user._id);
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
 
-    // Track changes
     let hasChanges = false;
-
     if (firstName !== undefined && firstName !== user.firstName) {
       user.firstName = firstName;
       hasChanges = true;
@@ -65,7 +84,6 @@ exports.updateUser = async (req, res) => {
       hasChanges = true;
     }
 
-    // If no data provided or no changes detected
     if (!hasChanges) {
       return res.status(400).json({
         message: "No changes detected. Please update at least one field.",
@@ -95,6 +113,15 @@ exports.changePassword = async (req, res) => {
         .json({ message: "Both old and new passwords are required" });
     }
 
+    // Password regex (same as in register)
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
+    if (!passwordRegex.test(newPassword)) {
+      return res.status(400).json({
+        message:
+          "New password must be at least 8 characters and include uppercase, lowercase, number, and special character",
+      });
+    }
+
     const user = await User.findById(req.user._id).select("+password");
     if (!user) {
       return res.status(404).json({ message: "User not found" });
@@ -105,7 +132,6 @@ exports.changePassword = async (req, res) => {
       return res.status(400).json({ message: "Old password is incorrect" });
     }
 
-    // Hash the new password
     const salt = await bcrypt.genSalt(10);
     user.password = await bcrypt.hash(newPassword, salt);
 

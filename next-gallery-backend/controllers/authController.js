@@ -49,15 +49,41 @@ exports.register = async (req, res) => {
     const { firstName, lastName, email, phone, password, role, studentId } =
       req.body;
 
+    // Regex patterns
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const phoneRegex = /^[0-9]{8,15}$/;
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
+    const nameRegex = /^[A-Za-zÀ-ỹ\s'-]{1,50}$/;
+
     if (!email || !password) {
-      console.log("Register: Missing email or password");
       return res
         .status(400)
         .json({ message: "Email and password are required" });
     }
 
+    if (!emailRegex.test(email)) {
+      return res.status(400).json({ message: "Invalid email format" });
+    }
+
+    if (phone && !phoneRegex.test(phone)) {
+      return res.status(400).json({ message: "Invalid phone number" });
+    }
+
+    if (!passwordRegex.test(password)) {
+      return res.status(400).json({
+        message:
+          "Password must be at least 8 characters and include uppercase, lowercase, number, and special character",
+      });
+    }
+
+    if (firstName && !nameRegex.test(firstName)) {
+      return res.status(400).json({ message: "Invalid first name" });
+    }
+    if (lastName && !nameRegex.test(lastName)) {
+      return res.status(400).json({ message: "Invalid last name" });
+    }
+
     if (role === "Admin" && !studentId) {
-      console.log("Register: Student ID required for Admin role");
       return res
         .status(400)
         .json({ message: "Student ID is required for Admins" });
@@ -65,7 +91,6 @@ exports.register = async (req, res) => {
 
     const existingUser = await User.findOne({ email: email.toLowerCase() });
     if (existingUser) {
-      console.log("Register: Email already registered:", email);
       return res.status(400).json({ message: "Email already registered" });
     }
 
@@ -81,7 +106,6 @@ exports.register = async (req, res) => {
     });
 
     const token = generateToken(user._id);
-    console.log("Register: User created:", formatUser(user));
 
     res.status(201).json({
       message: "Registration successful",
@@ -284,59 +308,64 @@ exports.forgotPassword = async (req, res) => {
     const user = await User.findOne({ email: email.toLowerCase() }).select(
       "+password"
     );
+
     if (!user) {
-      console.log("Forgot Password: User not found:", email);
       return res
         .status(404)
         .json({ message: "User not found with this email" });
     }
 
-    // Ensure providers array exists
+    // Ensure providers array
     if (!Array.isArray(user.providers)) {
-      console.log(
-        "Forgot Password: Initializing providers array for user:",
-        email
-      );
       user.providers = user.password ? [{ provider: "local" }] : [];
       await user.save();
     }
 
     if (!user.providers.some((p) => p.provider === "local")) {
-      console.log(
-        "Forgot Password: No local provider for user:",
-        email,
-        user.providers
-      );
       return res.status(400).json({
         message:
           "This account does not have a password set. Log in with Google or Discord.",
       });
     }
 
+    // Generate token
     const resetToken = crypto.randomBytes(20).toString("hex");
 
-    user.resetPasswordToken = resetToken;
-    user.resetPasswordExpire = Date.now() + 15 * 60 * 1000; // 15 mins
+    // Hash it before saving to DB
+    const hashedToken = crypto
+      .createHash("sha256")
+      .update(resetToken)
+      .digest("hex");
+
+    user.resetPasswordToken = hashedToken;
+    user.resetPasswordExpire = Date.now() + 15 * 60 * 1000; // 15 min
     await user.save({ validateBeforeSave: false });
 
     const resetUrl = `${process.env.FRONTEND_URL}/reset-password?token=${resetToken}`;
 
+    // Send email
     await transporter.sendMail({
       from: `"Photo App" <${process.env.EMAIL_USER}>`,
       to: user.email,
       subject: "Password Reset Request",
       html: `
         <p>Hello ${user.firstName || "user"},</p>
-        <p>You requested a password reset. Please click below:</p>
+        <p>You requested a password reset. Click below:</p>
         <a href="${resetUrl}">${resetUrl}</a>
-        <p>This link will expire at <b>${moment(user.resetPasswordExpire)
+        <p>This link expires at <b>${moment(user.resetPasswordExpire)
           .tz("Asia/Ho_Chi_Minh")
           .format("YYYY-MM-DD HH:mm:ss")} (UTC+7)</b>.</p>
       `,
     });
 
     console.log("Forgot Password: Reset link sent to:", email);
-    res.json({ message: "Password reset link sent to your email" });
+
+    // Return token ONLY in development (for Postman testing)
+    if (process.env.NODE_ENV === "development") {
+      return res.json({ message: "Password reset link sent", resetToken });
+    }
+
+    res.json({ message: "Password reset link sent" });
   } catch (error) {
     console.error("Forgot Password error:", error);
     res.status(500).json({ message: "Server error", error: error.message });
@@ -348,25 +377,22 @@ exports.resetPassword = async (req, res) => {
   try {
     const { token, newPassword } = req.body;
 
+    // Hash the incoming token before checking DB
+    const hashedToken = crypto.createHash("sha256").update(token).digest("hex");
+
     const user = await User.findOne({
-      resetPasswordToken: token,
+      resetPasswordToken: hashedToken,
       resetPasswordExpire: { $gt: Date.now() },
     }).select("+password");
 
     if (!user) {
-      console.log("Reset Password: Invalid or expired token");
       return res.status(400).json({ message: "Invalid or expired token" });
     }
 
-    // Ensure providers array exists
+    // Ensure providers array
     if (!Array.isArray(user.providers)) {
-      console.log(
-        "Reset Password: Initializing providers array for user:",
-        user.email
-      );
       user.providers = user.password ? [{ provider: "local" }] : [];
     }
-
     if (!user.providers.some((p) => p.provider === "local")) {
       user.providers.push({ provider: "local" });
     }
@@ -376,7 +402,6 @@ exports.resetPassword = async (req, res) => {
     user.resetPasswordExpire = undefined;
 
     await user.save();
-    console.log("Reset Password: Successful for user:", user.email);
 
     res.json({ message: "Password reset successful" });
   } catch (error) {
