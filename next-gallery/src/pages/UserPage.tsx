@@ -1,8 +1,11 @@
-// UserPage.tsx
 import React, { useState, useContext, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { AppContext } from "../components/Theme/AppContext";
-import { getCurrentUser, updateUser } from "../services/userService";
+import {
+  getCurrentUser,
+  updateUser,
+  changePassword,
+} from "../services/userService";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
@@ -20,6 +23,9 @@ interface FormData {
   iupcMember: boolean;
   avatar: string;
   agreed: boolean;
+  oldPassword: string;
+  newPassword: string;
+  confirmPassword: string;
 }
 
 const UserPage: React.FC = () => {
@@ -43,9 +49,13 @@ const UserPage: React.FC = () => {
     iupcMember: false,
     avatar: "",
     agreed: false,
+    oldPassword: "",
+    newPassword: "",
+    confirmPassword: "",
   });
 
   const [isEditing, setIsEditing] = useState(false);
+  const [showPasswordChange, setShowPasswordChange] = useState(false);
   const [statusMessage, setStatusMessage] = useState<{
     message: string;
     isError: boolean;
@@ -67,6 +77,9 @@ const UserPage: React.FC = () => {
       iupcMember: (user as any).iupcMember ?? user.role === "Admin",
       avatar: user.avatar || "",
       agreed: (user as any).agreed || false,
+      oldPassword: "",
+      newPassword: "",
+      confirmPassword: "",
     });
   }, []);
 
@@ -96,15 +109,89 @@ const UserPage: React.FC = () => {
 
   const handleSave = async () => {
     try {
-      const payload = {
-        ...formData,
+      let didProfile = false;
+      let didPassword = false;
+
+      // --- Profile update ---
+      const profilePayload = {
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        email: formData.email,
+        phone: formData.phone,
+        address: formData.address,
+        studentId: formData.studentId,
         role: formData.iupcMember ? "Admin" : formData.role,
+        avatar: formData.avatar,
       };
-      await updateUser(payload);
-      setStatusMessage({ message: t("user.update_success"), isError: false });
+
+      // check if profile has any non-empty changes
+      if (
+        profilePayload.firstName ||
+        profilePayload.lastName ||
+        profilePayload.phone ||
+        profilePayload.address ||
+        profilePayload.studentId ||
+        profilePayload.avatar
+      ) {
+        await updateUser(profilePayload);
+        didProfile = true;
+      }
+
+      // --- Password update ---
+      if (
+        formData.oldPassword ||
+        formData.newPassword ||
+        formData.confirmPassword
+      ) {
+        if (!formData.oldPassword || !formData.newPassword) {
+          setStatusMessage({
+            message: t("user.password_fields_required"),
+            isError: true,
+          });
+          return;
+        }
+        if (formData.newPassword !== formData.confirmPassword) {
+          setStatusMessage({
+            message: t("user.password_mismatch"),
+            isError: true,
+          });
+          return;
+        }
+        await changePassword(formData.oldPassword, formData.newPassword);
+        didPassword = true;
+      }
+
+      // --- Status messages ---
+      if (didProfile && didPassword) {
+        setStatusMessage({
+          message: t("user.update_and_password_success"),
+          isError: false,
+        });
+      } else if (didProfile) {
+        setStatusMessage({ message: t("user.update_success"), isError: false });
+      } else if (didPassword) {
+        setStatusMessage({
+          message: t("user.password_update_success"),
+          isError: false,
+        });
+      } else {
+        setStatusMessage({
+          message: t("user.no_changes_detected"),
+          isError: true,
+        });
+      }
+
+      // Reset password fields
+      setFormData((prev) => ({
+        ...prev,
+        oldPassword: "",
+        newPassword: "",
+        confirmPassword: "",
+      }));
+      setShowPasswordChange(false);
       setIsEditing(false);
     } catch (error: any) {
-      console.error("Update failed:", error);
+      console.error("Save failed:", error);
       setStatusMessage({
         message: error.response?.data?.message || t("user.update_error"),
         isError: true,
@@ -156,7 +243,6 @@ const UserPage: React.FC = () => {
           // -------------------- READ-ONLY MODE --------------------
           <div className="flex flex-col gap-4">
             {/* Avatar centered */}
-            {/* Avatar upload */}
             <div className="flex flex-col items-center gap-3">
               {formData.avatar && (
                 <img
@@ -165,8 +251,6 @@ const UserPage: React.FC = () => {
                   className="w-40 h-40 rounded-full border-2 border-gray-400 object-cover"
                 />
               )}
-
-              {/* Hidden file input */}
               <input
                 id="avatarInput"
                 type="file"
@@ -174,8 +258,6 @@ const UserPage: React.FC = () => {
                 onChange={handleAvatarChange}
                 className="hidden"
               />
-
-              {/* Button to trigger file picker */}
               <button
                 type="button"
                 onClick={() => document.getElementById("avatarInput")?.click()}
@@ -216,10 +298,6 @@ const UserPage: React.FC = () => {
               <p>
                 <strong>Role:</strong> {formData.role}
               </p>
-              <p>
-                <strong>IUPC Member:</strong>{" "}
-                {formData.iupcMember ? "Yes" : "No"}
-              </p>
             </div>
 
             {/* Edit button */}
@@ -248,8 +326,6 @@ const UserPage: React.FC = () => {
                   className="w-40 h-40 rounded-full border-2 border-gray-400 object-cover"
                 />
               )}
-
-              {/* Hidden file input */}
               <input
                 id="avatarInput"
                 type="file"
@@ -257,8 +333,6 @@ const UserPage: React.FC = () => {
                 onChange={handleAvatarChange}
                 className="hidden"
               />
-
-              {/* Button to trigger file picker */}
               <button
                 type="button"
                 onClick={() => document.getElementById("avatarInput")?.click()}
@@ -365,6 +439,58 @@ const UserPage: React.FC = () => {
               />
             )}
 
+            {/* Change Password Toggle Button */}
+            <button
+              type="button"
+              onClick={() => {
+                setShowPasswordChange(!showPasswordChange);
+                setFormData((prev) => ({
+                  ...prev,
+                  oldPassword: "",
+                  newPassword: "",
+                }));
+              }}
+              className="w-full px-4 py-3 rounded-lg bg-blue-600 text-white font-semibold hover:bg-blue-700 transition"
+            >
+              {showPasswordChange
+                ? t("user.hide_password_form")
+                : t("user.change_password")}
+            </button>
+
+            {/* Password Change Form (Conditional) */}
+            {showPasswordChange && (
+              <div className="flex flex-col gap-4 p-4 border border-zinc-300 rounded-lg">
+                <h3 className="text-lg font-semibold">
+                  {t("user.change_password")}
+                </h3>
+
+                <input
+                  type="password"
+                  name="oldPassword"
+                  placeholder={t("user.old_password")}
+                  value={formData.oldPassword}
+                  onChange={handleInputChange}
+                  className="w-full px-4 py-3 rounded-lg border border-zinc-300"
+                />
+                <input
+                  type="password"
+                  name="newPassword"
+                  placeholder={t("user.new_password")}
+                  value={formData.newPassword}
+                  onChange={handleInputChange}
+                  className="w-full px-4 py-3 rounded-lg border border-zinc-300"
+                />
+                <input
+                  type="password"
+                  name="confirmPassword"
+                  placeholder={t("user.confirm_password")}
+                  value={formData.confirmPassword}
+                  onChange={handleInputChange}
+                  className="w-full px-4 py-3 rounded-lg border border-zinc-300"
+                />
+              </div>
+            )}
+
             {/* Privacy Policy Agreement */}
             <label className="flex items-center gap-2 text-sm">
               <input
@@ -403,7 +529,15 @@ const UserPage: React.FC = () => {
               </button>
               <button
                 type="button"
-                onClick={() => setIsEditing(false)}
+                onClick={() => {
+                  setIsEditing(false);
+                  setShowPasswordChange(false);
+                  setFormData((prev) => ({
+                    ...prev,
+                    oldPassword: "",
+                    newPassword: "",
+                  }));
+                }}
                 className="flex-1 px-4 py-3 rounded-lg bg-gray-500 text-white font-semibold hover:bg-gray-600"
               >
                 {t("common.cancel")}

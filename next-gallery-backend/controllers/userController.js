@@ -1,6 +1,7 @@
 // controllers/userController.js
 const moment = require("moment-timezone");
 const User = require("../models/userModel");
+const bcrypt = require("bcrypt");
 
 // Helper
 const formatUser = (user) => {

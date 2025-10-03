@@ -110,7 +110,18 @@
         "upload_avatar": "Tải ảnh đại diện",
         "change_avatar": "Đổi ảnh đại diện",
         "agree_with": "Tôi đồng ý với",
-        "address_placeholder": "Địa chỉ"
+        "address_placeholder": "Địa chỉ",
+        "change_password": "Đổi Mật Khẩu",
+        "hide_password_form": "Ẩn Form Đổi Mật Khẩu",
+        "old_password": "Mật Khẩu Cũ",
+        "new_password": "Mật Khẩu Mới",
+        "password_required": "Cần nhập cả mật khẩu cũ và mới",
+        "update_and_password_success": "Cập nhật hồ sơ và mật khẩu thành công",
+        "password_change_success": "Cập nhật mật khẩu thành công",
+        "no_changes_detected": "Không có thay đổi nào được phát hiện. Vui lòng cập nhật ít nhất một trường hoặc mật khẩu.",
+        "password_update_success": "Cập nhật mật khẩu thành công",
+        "password_mismatch": "Mật khẩu mới và xác nhận không khớp",
+        "password_fields_required": "Vui lòng điền tất cả các trường mật khẩu"
     },
     "link_provider": {
         "title": "Liên kết nhà cung cấp đăng nhập",

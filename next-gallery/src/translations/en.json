@@ -111,7 +111,18 @@
         "change_avatar": "Change Avatar",
         "agree_with": "I agree with the",
         "address_placeholder": "Address",
-        "privacy": "Privacy Policy"
+        "privacy": "Privacy Policy",
+        "change_password": "Change Password",
+        "hide_password_form": "Hide Password Form",
+        "old_password": "Old Password",
+        "new_password": "New Password",
+        "password_required": "Both old and new passwords are required",
+        "update_and_password_success": "Profile and password updated successfully",
+        "password_change_success": "Password updated successfully",
+        "no_changes_detected": "No changes detected. Please update at least one field or password.",
+        "password_update_success": "Password updated successfully",
+        "password_mismatch": "New password and confirmation do not match",
+        "password_fields_required": "Please fill in all password fields"
     },
     "link_provider": {
         "title": "Link Authentication Providers",
