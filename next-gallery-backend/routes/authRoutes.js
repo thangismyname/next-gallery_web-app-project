@@ -9,6 +9,8 @@ const {
   resetPassword,
   linkProvider,
 } = require("../controllers/authController");
+const { me } = require("../controllers/userController");
+const { authMiddleware } = require("../middlewares/authMiddleware");
 
 const router = express.Router();
 
@@ -18,6 +20,9 @@ router.post("/login", login);
 router.post("/forgot-password", forgotPassword);
 router.post("/reset-password", resetPassword);
 router.post("/link-provider", linkProvider);
+
+// Get current user info
+router.get("/me", authMiddleware, me);
 
 // Google OAuth
 router.get("/google", (req, res, next) => {
