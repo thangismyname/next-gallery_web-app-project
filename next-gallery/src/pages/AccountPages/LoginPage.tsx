@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import { AppContext } from "../../components/Theme/AppContext";
 import { login } from "../../services/authService";
 import { useNavigate } from "react-router-dom";
+import { Eye, EyeOff } from "lucide-react";
 
 const Login: React.FC = () => {
   const { t } = useTranslation();
@@ -15,6 +16,7 @@ const Login: React.FC = () => {
   });
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const context = useContext(AppContext);
   if (!context)
@@ -112,18 +114,27 @@ const Login: React.FC = () => {
                 : "bg-white border-zinc-200 text-zinc-600 focus:ring-blue-500"
             }`}
           />
-          <input
-            type="password"
-            name="password"
-            value={formData.password}
-            onChange={handleInputChange}
-            placeholder={t("login.password_placeholder")}
-            className={`w-full px-4 py-3 rounded-lg border focus:outline-none focus:ring-2 ${
-              darkMode
-                ? "bg-gray-700 border-zinc-600 text-zinc-300 focus:ring-blue-400"
-                : "bg-white border-zinc-200 text-zinc-600 focus:ring-blue-500"
-            }`}
-          />
+          <div className="relative w-full">
+            <input
+              type={showPassword ? "text" : "password"}
+              name="password"
+              value={formData.password}
+              onChange={handleInputChange}
+              placeholder={t("login.password_placeholder")}
+              className={`w-full px-4 py-3 pr-10 rounded-lg border focus:outline-none focus:ring-2 ${
+                darkMode
+                  ? "bg-gray-700 border-zinc-600 text-zinc-300 focus:ring-blue-400"
+                  : "bg-white border-zinc-200 text-zinc-600 focus:ring-blue-500"
+              }`}
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword((prev) => !prev)}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+            >
+              {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+            </button>
+          </div>
           <div className="flex justify-between items-center">
             <label className="flex items-center gap-2">
               <input
