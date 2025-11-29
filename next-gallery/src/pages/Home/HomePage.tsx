@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import { useTheme } from "@/components/theme/theme-provider";
 
 import HeaderWithMenu from "@/components/header/headerwithmenu";
-import Footer from "@/components/footer/footer";
+import Footer from "@/components/footer/Footer";
 
 const HomePageContent: React.FC = () => {
   const { t } = useTranslation();
