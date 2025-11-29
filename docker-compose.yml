@@ -1,0 +1,38 @@
+version: "3.9"
+
+services:
+  frontend:
+    container_name: next_gallery_frontend_container
+    build: ./next-gallery
+    ports:
+      - "5173:5173"
+    env_file:
+      - ./.env     # use root .env
+    depends_on:
+      - backend
+    tty: true
+    command: npm run dev
+
+  backend:
+    container_name: next_gallery_backend_container
+    build: ./next-gallery-backend
+    ports:
+      - "3001:3001"
+    env_file:
+      - ./.env     # use root .env
+    volumes:
+      - ./next-gallery-backend/uploads:/app/uploads
+    tty: true
+    command: npm run dev
+
+#   mongo:
+#     container_name: next_gallery_mongo_container
+#     image: mongo:7
+#     restart: always
+#     ports:
+#       - "27017:27017"
+#     volumes:
+#       - mongo_data:/data/db
+
+# volumes:
+#   mongo_data:

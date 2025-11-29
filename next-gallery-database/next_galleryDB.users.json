@@ -1,0 +1,51 @@
+[{
+  "_id": {
+    "$oid": "68c5188e1e95b3bf05932811"
+  },
+  "name": "Test User",
+  "email": "test@example.com",
+  "password": "$2b$10$e1KjKFm5n.W3/pzNtiJBn.mMOqs15s9FrQz1qXxoeBMqj0cqn/2WC",
+  "role": "User",
+  "updatedAt": {
+    "$date": "2025-09-16T07:51:50.564Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68c521ab5841a84296822938"
+  },
+  "firstName": "Admin",
+  "lastName": "Test",
+  "email": "ngocphan649@gmail.com",
+  "phone": "1234567890",
+  "password": "$2b$10$4VD7Alf3IbJyAlW1ZJEteeHWBLZEu.dE784HOHZXSnjnA6ypRlRwy",
+  "role": "Admin",
+  "studentId": "ITITIU21000",
+  "createdAt": {
+    "$date": "2025-09-13T07:47:55.420Z"
+  },
+  "updatedAt": {
+    "$date": "2025-09-22T12:27:31.787Z"
+  },
+  "__v": 0,
+  "provider": "google",
+  "providerId": "112112346438934506947"
+},
+{
+  "_id": {
+    "$oid": "68c9086ae7f7551d831fb54f"
+  },
+  "firstName": "Photo",
+  "lastName": "Test",
+  "email": "phototest@gmail.com",
+  "phone": "1234567890",
+  "password": "$2b$10$lKEn3BxNwUMCbIJ9fJOjfeiyWTBbluXlxeolKXawxlGl24c520SO6",
+  "role": "Photographer",
+  "createdAt": {
+    "$date": "2025-09-16T06:49:14.005Z"
+  },
+  "updatedAt": {
+    "$date": "2025-09-16T06:49:14.005Z"
+  },
+  "__v": 0
+}]

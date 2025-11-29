@@ -1,0 +1,31 @@
+# Node modules & build cache
+node_modules
+npm-debug.log
+yarn.lock
+pnpm-lock.yaml
+
+# Environment files
+.env
+.env.local
+.env.development
+.env.production
+
+# Logs
+logs
+*.log
+
+# OS junk
+.DS_Store
+Thumbs.db
+
+# Git
+.git
+.gitignore
+
+# Docker artifacts
+Dockerfile
+docker-compose.yml
+
+# Upload folders (optional)
+uploads/
+tmp/
