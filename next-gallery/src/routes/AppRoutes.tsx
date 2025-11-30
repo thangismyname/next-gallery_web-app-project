@@ -4,7 +4,7 @@ import HomePage from "../pages/Home/HomePage";
 import LandingPage from "../pages/Landing/LandingPage";
 import Login from "../pages/Account/LoginPage";
 import ForgotPassword from "../pages/Account/ForgotPasswordPage";
-import OAuthSuccess from "../components/account/oauthsuccess";
+import OAuthSuccess from "../components/account/OAuthSuccess";
 
 const AppRoutes: React.FC = () => {
   return (

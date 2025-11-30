@@ -4,7 +4,7 @@ import React, { useState, useContext } from "react";
 import { useTranslation } from "react-i18next";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
-import { AppContext } from "../theme/appcontext";
+import { AppContext } from "../theme/AppContext";
 
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
