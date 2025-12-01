@@ -13,10 +13,12 @@
     "noEmit": true,
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
-    "resolveJsonModule": true                // ✅ added
+    "resolveJsonModule": true                
   },
   "include": [
-    "src/**/*"                                // ✅ include all files including .json
+    "src/**/*",
+    "src/translations/*.json"
+
   ],
   "exclude": ["node_modules", "dist"]
 }

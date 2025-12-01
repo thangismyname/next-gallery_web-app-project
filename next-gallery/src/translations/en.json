@@ -1,6 +1,6 @@
 {
     "title": {
-        "next_gallery": "📸 Next Gallery"
+        "next_gallery": "📸 Next Gallery®"
     },
     "animated_title": {
         "next_gallery": "Next Gallery®"
@@ -101,90 +101,41 @@
         "log_in": "Log in",
         "success_message": "Registration successful! Please check your email to verify your account."
     },
-    "user": {
-        "profile_title": "Your Profile",
-        "edit_profile": "Edit Profile",
-        "save_changes": "Save Changes",
-        "update_success": "Profile updated successfully!",
-        "update_error": "Failed to update profile. Please try again.",
-        "upload_avatar": "Upload Avatar",
-        "change_avatar": "Change Avatar",
-        "agree_with": "I agree with the",
-        "address_placeholder": "Address",
-        "privacy": "Privacy Policy",
-        "change_password": "Change Password",
-        "hide_password_form": "Hide Password Form",
-        "old_password": "Old Password",
-        "new_password": "New Password",
-        "password_required": "Both old and new passwords are required",
-        "update_and_password_success": "Profile and password updated successfully",
-        "password_change_success": "Password updated successfully",
-        "no_changes_detected": "No changes detected. Please update at least one field or password.",
-        "password_update_success": "Password updated successfully",
-        "password_mismatch": "New password and confirmation do not match",
-        "password_fields_required": "Please fill in all password fields"
-    },
-    "link_provider": {
-        "title": "Link Authentication Providers",
-        "email": "Email",
-        "password": "Set Password",
-        "link_password": "Link Password",
-        "link_google": "Link Google",
-        "link_discord": "Link Discord",
-        "loading": "Processing...",
-        "fill_fields": "Please fill all required fields",
-        "failed": "Failed to link provider",
-        "not_logged_in": "You must be logged in to link a provider"
-    },
-    "errors": {
-        "common": {
-            "fill_fields": "Please fill in all required fields"
-        },
-        "login": {
-            "fill_fields": "Please fill in all fields"
-        },
-        "register": {
-            "fill_fields": "Please fill in all required fields and agree to the privacy policy",
-            "first_name": "Please enter your first name",
-            "last_name": "Please enter your last name",
-            "email": "Please enter your email",
-            "password": "Please enter your password",
-            "student_id_required": "Student ID is required for IUPC members",
-            "student_id_invalid": "Invalid Student ID format",
-            "student_id_not_allowed": "This Student ID is not authorized to register as admin",
-            "agree_policy": "Please agree to the privacy policy"
-        }
-    },
-    "forgot_password": {
-        "title": "Forgot your password?",
-        "subtitle": "Enter your email to receive a one‑time password.",
-        "email_placeholder": "Email address",
-        "otp_placeholder": "Enter OTP",
-        "new_password_placeholder": "New password",
-        "send_reset_link": "Send OTP",
-        "sending_otp": "Sending OTP…",
-        "update_password": "Reset password",
-        "resetting": "Resetting…",
-        "back_to_login": "Back to login",
-        "error_email": "Please enter a valid e‑mail address.",
-        "error_missing_fields": "OTP and new password are required.",
-        "error_failed": "Something went wrong. Please try again.",
-        "otp_sent": "OTP sent! Check your inbox.",
-        "reset_success": "Password has been reset. You can now log in."
-    },
-    "reset_password": {
-        "title": "Reset Your Password",
-        "subtitle": "Enter your new password below to regain access to your account.",
-        "new_password": "New Password",
-        "confirm_password": "Confirm New Password",
-        "submit_button": "Reset Password",
-        "error_required": "Both fields are required.",
-        "error_mismatch": "Passwords do not match.",
-        "error_invalid_token": "Invalid or expired token.",
-        "success_message": "Your password has been reset successfully!"
+    "landingpage": {
+        "hero_title": "Next Gallery®",
+        "hero_line1": "Hold your",
+        "hero_line2": "memories",
+        "hero_image1_alt": "Gallery showcase image 1",
+        "hero_image2_alt": "Gallery showcase image 2",
+        "hero_image3_alt": "Gallery showcase image 3",
+        "transfer_line": "Transfer and receive images easily",
+        "creator_credit": "Next Gallery® is created to help photographers and clients connect and transfer lossless quality images easily without changing any platform",
+        "about_title": "About Next Gallery®",
+        "about_description": "Next Gallery® helps photographers and clients easily transfer albums of images in high quality, securely and efficiently. Organize your work and memories effortlessly.",
+        "about_stats_images": "200+ Images",
+        "about_stats_albums": "50+ Albums",
+        "about_stats_users": "100+ Active Users"
     },
     "homepage": {
-        "transfer_line": "Transfer and receive images easily",
-        "creator_credit": "Next Gallery® is created to help photographers and clients connect and transfer loss-less quality images easily without changing any platform"
+        "core_features_title": "Why Next Gallery®?",
+        "feature_high_quality_title": "High-Quality Transfer",
+        "feature_high_quality_desc": "Transfer images without losing quality, keeping your memories intact.",
+        "feature_album_title": "Albums Instead of Pins",
+        "feature_album_desc": "Organize multiple images as albums for easier management and viewing.",
+        "feature_sharing_title": "Easy Sharing",
+        "feature_sharing_desc": "Share albums effortlessly between photographers and clients.",
+        "feature_secure_title": "Secure & Reliable",
+        "feature_secure_desc": "Safe uploads and downloads with privacy and data integrity guaranteed."
+    },
+    "how_it_works": {
+        "title": "How It Works",
+        "step1_title": "Upload Your Images",
+        "step1_desc": "Upload images as albums directly to the platform without losing quality.",
+        "step2_title": "Organize Albums",
+        "step2_desc": "Arrange your images into albums for easy management and viewing.",
+        "step3_title": "Share Albums",
+        "step3_desc": "Send albums to clients or collaborators effortlessly with secure links.",
+        "step4_title": "Receive Feedback",
+        "step4_desc": "Get approvals or comments directly on your albums, keeping everything organized."
     }
 }
