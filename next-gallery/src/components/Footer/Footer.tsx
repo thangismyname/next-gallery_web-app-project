@@ -22,59 +22,66 @@ const Footer = () => {
 
   return (
     <footer className="w-full border-t bg-background text-foreground py-10">
-      <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-10">
-        {/* LEFT: Company Info */}
-        <div className="flex items-start gap-4">
-          <div className="w-14 h-14 bg-accent rounded-md" />
+      <div className="max-w-7xl mx-auto px-6">
+        {/* 🔥 Logo + Company Info (Mobile & Desktop) */}
+        <div
+          className="
+  flex flex-col items-center gap-4 mb-6 
+  md:flex-row md:items-center md:gap-6 md:mb-10
+"
+        >
+          {/* Logo */}
+          <div className="w-16 h-16 bg-accent rounded-md px-2 shrink-0" />
 
-          <div className="flex flex-col gap-2">
+          {/* Company Text */}
+          <div className="flex flex-col text-center md:text-left ">
             <h3 className="text-lg font-semibold">
               {t("footer.company_name")}
             </h3>
-
             <p className="text-sm text-muted-foreground">
               {t("footer.tagline")}
             </p>
-
-            <div className="flex flex-col mt-3 gap-2">
-              <a
-                onClick={handleLocationClick}
-                className="text-sm font-medium cursor-pointer hover:text-blue-600 flex items-center"
-              >
-                <FontAwesomeIcon icon={faMapMarkerAlt} className="mr-2" />
-                {t("footer.location")}
-              </a>
-
-              <a
-                onClick={handlePhoneClick}
-                className="text-sm font-medium cursor-pointer hover:text-blue-600 flex items-center"
-              >
-                <FontAwesomeIcon icon={faPhoneAlt} className="mr-2" />
-                {t("footer.phone")}
-              </a>
-            </div>
           </div>
         </div>
 
-        {/* CENTER: Legal Links */}
-        <div className="flex flex-col items-center gap-1 text-sm font-medium mt-6">
-          <a href="/terms" className="hover:text-blue-600 transition-colors">
-            {t("footer.terms_conditions")}
-          </a>
-          <a
-            href="/shipping-returns"
-            className="hover:text-blue-600 transition-colors"
-          >
-            {t("footer.shipping_returns")}
-          </a>
-          <a href="/privacy" className="hover:text-blue-600 transition-colors">
-            {t("footer.privacy_policy")}
-          </a>
-        </div>
+        {/* Main Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-10 items-end">
+          {/* LEFT COLUMN */}
+          <div className="flex flex-col gap-4 items-center md:items-start">
+            <div className="flex flex-col gap-2 pt-2">
+              <button
+                onClick={handleLocationClick}
+                className="text-sm font-medium hover:text-blue-600 flex items-start"
+              >
+                <FontAwesomeIcon icon={faMapMarkerAlt} className="mr-2" />
+                {t("footer.location")}
+              </button>
 
-        {/* RIGHT: Socials + ModeToggle */}
-        <div className="flex justify-between mt-6">
-          <div className="flex flex-col gap-2 text-sm font-medium">
+              <button
+                onClick={handlePhoneClick}
+                className="text-sm font-medium hover:text-blue-600 flex items-start"
+              >
+                <FontAwesomeIcon icon={faPhoneAlt} className="mr-2" />
+                {t("footer.phone")}
+              </button>
+            </div>
+          </div>
+
+          {/* CENTER COLUMN – Legal */}
+          <div className="flex flex-col items-center md:items-center gap-2 text-sm font-medium">
+            <a href="/terms" className="hover:text-blue-600">
+              {t("footer.terms_conditions")}
+            </a>
+            <a href="/shipping-returns" className="hover:text-blue-600">
+              {t("footer.shipping_returns")}
+            </a>
+            <a href="/privacy" className="hover:text-blue-600">
+              {t("footer.privacy_policy")}
+            </a>
+          </div>
+
+          {/* SOCIALS COLUMN */}
+          <div className="flex flex-col items-center md:items-center gap-2 text-sm font-medium">
             <a className="cursor-pointer hover:text-blue-600">
               {t("footer.instagram")}
             </a>
@@ -86,11 +93,12 @@ const Footer = () => {
             </a>
           </div>
 
-          <div className="flex flex-col items-end gap-3">
-            {/* 🔥 LanguageSelector removed */}
-            {/* 🔥 Replaced by unified ModeToggle */}
-            <ThemeToggle variant="default" />
-            <LanguageToggle variant="default" />
+          {/* MODE TOGGLES COLUMN */}
+          <div className="flex flex-col items-center md:items-end text-sm font-medium">
+            <div className="flex md:flex-col gap-3 pt-2">
+              <ThemeToggle variant="default" />
+              <LanguageToggle variant="default" />
+            </div>
           </div>
         </div>
       </div>
