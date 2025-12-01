@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMapMarkerAlt, faPhoneAlt } from "@fortawesome/free-solid-svg-icons";
 
-import { AppContext } from "../theme/appcontext";
+import { AppContext } from "../theme/AppContext";
 import { ThemeToggle, LanguageToggle } from "../theme/mode-toggle";
 
 const Footer = () => {

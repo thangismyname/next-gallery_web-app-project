@@ -5,8 +5,8 @@ import { useTranslation } from "react-i18next";
 import { useTheme } from "@/components/theme/theme-provider"; // Fixed import
 
 import HeaderWithMenu from "@/components/header/headerwithmenu";
-import Newsletter from "@/components/footer/newsletter";
-import Footer from "@/components/footer/footer";
+import Newsletter from "@/components/footer/Newsletter";
+import Footer from "@/components/footer/Footer";
 import PhotoGallery from "@/components/PhotoGallery";
 import UploadForm from "@/components/UploadForm";
 import { getPhotos } from "@/services/photoService";
