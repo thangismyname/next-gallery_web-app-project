@@ -12,7 +12,14 @@ import UploadForm from "@/components/UploadForm";
 import { getPhotos } from "@/services/photoService";
 import type { Photo } from "@/types/types";
 
-const HomePageContent: React.FC = () => {
+// Sections
+import HeroSection from "./sections/HeroSection";
+import AboutSection from "./sections/AboutSection";
+import FeatureSection from "./sections/FeatureSection";
+import HowItWorksSection from "./sections/HowItWorksSection";
+import ShowcaseSection from "./sections/ShowcaseSection";
+
+const LandingPageContent: React.FC = () => {
   const { t } = useTranslation();
   const { theme } = useTheme(); // Now using the correct custom theme provider
 
@@ -46,50 +53,15 @@ const HomePageContent: React.FC = () => {
       {/* Main content */}
       <main className="grow mx-6 md:mx-12 lg:mx-18 max-w-screen-2xl">
         {/* ===== HERO SECTION ===== */}
-        <section className="relative w-full max-w-screen-2xl mx-auto mt-6">
-          {/* 3-Image Row */}
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-4 overflow-hidden">
-            {/* Image 1 – top-left */}
-            <img
-              src="/assets/image1.jpg"
-              alt="Hero 1"
-              className="w-full h-32 md:h-64 object-cover col-start-1 md:row-start-1 md:col-start-1"
-            />
-
-            {/* Image 2 – large, centered */}
-            <img
-              src="/assets/image2.jpg"
-              alt="Hero 2"
-              className="w-full h-64 md:h-128 object-cover 
-               col-span-2 
-               md:col-start-2 md:col-span-1 
-               md:row-start-1 md:row-span-2"
-            />
-
-            {/* Image 3 – bottom-right */}
-            <img
-              src="/assets/image3.jpg"
-              alt="Hero 3"
-              className="w-full h-32 md:h-64 object-cover col-start-2
-               md:row-start-2 md:col-start-3"
-            />
-          </div>
-
-          {/* Title + Slogan Overlay */}
-          <div className="absolute inset-0 flex flex-col h-full justify-between p-2 pointer-events-none">
-            <h1 className="text-left text-4xl md:text-7xl font-extrabold text-white drop-shadow-lg uppercase mt-4 md:mt-6">
-              Next Gallery®
-            </h1>
-            <div>
-              <p className="text-left text-6xl md:text-9xl font-bold text-white mt-2 drop-shadow-md uppercase md:mt-3">
-                Hold your
-              </p>
-              <p className="text-right text-6xl md:text-9xl font-bold text-white mt-2 drop-shadow-md uppercase md:mt-3">
-                memories
-              </p>
-            </div>
-          </div>
-        </section>
+        <HeroSection />
+        {/* ===== ABOUT SECTION ===== */}
+        <AboutSection />
+        {/* ===== FEATURE SECTION ===== */}
+        <FeatureSection />
+        {/* ===== HOW IT WORKS SECTION ===== */}
+        <HowItWorksSection />
+        {/* ===== SHOWCASE SECTION ===== */}
+        <ShowcaseSection albums={[]} />
 
         {/* Status messages */}
         {isLoading && (
@@ -118,4 +90,4 @@ const HomePageContent: React.FC = () => {
   );
 };
 
-export default HomePageContent;
+export default LandingPageContent;

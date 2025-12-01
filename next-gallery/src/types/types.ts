@@ -4,7 +4,6 @@ export interface Photo {
   originalName: string;
   category?: string;
 
-  // backend fields
   originalFile: string;
   originalUrl: string;     // original file for download
   previewFile: string;
@@ -14,6 +13,13 @@ export interface Photo {
   storage: "local" | "s3";
   size: number;
   createdAt?: string;
+}
+
+export interface Album {
+  id: string;
+  title: string;
+  coverPhoto: Photo;
+  photos: Photo[];
 }
 
 export interface User {

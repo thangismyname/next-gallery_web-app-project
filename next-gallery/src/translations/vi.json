@@ -174,8 +174,25 @@
         "error_invalid_token": "Token không hợp lệ hoặc đã hết hạn.",
         "success_message": "Mật khẩu đã được đặt lại thành công!"
     },
-    "homepage": {
+    "landingpage": {
+        "hero_title": "Next Gallery®",
+        "hero_line1": "Giữ lấy",
+        "hero_line2": "kỷ niệm của bạn",
+        "hero_image1_alt": "Hình ảnh minh họa 1",
+        "hero_image2_alt": "Hình ảnh minh họa 2",
+        "hero_image3_alt": "Hình ảnh minh họa 3",
         "transfer_line": "Chuyển và nhận ảnh dễ dàng",
         "creator_credit": "Next Gallery® được tạo để giúp nhiếp ảnh gia và khách hàng kết nối, chia sẻ ảnh chất lượng cao dễ dàng mà không cần thay đổi nền tảng"
+    },
+    "homepage": {
+        "core_features_title": "Tại sao chọn Next Gallery®?",
+        "feature_high_quality_title": "Chuyển ảnh chất lượng cao",
+        "feature_high_quality_desc": "Chuyển ảnh mà không giảm chất lượng, giữ trọn ký ức của bạn.",
+        "feature_album_title": "Album thay vì ảnh lẻ",
+        "feature_album_desc": "Sắp xếp nhiều ảnh thành album để quản lý và xem dễ dàng hơn.",
+        "feature_sharing_title": "Chia sẻ dễ dàng",
+        "feature_sharing_desc": "Chia sẻ album nhanh chóng giữa nhiếp ảnh gia và khách hàng.",
+        "feature_secure_title": "An toàn & Đáng tin cậy",
+        "feature_secure_desc": "Tải lên và tải xuống an toàn với quyền riêng tư và toàn vẹn dữ liệu được đảm bảo."
     }
 }
