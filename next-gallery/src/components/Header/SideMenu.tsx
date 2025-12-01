@@ -54,7 +54,7 @@ export const SideMenu: React.FC<SideMenuProps> = ({
           variant="ghost"
           className="font-medium text-base hover:bg-accent hover:text-accent-foreground"
         >
-          ☰ Menu
+          Menu
         </Button>
       </SheetTrigger>
 

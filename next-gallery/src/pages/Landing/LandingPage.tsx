@@ -18,6 +18,7 @@ import AboutSection from "./sections/AboutSection";
 import FeatureSection from "./sections/FeatureSection";
 import HowItWorksSection from "./sections/HowItWorksSection";
 import ShowcaseSection from "./sections/ShowcaseSection";
+import CTASection from "./sections/CTASection";
 
 const LandingPageContent: React.FC = () => {
   const { t } = useTranslation();
@@ -62,6 +63,8 @@ const LandingPageContent: React.FC = () => {
         <HowItWorksSection />
         {/* ===== SHOWCASE SECTION ===== */}
         <ShowcaseSection albums={[]} />
+        {/* ===== CTA SECTION ===== */}
+        <CTASection />
 
         {/* Status messages */}
         {isLoading && (
