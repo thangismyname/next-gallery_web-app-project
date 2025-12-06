@@ -194,5 +194,37 @@
         "feature_sharing_desc": "Chia sẻ album nhanh chóng giữa nhiếp ảnh gia và khách hàng.",
         "feature_secure_title": "An toàn & Đáng tin cậy",
         "feature_secure_desc": "Tải lên và tải xuống an toàn với quyền riêng tư và toàn vẹn dữ liệu được đảm bảo."
+    },
+    "auth": {
+        "loginTitle": "Đăng nhập tại đây",
+        "registerTitle": "Đăng ký tại đây",
+        "email": "Email",
+        "password": "Mật khẩu",
+        "firstName": "Tên",
+        "lastName": "Họ",
+        "phone": "Số điện thoại",
+        "role": "Vai trò",
+        "studentId": "Mã sinh viên",
+        "studentIdPlaceholder": "Mã sinh viên (tùy chọn)",
+        "login": "Đăng nhập",
+        "register": "Đăng ký",
+        "registerNow": "Đăng ký ngay",
+        "noAccount": "Chưa có tài khoản?",
+        "haveAccount": "Đã có tài khoản?",
+        "loginWithGoogle": "Đăng nhập với Google",
+        "loginWithDiscord": "Đăng nhập với Discord",
+        "helloFriends": "Xin chào bạn!",
+        "helloFriendsDesc": "Nếu bạn chưa có tài khoản, hãy tham gia cùng chúng tôi và bắt đầu hành trình của bạn.",
+        "welcomeBack": "Chào mừng trở lại!",
+        "welcomeBackDesc": "Nếu bạn đã có tài khoản, đăng nhập tại đây và tận hưởng.",
+        "roles": {
+            "user": "Người dùng",
+            "admin": "Quản trị viên",
+            "photographer": "Nhiếp ảnh gia"
+        },
+        "errors": {
+            "fillAllFields": "Vui lòng điền tất cả các trường",
+            "fillRequiredFields": "Vui lòng điền tất cả các trường bắt buộc"
+        }
     }
 }

@@ -1,11 +1,11 @@
 # Use official Node image
-FROM node:20-alpine
+FROM node:20-bullseye
 
 # Set working directory
 WORKDIR /app
 
 # Install dependencies for building native modules
-RUN apk add --no-cache python3 make g++ git
+RUN apt-get update && apt-get install -y python3 make g++ git
 
 # Copy package files
 COPY package*.json ./

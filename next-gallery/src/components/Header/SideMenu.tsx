@@ -43,7 +43,7 @@ export const SideMenu: React.FC<SideMenuProps> = ({
     window.dispatchEvent(new Event("storage"));
 
     // Navigate to login page
-    navigate("/login");
+    navigate("/auth");
     setMenuOpen(false);
   };
 

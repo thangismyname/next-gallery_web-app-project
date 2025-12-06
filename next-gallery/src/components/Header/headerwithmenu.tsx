@@ -39,7 +39,7 @@ const HeaderWithMenu: React.FC = () => {
 
   const handleUserClick = () => {
     if (user) navigate("/userpage");
-    else navigate("/login");
+    else navigate("/auth");
   };
 
   const handleGoHome = () => navigate("/");
