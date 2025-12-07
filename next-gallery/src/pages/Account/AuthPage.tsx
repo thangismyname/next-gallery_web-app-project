@@ -100,6 +100,9 @@ export default function AuthPage() {
                     {isLogin ? t("auth.register") : t("auth.login")}
                   </button>
                 </p>
+                <SocialLogin mode="login" />
+                <ThemeToggle />
+                <LanguageToggle />
               </div>
             </div>
           ) : (
@@ -135,14 +138,14 @@ export default function AuthPage() {
 
               {/* Left Welcome Panel */}
               <div
-                className={`absolute left-0 top-0 h-full w-1/2 flex flex-col items-center justify-center px-12 text-white transition-opacity duration-700 ${
+                className={`absolute left-0 top-0 h-full w-1/2 flex flex-col items-center justify-center px-12 text-foreground transition-opacity duration-700 ${
                   !isLogin ? "opacity-100 z-10" : "opacity-0"
                 }`}
               >
-                <h2 className="text-5xl font-bold mb-6">
+                <h2 className="text-5xl font-bold mb-6 text-white">
                   {t("auth.welcomeBack")}
                 </h2>
-                <p className="text-lg max-w-sm mb-10">
+                <p className="text-lg max-w-sm mb-10 text-white">
                   {t("auth.welcomeBackDesc")}
                 </p>
                 <Button
@@ -157,14 +160,14 @@ export default function AuthPage() {
 
               {/* Right Welcome Panel */}
               <div
-                className={`absolute right-0 top-0 h-full w-1/2 flex flex-col items-center justify-center px-12 text-white transition-opacity duration-700 ${
+                className={`absolute right-0 top-0 h-full w-1/2 flex flex-col items-center justify-center px-12 text-foreground transition-opacity duration-700 ${
                   isLogin ? "opacity-100 z-10" : "opacity-0"
                 }`}
               >
-                <h2 className="text-5xl font-bold mb-6">
+                <h2 className="text-5xl font-bold mb-6 text-white">
                   {t("auth.helloFriends")}
                 </h2>
-                <p className="text-lg max-w-sm mb-10">
+                <p className="text-lg max-w-sm mb-10 text-white">
                   {t("auth.helloFriendsDesc")}
                 </p>
                 <Button
@@ -181,8 +184,13 @@ export default function AuthPage() {
         </div>
 
         {!isMobile && (
-          <div className="flex justify-center mt-8">
+          <div className="flex flex-col justify-center mt-8 gap-4">
             <SocialLogin mode="login" />
+            {/* Theme & Language Toggles */}
+            <div className="flex items-center justify-center gap-4 mt-2">
+              <ThemeToggle />
+              <LanguageToggle />
+            </div>
           </div>
         )}
       </div>
