@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGlobe } from "@fortawesome/free-solid-svg-icons";
-import { useTheme } from "next-themes"; // 👈 Shadcn theme provider hook
+import { useTheme } from "@/components/theme/theme-provider";
 
 const LanguageSelector: React.FC = () => {
   const { t, i18n } = useTranslation();

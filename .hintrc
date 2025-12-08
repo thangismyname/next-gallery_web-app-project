@@ -7,7 +7,8 @@
     "axe/forms": [
       "default",
       {
-        "label": "off"
+        "label": "off",
+        "select-name": "off"
       }
     ],
     "typescript-config/is-valid": "off",
@@ -20,6 +21,12 @@
         "ignore": [
           "user-select"
         ]
+      }
+    ],
+    "axe/text-alternatives": [
+      "default",
+      {
+        "image-alt": "off"
       }
     ]
   }

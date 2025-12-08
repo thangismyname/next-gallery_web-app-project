@@ -9,7 +9,7 @@ export interface User {
   lastName: string;
   email: string;
   phone?: string;
-  role: "Admin" | "Photographer" | "User";
+  role: "Admin" | "Photographer" | "User" | "IUPC Member";
   studentId?: string;
   providers: { provider: "local" | "google" | "discord"; providerId?: string }[];
   avatar?: string;
@@ -34,7 +34,7 @@ export const login = async ({
 }): Promise<User> => {
   try {
     console.log("authService: Login attempt:", { email });
-    const res = await axios.post<AuthResponse>(`${AUTH_URL}/login`, { email, password });
+    const res = await axios.post<AuthResponse>(`${AUTH_URL}/auth`, { email, password });
     const { token, user } = res.data;
 
     if (rememberMe) {
@@ -110,15 +110,15 @@ export const linkProvider = async (
 };
 
 // ---------------------- FORGOT PASSWORD ----------------------
-export const forgotPassword = async (email: string): Promise<{ message: string; otp?: string }> => {
+export const forgotPassword = async (email: string): Promise<{ message: string }> => {
   try {
     console.log("authService: Forgot password attempt:", { email });
-    const res = await axios.post<{ message: string; otp?: string }>(
+    const res = await axios.post<{ message: string }>(
       `${AUTH_URL}/forgot-password`,
       { email }
     );
     console.log("authService: Forgot password success:", res.data);
-    return res.data;
+    return res.data; // only message, never return OTP
   } catch (err: any) {
     const message = err.response?.data?.message || err.message || "Forgot password failed";
     console.error("authService: Forgot password error:", message);
@@ -126,13 +126,29 @@ export const forgotPassword = async (email: string): Promise<{ message: string; 
   }
 };
 
-// ---------------------- RESET PASSWORD ----------------------
-export const resetPassword = async (otp: string, newPassword: string): Promise<{ message: string }> => {
+// ---------------------- VERIFY OTP ----------------------
+export const verifyOtp = async (email: string, otp: string): Promise<{ message: string }> => {
   try {
-    console.log("authService: Reset password attempt:", { otp });
+    const res = await axios.post<{ message: string }>(`${AUTH_URL}/verify-otp`, { email, otp });
+    return res.data;
+  } catch (err: any) {
+    const message = err.response?.data?.message || err.message || "OTP verification failed";
+    throw new Error(message);
+  }
+};
+
+
+// ---------------------- RESET PASSWORD ----------------------
+export const resetPassword = async (
+  email: string,
+  otp: string,
+  newPassword: string
+): Promise<{ message: string }> => {
+  try {
+    console.log("authService: Reset password attempt:", { email, otp });
     const res = await axios.post<{ message: string }>(
       `${AUTH_URL}/reset-password`,
-      { otp, newPassword } // must match backend field names
+      { email, otp, newPassword } // must match backend field names
     );
     console.log("authService: Reset password success:", res.data);
     return res.data;

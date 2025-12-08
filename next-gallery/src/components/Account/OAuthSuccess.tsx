@@ -21,7 +21,7 @@ const OAuthSuccess: React.FC = () => {
     const token = params.get("token");
 
     if (!token) {
-      navigate("/login");
+      navigate("/auth");
       return;
     }
 
@@ -45,7 +45,7 @@ const OAuthSuccess: React.FC = () => {
         navigate("/");
       })
       .catch(() => {
-        navigate("/login");
+        navigate("/auth");
       });
   }, [location, navigate]);
 

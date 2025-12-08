@@ -137,5 +137,37 @@
         "step3_desc": "Send albums to clients or collaborators effortlessly with secure links.",
         "step4_title": "Receive Feedback",
         "step4_desc": "Get approvals or comments directly on your albums, keeping everything organized."
+    },
+    "auth": {
+        "loginTitle": "Login here",
+        "registerTitle": "Register here",
+        "email": "Email",
+        "password": "Password",
+        "firstName": "First Name",
+        "lastName": "Last Name",
+        "phone": "Phone",
+        "role": "Role",
+        "studentId": "Student ID",
+        "studentIdPlaceholder": "Student ID (optional)",
+        "login": "Login",
+        "register": "Register",
+        "registerNow": "Register now",
+        "noAccount": "Don't have an account?",
+        "haveAccount": "Already have an account?",
+        "loginWithGoogle": "Login with Google",
+        "loginWithDiscord": "Login with Discord",
+        "helloFriends": "Hello Friends!",
+        "helloFriendsDesc": "If you don't have an account yet, join us and start your journey.",
+        "welcomeBack": "Welcome Back!",
+        "welcomeBackDesc": "If you already have an account, login here and have fun.",
+        "roles": {
+            "user": "User",
+            "admin": "Admin",
+            "photographer": "Photographer"
+        },
+        "errors": {
+            "fillAllFields": "Please fill in all fields",
+            "fillRequiredFields": "Please fill in all required fields"
+        }
     }
 }

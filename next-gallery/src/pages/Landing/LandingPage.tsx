@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useTheme } from "@/components/theme/theme-provider"; // Fixed import
 
-import HeaderWithMenu from "@/components/header/headerwithmenu";
+import Header from "@/components/header/Header";
 import Newsletter from "@/components/footer/Newsletter";
 import Footer from "@/components/footer/Footer";
 import PhotoGallery from "@/components/PhotoGallery";
@@ -19,6 +19,7 @@ import FeatureSection from "./sections/FeatureSection";
 import HowItWorksSection from "./sections/HowItWorksSection";
 import ShowcaseSection from "./sections/ShowcaseSection";
 import CTASection from "./sections/CTASection";
+import { fa } from "zod/v4/locales";
 
 const LandingPageContent: React.FC = () => {
   const { t } = useTranslation();
@@ -49,7 +50,7 @@ const LandingPageContent: React.FC = () => {
   return (
     <div className="flex flex-col min-h-screen bg-background text-foreground transition-colors duration-300">
       {/* Header */}
-      <HeaderWithMenu />
+      <Header vertical={false} horizontal={true} />
 
       {/* Main content */}
       <main className="grow mx-6 md:mx-12 lg:mx-18 max-w-screen-2xl">
