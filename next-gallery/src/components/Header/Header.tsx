@@ -11,7 +11,6 @@ import { Search, User } from "lucide-react";
 
 import { SideMenu } from "./SideMenu";
 import { SearchDialog } from "./searchdialog";
-
 interface UserHeader {
   firstName?: string;
   lastName?: string;
@@ -19,7 +18,7 @@ interface UserHeader {
   avatar?: string;
 }
 
-const HeaderWithMenu: React.FC = () => {
+const Header: React.FC = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [user, setUser] = useState<UserHeader | null>(getCurrentUser());
@@ -108,4 +107,4 @@ const HeaderWithMenu: React.FC = () => {
   );
 };
 
-export default HeaderWithMenu;
+export default Header;
