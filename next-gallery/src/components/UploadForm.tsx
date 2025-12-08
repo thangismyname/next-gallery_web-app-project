@@ -1,8 +1,7 @@
 import React, { useState, type FormEvent, type ChangeEvent } from "react";
 import axios from "axios";
 import { Button } from "@/components/ui/button"; // Shadcn Button
-import { useTheme } from "next-themes";
-
+import { useTheme } from "@/components/theme/theme-provider";
 interface UploadFormProps {
   onUploadSuccess: () => void;
 }

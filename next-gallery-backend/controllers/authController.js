@@ -358,6 +358,33 @@ exports.forgotPassword = async (req, res) => {
   }
 };
 
+// -------- Verify OTP --------
+exports.verifyOtp = async (req, res) => {
+  try {
+    const { email, otp } = req.body;
+    if (!email || !otp) {
+      return res.status(400).json({ message: "Email and OTP required" });
+    }
+
+    const hashedOtp = crypto.createHash("sha256").update(otp).digest("hex");
+
+    const user = await User.findOne({
+      email: email.toLowerCase(),
+      resetPasswordToken: hashedOtp,
+      resetPasswordExpire: { $gt: Date.now() },
+    });
+
+    if (!user) {
+      return res.status(400).json({ message: "Invalid or expired OTP" });
+    }
+
+    res.json({ message: "OTP verified successfully" });
+  } catch (err) {
+    console.error("Verify OTP error:", err);
+    res.status(500).json({ message: "Server error", error: err.message });
+  }
+};
+
 // -------- Reset Password (OTP) --------
 exports.resetPassword = async (req, res) => {
   try {

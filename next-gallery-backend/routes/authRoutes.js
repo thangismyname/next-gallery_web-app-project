@@ -6,18 +6,20 @@ const {
   register,
   login,
   forgotPassword,
+  verifyOtp, // <-- add this
   resetPassword,
   linkProvider,
 } = require("../controllers/authController");
+
 const { me } = require("../controllers/userController");
 const { authMiddleware } = require("../middlewares/authMiddleware");
 
 const router = express.Router();
 
 // Normal Auth (API)
-router.post("/register", register);
-router.post("/login", login);
+router.post("/auth", login);
 router.post("/forgot-password", forgotPassword);
+router.post("/verify-otp", verifyOtp); // <-- new route
 router.post("/reset-password", resetPassword);
 router.post("/link-provider", linkProvider);
 
@@ -37,7 +39,7 @@ router.get("/google", (req, res, next) => {
 router.get(
   "/google/callback",
   passport.authenticate("google", {
-    failureRedirect: `${process.env.FRONTEND_URL}/login`,
+    failureRedirect: `${process.env.FRONTEND_URL}/auth`,
     session: false,
   }),
   async (req, res) => {
@@ -81,7 +83,7 @@ router.get(
       }
     } catch (error) {
       console.error("Google Callback error:", error);
-      res.redirect(`${process.env.FRONTEND_URL}/login`);
+      res.redirect(`${process.env.FRONTEND_URL}/auth`);
     }
   }
 );
@@ -99,7 +101,7 @@ router.get("/discord", (req, res, next) => {
 router.get(
   "/discord/callback",
   passport.authenticate("discord", {
-    failureRedirect: `${process.env.FRONTEND_URL}/login`,
+    failureRedirect: `${process.env.FRONTEND_URL}/auth`,
     session: false,
   }),
   async (req, res) => {
@@ -143,7 +145,7 @@ router.get(
       }
     } catch (error) {
       console.error("Discord Callback error:", error);
-      res.redirect(`${process.env.FRONTEND_URL}/login`);
+      res.redirect(`${process.env.FRONTEND_URL}/auth`);
     }
   }
 );
